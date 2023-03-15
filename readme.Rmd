@@ -1,0 +1,112 @@
+---
+title: "EPG3308 - Computación Estadística"
+output:
+  github_document:
+    toc: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Programa
+
+1.  Introducción a la programación con R.
+
+    - Ambiente de programación Rstudio.
+    - Proyectos y scripts.
+    - Creación, manipulación y asignación de objetos.
+    - Ejecutando código.
+
+1.  Análisis Exploratorio de datos.
+
+    - Visualización de datos con ggplot2: Mapeos estéticos, separación en facetas, geometrías.
+    - Transformación de datos: filtrar, ordenar, seleccionar, transformaciones, resúmenes agrupados y transformaciones agrupadas.
+    - Introducción al _Pipe_ `|>`.
+
+1.  Manipulación de datos.
+
+    - Datos relacionales: uniones (joins) de transformación y filtrado.
+    - Datos ordenados: pivotar, separar y unir, valores faltantes.
+    - Manejo de strings y expresiones regulares. Manipulación de factores y fechas.
+    - Importación y orígenes de información: texto plano, API, bases de datos, Web scraping.
+
+1.  Modelamiento.
+
+    - Conceptos básicos: predicción, error, sesgo, métricas de evaluación.
+    - Modelos de Regresión: Lineal y Logística.
+    - Árboles de decisión.
+    - Random Forests. Ideas tras Bagging y Boosting.
+    - Importancia de variables.
+    - Métodos no supervisados, métodos de clustering.
+
+
+## Material
+
+### Slides
+
+```{r, results='asis'}
+slides_files <- dir("slides", full.names = TRUE)  |> 
+  stringr::str_subset(".html") |> 
+  stringr::str_subset("99", negate = TRUE)
+
+slides_url <- file.path(
+  "https://jbkunst.github.io",
+  "computacion-estadistica-EPG3308",
+  slides_files
+  )
+
+slides_nms <- slides_files |> 
+  stringr::str_replace("html$", "Rmd") |> 
+  purrr::map(rmarkdown::yaml_front_matter) |> 
+  purrr::map(purrr::pluck, "subtitle") |> 
+  stringr::str_remove("^[0-9]+") |> 
+  # stringr::str_remove("\\.html$") |> 
+  stringr::str_replace_all("\\-", " ") |> 
+  stringr::str_trim()
+
+# n <-  "R Rstudio Copy Paste"
+# u <- "https://jbkunst.github.io/usach-ingemat-computacion-estadistica-EPG3308-202201/01-R-Rstudio-copy-paste.html"
+
+purrr::walk2(slides_nms, slides_url, ~ {cat(stringr::str_glue("1. [{ n }]({ u })", n = .x, u = .y)); cat("\n")})
+```
+
+### Repositorio
+
+Repositorio del curso en github https://github.com/jbkunst/computacion-estadistica-EPG3308. Acá podrás
+encontrar datos, código fuente de las slides, evaluaciones, etc.
+
+## Bibliografía
+
+- [R for Data Science](https://r4ds.hadley.nz/). Versión traducida al español [R para Ciencia de Datos](https://es.r4ds.hadley.nz/).
+- [Tidy Modeling with R](https://www.tmwr.org/).
+- [Machine Learning for Everyone](https://vas3k.com/blog/machine_learning/).
+
+## Horarios
+
+### Cátedra
+
+Miércoles módulos 6, 7 y 8, desde 17:30 a 20:20 hrs. Sala A301 (Patio de la Virgen) en el campus Casa Central 
+
+### Ayudantía
+
+Sábado desde 10:00 a 11:20 hrs por Alonso Campos, aacampos3@uc.cl.
+
+### Clases
+
+```{r, results='asis', message=FALSE, warning=FALSE}
+options(knitr.kable.NA = "")
+readr::read_delim("docs/calendario-clases.txt") |> 
+  knitr::kable()
+```
+
+# Evaluaciones
+
+| Tarea | Publicación | Entrega  |
+|-------|-------------|----------|
+| 1     | 21 abril    | 28 abril |
+| 2     | 24 mayo     | 31 mayo  |
+| 3     | 20 junio    | 28 junio |
+
