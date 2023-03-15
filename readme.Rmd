@@ -33,14 +33,10 @@ knitr::opts_chunk$set(echo = FALSE)
     - Manejo de strings y expresiones regulares. Manipulación de factores y fechas.
     - Importación y orígenes de información: texto plano, API, bases de datos, Web scraping.
 
-1.  Modelamiento.
+1.  Elementos y aplicaciones del Modelamiento.
 
     - Conceptos básicos: predicción, error, sesgo, métricas de evaluación.
     - Modelos de Regresión: Lineal y Logística.
-    - Árboles de decisión.
-    - Random Forests. Ideas tras Bagging y Boosting.
-    - Importancia de variables.
-    - Métodos no supervisados, métodos de clustering.
 
 
 ## Material

@@ -39,15 +39,11 @@ EPG3308 - Computación Estadística
     - Importación y orígenes de información: texto plano, API, bases de
       datos, Web scraping.
 
-4.  Modelamiento.
+4.  Elementos y aplicaciones del Modelamiento.
 
     - Conceptos básicos: predicción, error, sesgo, métricas de
       evaluación.
     - Modelos de Regresión: Lineal y Logística.
-    - Árboles de decisión.
-    - Random Forests. Ideas tras Bagging y Boosting.
-    - Importancia de variables.
-    - Métodos no supervisados, métodos de clustering.
 
 ## Material
 
