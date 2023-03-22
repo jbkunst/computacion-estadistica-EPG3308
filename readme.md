@@ -51,6 +51,8 @@ EPG3308 - Computación Estadística
 
 1.  [Bienvenida R Rstudio Copy
     Paste](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/01-R-Rstudio-copy-paste.html)
+2.  [AED Viz
+    <code><small>ggplot2</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/02-AED-Viz-ggplot2.html)
 
 ### Repositorio
 
