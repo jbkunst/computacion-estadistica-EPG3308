@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>02-AED-Viz-ggplot2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content=" Joshua Kunst @jbkunst" />
+    <meta name="date" content="2023-03-22" />
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+.title[
+# Computación Estadística EPG3308
+]
+.subtitle[
+## 02 AED Viz <code><small>ggplot2</small></code>
+]
+.author[
+### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
+]
+.date[
+### 2023-03-22
+]
+
+---
+
+
+
+
+
+## Análisis Exploratorio de Datos
+
+El **Análisis Exploratorio de Datos** se refiere a un ciclo iterativo en el que:
+
+- Generas preguntas acerca de tus datos.
+- Buscas respuestas visualizando, transformando y modelando tus datos.
+- Usas lo que has aprendido para refinar tus preguntas y/o generar nuevas interrogantes.
+
+Lo anterior es un _copy &amp; paste_ desde [R4DS](https://es.r4ds.hadley.nz/an%C3%A1lisis-exploratorio-de-datos-eda.html#an%C3%A1lisis-exploratorio-de-datos-eda).
+
+
+&lt;img src="images/data-science-explore.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Visualización
+
+Definiremos la visualización, en el contexto de análisis de datos, como una manera
+de representar/codificar información, y por tanto una herramienta para analizar
+datos.
+
+&lt;img src="images/data-viz.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Antes de seguir
+
+- Una __variable__ es una cantidad, que puede ser medida: estatura, magnitud de un sismo, velocidad.
+
+- Un __valor__ es un estado de la variable cuando se mide: 1.20 metros, 8° Richter.
+
+- Una __observación__ o caso es un conjunto de mediciones -no de la misma variable necesariamente- pero si en un mismo instante y a un mismo objeto.
+
+
+
+
+---
+
+## Un primer ejemplo: Set de legos! 
+
+
+
+&lt;img src="images/legoscsv.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Explorar (v1)
+
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/unnamed-chunk-5-1.svg" width="100%" /&gt;
+
+---
+
+## Explorar (v2)
+
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/unnamed-chunk-6-1.svg" width="100%" /&gt;
+
+---
+
+## Codificamos mayor información. Bueno/Malo?
+
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/unnamed-chunk-7-1.svg" width="100%" /&gt;
+
+---
+
+## Cada visualización cuenta una historia
+
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/unnamed-chunk-8-1.svg" width="100%" /&gt;
+
+
+---
+
+## Explorar tendencia antes que detalles...
+
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/unnamed-chunk-9-1.svg" width="100%" /&gt;
+
+---
+
+## Explorar tendencia antes que detalles... (v2)
+
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/unnamed-chunk-10-1.svg" width="100%" /&gt;
+
+---
+
+## O simplemente contar una historia más sencilla
+
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/unnamed-chunk-11-1.svg" width="100%" /&gt;
+
+
+---
+
+## `ggplot2`
+
+&lt;img src="images/viz-mapping-vars.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+De forma **general**:
+
+```
+ggplot(data = &lt;DATOS&gt;) +
+  &lt;GEOM_FUNCIÓN&gt;(mapping = aes(&lt;MAPEOS&gt;))
+```
+
+---
+
+## `ggplot2`
+
+&lt;img src="images/viz-mapping-vars.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+De forma **particular**:
+
+```
+ggplot(data = datos) +
+  geom_point(mapping = aes(x = foo, y = bar, size = zaz))
+```
+
+---
+
+## `ggplot2` 
+
+`ggplot2` funciona bajo un marco de layers o capas. Estas las iremos agregando
+de abajo hacia arriba.
+
+&lt;img src="images/layers-of-ggplot.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Revisemos los datos
+
+
+```r
+library(tidyverse)
+library(datos)
+
+glimpse(millas)
+```
+
+```
+## Rows: 234
+## Columns: 11
+## $ fabricante  &lt;chr&gt; "audi", "audi", "audi", "audi", "audi", "audi", "audi", "a…
+## $ modelo      &lt;chr&gt; "a4", "a4", "a4", "a4", "a4", "a4", "a4", "a4 quattro", "a…
+## $ cilindrada  &lt;dbl&gt; 1.8, 1.8, 2.0, 2.0, 2.8, 2.8, 3.1, 1.8, 1.8, 2.0, 2.0, 2.8…
+## $ anio        &lt;int&gt; 1999, 1999, 2008, 2008, 1999, 1999, 2008, 1999, 1999, 2008…
+## $ cilindros   &lt;int&gt; 4, 4, 4, 4, 6, 6, 6, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 8, 8, 8…
+## $ transmision &lt;chr&gt; "auto(l5)", "manual(m5)", "manual(m6)", "auto(av)", "auto(…
+## $ traccion    &lt;chr&gt; "d", "d", "d", "d", "d", "d", "d", "4", "4", "4", "4", "4"…
+## $ ciudad      &lt;int&gt; 18, 21, 20, 21, 16, 18, 18, 18, 16, 20, 19, 15, 17, 17, 15…
+## $ autopista   &lt;int&gt; 29, 29, 31, 30, 26, 26, 27, 26, 25, 28, 27, 25, 25, 25, 25…
+## $ combustible &lt;chr&gt; "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p"…
+## $ clase       &lt;chr&gt; "compacto", "compacto", "compacto", "compacto", "compacto"…
+```
+
+
+
+---
+
+
+
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+*ggplot(
+* millas,  # data
+* aes(cilindrada, autopista)  # aesthetics
+*) 
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+ggplot(
+  millas,  # data
+  aes(cilindrada, autopista)  # aesthetics
+) +
+* geom_point(aes(color = traccion))   # geometries
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+ggplot(
+  millas,  # data
+  aes(cilindrada, autopista)  # aesthetics
+) +
+  geom_point(aes(color = traccion)) +  # geometries
+* facet_wrap(vars(anio))   # facets
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+ggplot(
+  millas,  # data
+  aes(cilindrada, autopista)  # aesthetics
+) +
+  geom_point(aes(color = traccion)) +  # geometries
+  facet_wrap(vars(anio)) +  # facets
+* stat_smooth(color = "red", method = "lm")   # stats
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+ggplot(
+  millas,  # data
+  aes(cilindrada, autopista)  # aesthetics
+) +
+  geom_point(aes(color = traccion)) +  # geometries
+  facet_wrap(vars(anio)) +  # facets
+  stat_smooth(color = "red", method = "lm") +  # stats
+* scale_x_continuous(labels = comma_format(suffix = "Lts."))   # coords
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+ggplot(
+  millas,  # data
+  aes(cilindrada, autopista)  # aesthetics
+) +
+  geom_point(aes(color = traccion)) +  # geometries
+  facet_wrap(vars(anio)) +  # facets
+  stat_smooth(color = "red", method = "lm") +  # stats
+  scale_x_continuous(labels = comma_format(suffix = "Lts.")) +  # coords
+* scale_y_continuous(labels = comma_format(suffix = "Km/l"))   # coords
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+ggplot(
+  millas,  # data
+  aes(cilindrada, autopista)  # aesthetics
+) +
+  geom_point(aes(color = traccion)) +  # geometries
+  facet_wrap(vars(anio)) +  # facets
+  stat_smooth(color = "red", method = "lm") +  # stats
+  scale_x_continuous(labels = comma_format(suffix = "Lts.")) +  # coords
+  scale_y_continuous(labels = comma_format(suffix = "Km/l")) +  # coords
+* theme_minimal(base_size = 5)   # theme
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+ggplot(
+  millas,  # data
+  aes(cilindrada, autopista)  # aesthetics
+) +
+  geom_point(aes(color = traccion)) +  # geometries
+  facet_wrap(vars(anio)) +  # facets
+  stat_smooth(color = "red", method = "lm") +  # stats
+  scale_x_continuous(labels = comma_format(suffix = "Lts.")) +  # coords
+  scale_y_continuous(labels = comma_format(suffix = "Km/l")) +  # coords
+  theme_minimal(base_size = 5) +  # theme
+* theme(legend.position = "bottom")   # theme
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_08_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+ggplot(
+  millas,  # data
+  aes(cilindrada, autopista)  # aesthetics
+) +
+  geom_point(aes(color = traccion)) +  # geometries
+  facet_wrap(vars(anio)) +  # facets
+  stat_smooth(color = "red", method = "lm") +  # stats
+  scale_x_continuous(labels = comma_format(suffix = "Lts.")) +  # coords
+  scale_y_continuous(labels = comma_format(suffix = "Km/l")) +  # coords
+  theme_minimal(base_size = 5) +  # theme
+  theme(legend.position = "bottom") +  # theme
+# otros
+* scale_color_viridis_d()
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_09_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-millas2-auto[
+
+```r
+ggplot(
+  millas,  # data
+  aes(cilindrada, autopista)  # aesthetics
+) +
+  geom_point(aes(color = traccion)) +  # geometries
+  facet_wrap(vars(anio)) +  # facets
+  stat_smooth(color = "red", method = "lm") +  # stats
+  scale_x_continuous(labels = comma_format(suffix = "Lts.")) +  # coords
+  scale_y_continuous(labels = comma_format(suffix = "Km/l")) +  # coords
+  theme_minimal(base_size = 5) +  # theme
+  theme(legend.position = "bottom") +  # theme
+# otros
+  scale_color_viridis_d() +
+* labs(
+*   title = "Un hermoso título",
+*   subtitle = "Un bellos y extenso subtítulo",
+*   caption = "Un texto que nadie mira",
+*   x = "Cilindrada vehículo cc",
+*   y = "Rendimiento en autopista km/lts",
+*   color = "Tipo tracción"
+* )
+```
+]
+ 
+.panel2-millas2-auto[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/millas2_auto_10_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-millas2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-millas2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-millas2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+## Hagamos un _copy &amp; paste_
+
+
+```r
+library(datos)
+library(ggplot2)
+
+ggplot(data = millas) +
+  geom_point(mapping = aes(x = cilindrada, y = autopista))
+```
+
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/unnamed-chunk-17-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Hagamos un _copy &amp; paste_ (v2)
+
+
+```r
+library(datos)
+library(ggplot2)
+
+ggplot(millas) +
+  geom_point(aes(cilindrada, autopista))
+```
+
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/unnamed-chunk-18-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Ejercicio 1: en un script de R:
+
+1. Cargue los paquetes `datos`, `ggplot2` y `dplyr`.
+1. Ejecute `glimpse(vuelos)`.
+1. Objtenga una _muestra_ de 10.000 registros para responder las preguntas utilizando la funcion `sample_n`. 
+1. ¿Cuántos filas/columnas tienen los datos?
+1. ¿Cuántos datos son numéricos?
+1. Explore la relación entre `distancia` y `tiempo_vuelo`.
+1. ¿Qué otras preguntas tienes? ¿Como podríamos obtener QUE vuelo es el más largos?
+1. Reutiliza el código del ejemplo paso a paso para utilizar la función `facet_wrap` 
+con estos datos.
+
+---
+
+
+
+count: false
+ 
+## Sirve obtener una **muestra**?
+.panel1-vuelos_sample-5[
+
+```r
+vuelos2 &lt;- sample_n(vuelos, 5000)
+
+ggplot(vuelos2, aes(distancia, tiempo_vuelo)) +
+  geom_point(alpha = 0.05, color = "gray60") +
+  geom_smooth(se = FALSE, color = "darkred") +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(limits = c(0, 650))
+```
+]
+ 
+.panel2-vuelos_sample-5[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/vuelos_sample_5_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Sirve obtener una **muestra**?
+.panel1-vuelos_sample-5[
+
+```r
+vuelos2 &lt;- sample_n(vuelos, 5000)
+
+ggplot(vuelos2, aes(distancia, tiempo_vuelo)) +
+  geom_point(alpha = 0.05, color = "gray60") +
+  geom_smooth(se = FALSE, color = "darkred") +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(limits = c(0, 650))
+```
+]
+ 
+.panel2-vuelos_sample-5[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/vuelos_sample_5_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Sirve obtener una **muestra**?
+.panel1-vuelos_sample-5[
+
+```r
+vuelos2 &lt;- sample_n(vuelos, 5000)
+
+ggplot(vuelos2, aes(distancia, tiempo_vuelo)) +
+  geom_point(alpha = 0.05, color = "gray60") +
+  geom_smooth(se = FALSE, color = "darkred") +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(limits = c(0, 650))
+```
+]
+ 
+.panel2-vuelos_sample-5[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/vuelos_sample_5_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Sirve obtener una **muestra**?
+.panel1-vuelos_sample-5[
+
+```r
+vuelos2 &lt;- sample_n(vuelos, 5000)
+
+ggplot(vuelos2, aes(distancia, tiempo_vuelo)) +
+  geom_point(alpha = 0.05, color = "gray60") +
+  geom_smooth(se = FALSE, color = "darkred") +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(limits = c(0, 650))
+```
+]
+ 
+.panel2-vuelos_sample-5[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/vuelos_sample_5_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Sirve obtener una **muestra**?
+.panel1-vuelos_sample-5[
+
+```r
+vuelos2 &lt;- sample_n(vuelos, 5000)
+
+ggplot(vuelos2, aes(distancia, tiempo_vuelo)) +
+  geom_point(alpha = 0.05, color = "gray60") +
+  geom_smooth(se = FALSE, color = "darkred") +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(limits = c(0, 650))
+```
+]
+ 
+.panel2-vuelos_sample-5[
+&lt;img src="02-AED-Viz-ggplot2_files/figure-html/vuelos_sample_5_05_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-vuelos_sample-5 {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-vuelos_sample-5 {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-vuelos_sample-5 {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+.center[
+&lt;img src="images/ggplot_elements2.png" width="90%" /&gt;
+]
+
+https://bookdown.org/alapo/learnr/data-visualisation.html
+
+---
+
+## Ejercicio 2: Replique los gráficos de Legos
+
+Para cargar los datos utilice:
+
+
+```r
+library(tidyverse)
+
+set.seed(123)
+
+url_datos &lt;- "https://raw.githubusercontent.com/seankross/lego/master/data-tidy/legosets.csv"
+
+legos &lt;- read_csv(url_datos) |&gt; 
+  mutate(year2 = floor(Year/10)*10) |&gt; 
+  sample_n(3000)
+```
+
+Antes de replicar los gráficos de legos -si bien utiliza funciones que no hemos visto-, interprete el código que lee los datos.
+
+---
+
+## Más información sobre visualización
+
+- [Visualización de datos](https://es.r4ds.hadley.nz/visualizaci%C3%B3n-de-datos.html#introducci%C3%B3n-1) en R4DS.
+
+- A _simple_ intro to `ggplot2`, [link](https://www.rforecology.com/post/a-simple-introduction-to-ggplot2/). 
+
+- Para motivarse: _ggplot Wizardry Hands-On_ , [link](https://z3tt.github.io/OutlierConf2021/). [Cedric Sherer](https://www.cedricscherer.com/)
+
+- Visualización desde el análisis de datos. [Slides](https://jkunst.com/slides/202107-visualizacion-desde-el-analsis-de-datos/index.html).
+
+- Más _flipbooks_ con el paquete [`flipbookr`](https://evamaerey.github.io/flipbooks/about).
+
+- Documentación `ggplot2` https://ggplot2.tidyverse.org/index.html.
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
