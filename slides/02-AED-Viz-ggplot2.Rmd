@@ -66,7 +66,7 @@ knitr::include_graphics("images/data-viz.jpg")
 - Una __observación__ o caso es un conjunto de mediciones -no de la misma variable necesariamente- pero si en un mismo instante y a un mismo objeto.
 
 
-```{r out.width="70%", fig.align='center', include=FALSE}
+```{r out.width="70%", fig.align='center', echo=FALSE}
 knitr::include_graphics("images/tidy-1.png")
 ```
 
@@ -392,3 +392,4 @@ Antes de replicar los gráficos de legos -si bien utiliza funciones que no hemos
 
 - Documentación `ggplot2` https://ggplot2.tidyverse.org/index.html.
 
+- Explorando histogramas, link](http://tinlizzie.org/histograms/).
