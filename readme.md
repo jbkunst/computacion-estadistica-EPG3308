@@ -9,41 +9,42 @@ EPG3308 - Computación Estadística
 - <a href="#horarios" id="toc-horarios">Horarios</a>
   - <a href="#cátedra" id="toc-cátedra">Cátedra</a>
   - <a href="#ayudantía" id="toc-ayudantía">Ayudantía</a>
-  - <a href="#clases" id="toc-clases">Clases</a>
 - <a href="#evaluaciones" id="toc-evaluaciones">Evaluaciones</a>
 
 ## Programa
 
 1.  Introducción a la programación con R.
-
-    - Ambiente de programación Rstudio.
-    - Proyectos y scripts.
-    - Creación, manipulación y asignación de objetos.
-    - Ejecutando código.
-
 2.  Análisis Exploratorio de datos.
-
-    - Visualización de datos con ggplot2: Mapeos estéticos, separación
-      en facetas, geometrías.
-    - Transformación de datos: filtrar, ordenar, seleccionar,
-      transformaciones, resúmenes agrupados y transformaciones
-      agrupadas.
-    - Introducción al *Pipe* `|>`.
-
 3.  Manipulación de datos.
+4.  Reproductibilidad.
+5.  Funciones y programación funcional.
+6.  Elementos del modelamiento predictivo.
+7.  Aplicaciones.
 
-    - Datos relacionales: uniones (joins) de transformación y filtrado.
-    - Datos ordenados: pivotar, separar y unir, valores faltantes.
-    - Manejo de strings y expresiones regulares. Manipulación de
-      factores y fechas.
-    - Importación y orígenes de información: texto plano, API, bases de
-      datos, Web scraping.
+En particular, las clases están planificadas de la siguiente manera:
 
-4.  Elementos y aplicaciones del Modelamiento.
+<small>
 
-    - Conceptos básicos: predicción, error, sesgo, métricas de
-      evaluación.
-    - Modelos de Regresión: Lineal y Logística.
+|  Id | Fecha      | Tópico             | Tema                                               | Contenido                                                                                                                                               | Referencias                                                                                                                                      | Info              |
+|----:|:-----------|:-------------------|:---------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------|:------------------|
+|   1 | 2023-03-15 |                    | Bienvenida                                         | Ambiente de trabajo: R, Rstudio, posit.cloud                                                                                                            |                                                                                                                                                  |                   |
+|   2 | 2023-03-22 | AED                | AED ggplot2                                        | Análisis exploratorio de datos, ejemplos. Paquete ggplot2. Capas y gramática de gráficos                                                                |                                                                                                                                                  |                   |
+|   3 | 2023-03-29 | AED                | AED ggplot2                                        | Visualización en el análisis de datos Escala de colores                                                                                                 | <https://es.r4ds.hadley.nz/comunicar-con-gr%C3%A1ficos.html>                                                                                     | on-line           |
+|   4 | 2023-04-05 | AED                | Transformación de datos                            | Operador pipe \|\>, %\>%. Paquete dplyr y principales funciones/acciones/verbos para la manipulación de dataframes: select, filter, arrange, summarize. | <https://es.r4ds.hadley.nz/transform.html>                                                                                                       |                   |
+|   5 | 2023-04-12 | Manipulación datos | Datos ordenados y datos relacionales               | Paquete tidyr y otras funciones para la manipulacion, pivot_longer, pivot_wider, separate, unite, fill.                                                 | <https://es.r4ds.hadley.nz/datos-ordenados.html> <https://es.r4ds.hadley.nz/datos-relacionales.html>                                             |                   |
+|   6 | 2023-04-19 | Manipulación datos | Importación de datos                               | Fuentes de información txt, csv, xlsx, html, API, bbdd, otros. Paquetes readr, rvest, httr, haven                                                       | <https://es.r4ds.hadley.nz/importaci%C3%B3n-de-datos.html>                                                                                       |                   |
+|   7 | 2023-04-26 | Manipulación datos | Tipos de datos                                     | stringr: carácteres y expresiones regulares. Forcast: factores. Lubridate: fechas y horas. Nulos, NA                                                    | <https://es.r4ds.hadley.nz/cadenas-de-caracteres.html> <https://es.r4ds.hadley.nz/factores.html> <https://es.r4ds.hadley.nz/fechas-y-horas.html> |                   |
+|   8 | 2023-05-03 |                    |                                                    |                                                                                                                                                         |                                                                                                                                                  | semana-receso     |
+|   9 | 2023-05-10 | Comunicar          | Generación de informes automatizados con Rmarkdown | Rmarkdown: Sintaxis Componentes: YAML, texto, código Tipos de Documentos/outputs/formatos HTMLWidgets                                                   | <https://es.r4ds.hadley.nz/r-markdown.html>                                                                                                      |                   |
+|  10 | 2023-05-17 | Programar          | Funciones & Programación Funcional                 | Motivación: funciones Paquete purrr, funciones map, map2, y pmap, walk, Paquete furrr                                                                   | <https://es.r4ds.hadley.nz/iteraci%C3%B3n.html>                                                                                                  |                   |
+|  11 | 2023-05-24 | Modelamiento       | Elementos del modelamiento predictivo              | Definiciones, error, sesgo, varianza. Introducción regresión linear, logística, árbol de decisión.                                                      | <https://es.r4ds.hadley.nz/modelos-conceptos-b%C3%A1sicos.html>                                                                                  |                   |
+|  12 | 2023-05-31 | Aplicaciones       | Por definir/tentativo                              | Series de tiempo                                                                                                                                        |                                                                                                                                                  |                   |
+|  13 | 2023-06-07 | Aplicaciones       | Por definir/tentativo                              | Simulaciones                                                                                                                                            |                                                                                                                                                  |                   |
+|  14 | 2023-06-14 | Aplicaciones       | Por definir/tentativo                              | Modelamiento                                                                                                                                            |                                                                                                                                                  |                   |
+|  15 | 2023-06-21 |                    |                                                    |                                                                                                                                                         |                                                                                                                                                  | pueblos-indigenas |
+|  16 | 2023-06-28 | Aplicaciones       | Por definir/tentativo                              | Shiny                                                                                                                                                   |                                                                                                                                                  | última-clase      |
+
+</small>
 
 ## Material
 
@@ -57,8 +58,9 @@ EPG3308 - Computación Estadística
 ### Repositorio
 
 Repositorio del curso en github
-<https://github.com/jbkunst/computacion-estadistica-EPG3308>. Acá podrás
-encontrar datos, código fuente de las slides, evaluaciones, etc.
+<https://github.com/jbkunst/computacion-estadistica-EPG3308>. Acá
+estarán datos, scripts, código fuente de las slides, ayudantías,
+evaluaciones, etc.
 
 ## Bibliografía
 
@@ -78,27 +80,6 @@ la Virgen) en el campus Casa Central
 ### Ayudantía
 
 Sábado desde 10:00 a 11:20 hrs por Alonso Campos, <aacampos3@uc.cl>.
-
-### Clases
-
-| id  | fecha      | info              |
-|:----|:-----------|:------------------|
-| 01  | 2023-03-15 |                   |
-| 02  | 2023-03-22 |                   |
-| 03  | 2023-03-29 | on-line           |
-| 04  | 2023-04-05 |                   |
-| 05  | 2023-04-12 |                   |
-| 06  | 2023-04-19 |                   |
-| 07  | 2023-04-26 |                   |
-| 08  | 2023-05-03 | semana-receso     |
-| 09  | 2023-05-10 |                   |
-| 10  | 2023-05-17 |                   |
-| 11  | 2023-05-24 |                   |
-| 12  | 2023-05-31 |                   |
-| 13  | 2023-06-07 |                   |
-| 14  | 2023-06-14 |                   |
-| 15  | 2023-06-21 | pueblos-indigenas |
-| 16  | 2023-06-28 | última-clase      |
 
 # Evaluaciones
 

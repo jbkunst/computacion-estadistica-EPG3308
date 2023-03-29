@@ -100,34 +100,41 @@ xaringanExtra::use_progress_bar(color = "red", location = "bottom", height = "30
 sysfonts::font_add_google(PARS$font_main, "font_main")
 showtext::showtext_auto()
 
+theme_slides <- ggplot2::theme_minimal(
+  base_family = "font_main"
+  # base_size   = 12
+  
+  # base_size       = 10,
+  # axis_title_size = 8,
+  # plot_margin     = ggplot2::margin(10, 10, 10, 10),
+  
+  # plot_title_face = "plain",
+  # subtitle_face = "plain"
+) +
+  ggplot2::theme(
+    plot.title       = ggplot2::element_text(face = "plain"),
+    plot.background  = ggplot2::element_rect(fill = PARS$color_background, colour = NA),
+    panel.background = ggplot2::element_rect(fill = PARS$color_background, colour = NA),
+    
+    # hrbrthemes::theme_ipsum
+    # b = 0, l = 0, m = 0.5, c = 0.5, r = 1, t = 1
+    axis.title.x     = ggplot2::element_text(hjust = 1),
+    axis.title.y     = ggplot2::element_text(hjust = 1),
+    # plot.margin      = ggplot2::margin(30, 30, 30, 30),
+    
+    legend.key.width = ggplot2::unit(1.5, "cm"),
+    legend.position = "bottom"
+    
+  )
+
+theme_flipboork <- ggplot2::theme_gray(base_size = 5) +
+  ggplot2::theme(legend.position = "bottom")
+
 ggplot2::theme_set(
-  ggplot2::theme_minimal(
-    base_family = "font_main"
-    # base_size   = 12
-    
-    # base_size       = 10,
-    # axis_title_size = 8,
-    # plot_margin     = ggplot2::margin(10, 10, 10, 10),
-    
-    # plot_title_face = "plain",
-    # subtitle_face = "plain"
-  ) +
-    ggplot2::theme(
-      plot.title       = ggplot2::element_text(face = "plain"),
-      plot.background  = ggplot2::element_rect(fill = PARS$color_background, colour = NA),
-      panel.background = ggplot2::element_rect(fill = PARS$color_background, colour = NA),
-      
-      # hrbrthemes::theme_ipsum
-      # b = 0, l = 0, m = 0.5, c = 0.5, r = 1, t = 1
-      axis.title.x     = ggplot2::element_text(hjust = 1),
-      axis.title.y     = ggplot2::element_text(hjust = 1),
-      # plot.margin      = ggplot2::margin(30, 30, 30, 30),
-      
-      legend.key.width = ggplot2::unit(1.5, "cm"),
-      legend.position = "bottom"
-      
-    )
+  theme_slides
 )
+
+
 
 scale_fill_pres_c <- function(option = "C", begin = 0.05, end = 0.85, ...) {
   ggplot2::scale_fill_viridis_c(option = option, begin = begin, end = end, ...)

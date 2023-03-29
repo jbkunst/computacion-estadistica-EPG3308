@@ -13,31 +13,32 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Programa
 
-1.  Introducción a la programación con R.
+1. Introducción a la programación con R.
+1. Análisis Exploratorio de datos.
+1. Manipulación de datos.
+1. Reproductibilidad.
+1. Funciones y programación funcional.
+1. Elementos del modelamiento predictivo.
+1. Aplicaciones.
 
-    - Ambiente de programación Rstudio.
-    - Proyectos y scripts.
-    - Creación, manipulación y asignación de objetos.
-    - Ejecutando código.
+En particular, las clases están planificadas de la siguiente manera:
 
-1.  Análisis Exploratorio de datos.
+<small>
 
-    - Visualización de datos con ggplot2: Mapeos estéticos, separación en facetas, geometrías.
-    - Transformación de datos: filtrar, ordenar, seleccionar, transformaciones, resúmenes agrupados y transformaciones agrupadas.
-    - Introducción al _Pipe_ `|>`.
+```{r, results='asis', message=FALSE, warning=FALSE}
+options(knitr.kable.NA = "")
+readxl::read_excel("docs/planificacion-EPG3308-2023.xlsx", sheet = 1) |> 
+  dplyr::mutate(
+    fecha = as.Date(fecha),
+    contenido = stringr::str_squish(contenido),
+    referencias = stringr::str_squish(referencias)
+    ) |> 
+  dplyr::rename_all(stringr::str_to_title) |> 
+  # dplyr::select(id, fecha, tópico, tema, contenido, referencias) |> 
+  knitr::kable()
+```
 
-1.  Manipulación de datos.
-
-    - Datos relacionales: uniones (joins) de transformación y filtrado.
-    - Datos ordenados: pivotar, separar y unir, valores faltantes.
-    - Manejo de strings y expresiones regulares. Manipulación de factores y fechas.
-    - Importación y orígenes de información: texto plano, API, bases de datos, Web scraping.
-
-1.  Elementos y aplicaciones del Modelamiento.
-
-    - Conceptos básicos: predicción, error, sesgo, métricas de evaluación.
-    - Modelos de Regresión: Lineal y Logística.
-
+</small>
 
 ## Material
 
@@ -71,8 +72,7 @@ purrr::walk2(slides_nms, slides_url, ~ {cat(stringr::str_glue("1. [{ n }]({ u })
 
 ### Repositorio
 
-Repositorio del curso en github https://github.com/jbkunst/computacion-estadistica-EPG3308. Acá podrás
-encontrar datos, código fuente de las slides, evaluaciones, etc.
+Repositorio del curso en github https://github.com/jbkunst/computacion-estadistica-EPG3308. Acá estarán datos, scripts, código fuente de las slides, ayudantías, evaluaciones, etc.
 
 ## Bibliografía
 
@@ -89,14 +89,6 @@ Miércoles módulos 6, 7 y 8, desde 17:30 a 20:20 hrs. Sala A301 (Patio de la Vi
 ### Ayudantía
 
 Sábado desde 10:00 a 11:20 hrs por Alonso Campos, aacampos3@uc.cl.
-
-### Clases
-
-```{r, results='asis', message=FALSE, warning=FALSE}
-options(knitr.kable.NA = "")
-readr::read_delim("docs/calendario-clases.txt") |> 
-  knitr::kable()
-```
 
 # Evaluaciones
 

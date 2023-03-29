@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>03-AED-Viz-Estadística-Descriptiva-ggplot2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content=" Joshua Kunst @jbkunst" />
+    <meta name="date" content="2023-03-29" />
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+.title[
+# Computación Estadística EPG3308
+]
+.subtitle[
+## 03 AED Viz Estadística Descriptiva <code><small>ggplot2</small></code>
+]
+.author[
+### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
+]
+.date[
+### 2023-03-29
+]
+
+---
+
+
+
+
+
+## ¿Existe el mejor gráfico? 
+
+Queremos comunicar: _La región del sur exhibe el mayor crecimiento en ventas._
+
+Ejemplo adapatado del tweet de [Lisa Charlotte Rost](https://twitter.com/lisacrost/status/948233069110222848)
+que a su vez está viene del ejemplo del libro "Show me the numbers" de Stephen Few
+
+
+Los datos:
+
+
+```
+## Rows: 16
+## Columns: 3
+## $ region &lt;fct&gt; sur, sur, sur, sur, norte, norte, norte, norte, este, este, est…
+## $ cuarto &lt;chr&gt; "Q1", "Q2", "Q3", "Q4", "Q1", "Q2", "Q3", "Q4", "Q1", "Q2", "Q3…
+## $ valor  &lt;dbl&gt; 100, 150, 225, 290, 150, 160, 180, 300, 180, 200, 200, 240, 250…
+```
+
+---
+
+## Opción #1
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-2-1.svg" width="100%" /&gt;
+
+---
+
+## Opción #2
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-3-1.svg" width="100%" /&gt;
+
+---
+
+## Opción #3
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-4-1.svg" width="100%" /&gt;
+
+---
+
+## ¿Cuál es la mejor?
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-5-1.svg" width="100%" /&gt;
+
+---
+
+
+
+
+
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+*datosq
+```
+]
+ 
+.panel2-datosq-auto[
+
+```
+## # A tibble: 16 × 3
+##    region cuarto valor
+##    &lt;fct&gt;  &lt;chr&gt;  &lt;dbl&gt;
+##  1 sur    Q1       100
+##  2 sur    Q2       150
+##  3 sur    Q3       225
+##  4 sur    Q4       290
+##  5 norte  Q1       150
+##  6 norte  Q2       160
+##  7 norte  Q3       180
+##  8 norte  Q4       300
+##  9 este   Q1       180
+## 10 este   Q2       200
+## 11 este   Q3       200
+## 12 este   Q4       240
+## 13 oeste  Q1       250
+## 14 oeste  Q2       250
+## 15 oeste  Q3       300
+## 16 oeste  Q4       170
+```
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+* mutate(es_sur = ifelse(region == "sur", 1, 0))
+```
+]
+ 
+.panel2-datosq-auto[
+
+```
+## # A tibble: 16 × 4
+##    region cuarto valor es_sur
+##    &lt;fct&gt;  &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 sur    Q1       100      1
+##  2 sur    Q2       150      1
+##  3 sur    Q3       225      1
+##  4 sur    Q4       290      1
+##  5 norte  Q1       150      0
+##  6 norte  Q2       160      0
+##  7 norte  Q3       180      0
+##  8 norte  Q4       300      0
+##  9 este   Q1       180      0
+## 10 este   Q2       200      0
+## 11 este   Q3       200      0
+## 12 este   Q4       240      0
+## 13 oeste  Q1       250      0
+## 14 oeste  Q2       250      0
+## 15 oeste  Q3       300      0
+## 16 oeste  Q4       170      0
+```
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
+* ggplot()
+```
+]
+ 
+.panel2-datosq-auto[
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
+  ggplot() +
+* geom_line(aes(x = cuarto, y = valor,
+*               group = region,
+*               color = es_sur,
+*               size = es_sur),
+*           lineend = "round")
+```
+]
+ 
+.panel2-datosq-auto[
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
+  ggplot() +
+  geom_line(aes(x = cuarto, y = valor,
+                group = region,
+                color = es_sur,
+                size = es_sur),
+            lineend = "round") +
+* scale_color_gradient(low = "#00000020", high = "darkred")
+```
+]
+ 
+.panel2-datosq-auto[
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
+  ggplot() +
+  geom_line(aes(x = cuarto, y = valor,
+                group = region,
+                color = es_sur,
+                size = es_sur),
+            lineend = "round") +
+  scale_color_gradient(low = "#00000020", high = "darkred") +
+* scale_size_continuous(range = c(1.5, 3))
+```
+]
+ 
+.panel2-datosq-auto[
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
+  ggplot() +
+  geom_line(aes(x = cuarto, y = valor,
+                group = region,
+                color = es_sur,
+                size = es_sur),
+            lineend = "round") +
+  scale_color_gradient(low = "#00000020", high = "darkred") +
+  scale_size_continuous(range = c(1.5, 3)) +
+* scale_y_continuous(position = "right", limits = c(70, 320))
+```
+]
+ 
+.panel2-datosq-auto[
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
+  ggplot() +
+  geom_line(aes(x = cuarto, y = valor,
+                group = region,
+                color = es_sur,
+                size = es_sur),
+            lineend = "round") +
+  scale_color_gradient(low = "#00000020", high = "darkred") +
+  scale_size_continuous(range = c(1.5, 3)) +
+  scale_y_continuous(position = "right", limits = c(70, 320)) +
+* theme_minimal(base_size = 7)
+```
+]
+ 
+.panel2-datosq-auto[
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_08_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
+  ggplot() +
+  geom_line(aes(x = cuarto, y = valor,
+                group = region,
+                color = es_sur,
+                size = es_sur),
+            lineend = "round") +
+  scale_color_gradient(low = "#00000020", high = "darkred") +
+  scale_size_continuous(range = c(1.5, 3)) +
+  scale_y_continuous(position = "right", limits = c(70, 320)) +
+  theme_minimal(base_size = 7) +
+* theme(legend.position = "none")
+```
+]
+ 
+.panel2-datosq-auto[
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_09_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
+  ggplot() +
+  geom_line(aes(x = cuarto, y = valor,
+                group = region,
+                color = es_sur,
+                size = es_sur),
+            lineend = "round") +
+  scale_color_gradient(low = "#00000020", high = "darkred") +
+  scale_size_continuous(range = c(1.5, 3)) +
+  scale_y_continuous(position = "right", limits = c(70, 320)) +
+  theme_minimal(base_size = 7) +
+  theme(legend.position = "none") +
+* labs(x = NULL, y = NULL)
+```
+]
+ 
+.panel2-datosq-auto[
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_10_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Ejemplo layers
+.panel1-datosq-auto[
+
+```r
+datosq |&gt;
+  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
+  ggplot() +
+  geom_line(aes(x = cuarto, y = valor,
+                group = region,
+                color = es_sur,
+                size = es_sur),
+            lineend = "round") +
+  scale_color_gradient(low = "#00000020", high = "darkred") +
+  scale_size_continuous(range = c(1.5, 3)) +
+  scale_y_continuous(position = "right", limits = c(70, 320)) +
+  theme_minimal(base_size = 7) +
+  theme(legend.position = "none") +
+  labs(x = NULL, y = NULL) +
+* labs(
+*   title = "Sur exhibe el mayor crecimiento con un 234% anual")
+```
+]
+ 
+.panel2-datosq-auto[
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_11_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-datosq-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-datosq-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-datosq-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
