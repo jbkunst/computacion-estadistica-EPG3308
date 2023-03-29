@@ -531,7 +531,7 @@ df |>
   summarise(
     cantidad_de_alumnos = n(),
     promedio = mean(nota),
-    desviacion_estandiar = sd(nota),
+    desviacion_estandar = sd(nota),
     mediana = median(nota),
     minimo = min(nota),
     maximo = max(nota)
@@ -662,3 +662,5 @@ edades |>
 - Comunicar con gráficos. R4DS. [Link](https://es.r4ds.hadley.nz/comunicar-con-gr%C3%A1ficos.html)
 
 - Estadística descriptiva. [Link](http://eio.usc.es/eipc1/BASE/BASEMASTER/FORMULARIOS-PHP-DPTO/MATERIALES/Mat_G2021103104_EstadisticaTema1.pdf)
+
+- The best stats you've ever seen [Link](https://www.ted.com/talks/hans_rosling_the_best_stats_you_ve_ever_seen)

@@ -113,3 +113,30 @@ hc
 # guardar y mandar por mail!
 htmlwidgets::saveWidget(hc, "outputs/pib_per_capita.html", selfcontained = TRUE)
 
+
+# interactivos 2 ----------------------------------------------------------
+library(plotly)
+
+df <- paises
+
+fig <- plot_ly(
+    df,
+    x = ~pib_per_capita, 
+    y = ~esperanza_de_vida, 
+    size = ~poblacion, 
+    color = ~continente, 
+    frame = ~anio, 
+    text = ~pais, 
+    hoverinfo = "text",
+    type = 'scatter',
+    mode = 'markers'
+  )
+
+fig <- fig |> 
+  layout(xaxis = list(type = "log"))
+
+fig
+
+
+
+
