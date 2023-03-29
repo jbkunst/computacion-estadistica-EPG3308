@@ -284,6 +284,18 @@ knitr::include_graphics("images/viz/average_female_height.jpg")
 ```
 
 <small>https://twitter.com/lizardbill/status/1127005323636686848</small>
+
+---
+
+## Puntos de referencia 6 (de última hora!!)
+
+
+</br>
+</br>
+
+https://twitter.com/bioBlogia/status/1640891625877504002
+
+
 ---
 
 ## Convenciones: Encuentre las anomalías
