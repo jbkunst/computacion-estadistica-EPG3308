@@ -83,7 +83,7 @@ Los datos:
 
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -119,7 +119,7 @@ count: false
 ---
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -156,7 +156,7 @@ datosq |&gt;
 ---
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -173,7 +173,7 @@ datosq |&gt;
 ---
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -195,7 +195,7 @@ datosq |&gt;
 ---
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -218,7 +218,7 @@ datosq |&gt;
 ---
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -242,7 +242,7 @@ datosq |&gt;
 ---
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -267,7 +267,7 @@ datosq |&gt;
 ---
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -293,7 +293,7 @@ datosq |&gt;
 ---
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -320,7 +320,7 @@ datosq |&gt;
 ---
 count: false
  
-## Ejemplo layers
+## Otra opción
 .panel1-datosq-auto[
 
 ```r
@@ -337,42 +337,16 @@ datosq |&gt;
   scale_y_continuous(position = "right", limits = c(70, 320)) +
   theme_minimal(base_size = 7) +
   theme(legend.position = "none") +
-* labs(x = NULL, y = NULL)
+* labs(
+*   title = "Sur exhibe el mayor crecimiento con un 234% anual",
+*   x = NULL,
+*   y = NULL
+*   )
 ```
 ]
  
 .panel2-datosq-auto[
 &lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_10_output-1.svg" width="100%" /&gt;
-]
-
----
-count: false
- 
-## Ejemplo layers
-.panel1-datosq-auto[
-
-```r
-datosq |&gt;
-  mutate(es_sur = ifelse(region == "sur", 1, 0)) |&gt;
-  ggplot() +
-  geom_line(aes(x = cuarto, y = valor,
-                group = region,
-                color = es_sur,
-                size = es_sur),
-            lineend = "round") +
-  scale_color_gradient(low = "#00000020", high = "darkred") +
-  scale_size_continuous(range = c(1.5, 3)) +
-  scale_y_continuous(position = "right", limits = c(70, 320)) +
-  theme_minimal(base_size = 7) +
-  theme(legend.position = "none") +
-  labs(x = NULL, y = NULL) +
-* labs(
-*   title = "Sur exhibe el mayor crecimiento con un 234% anual")
-```
-]
- 
-.panel2-datosq-auto[
-&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/datosq_auto_11_output-1.svg" width="100%" /&gt;
 ]
 
 &lt;style&gt;
@@ -404,7 +378,574 @@ datosq |&gt;
 
 
 
+---
 
+## Recomendaciones Técnicas &lt;br&gt; y algunas misceláneas
+
+- Tipos de gráficos.
+- Puntos de referencia.
+- Convenciones.
+- Tipografías.
+- Colores.
+- Etiquetas.
+
+
+
+---
+
+## Tipos de gráficos
+
+Es muy usado es el __pie chart__
+
+
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-8-1.svg" width="100%" /&gt;
+
+---
+
+## Tipos de gráficos
+
+Es muy (__ab__)usado es el __pie chart__
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-9-1.svg" width="100%" /&gt;
+
+---
+
+## El pie para el postre
+
+&lt;img src="images/viz/omgpie.gif" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Puntos de referencia
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-11-1.svg" width="100%" /&gt;
+
+
+---
+
+## Puntos de referencia 2
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-12-1.svg" width="100%" /&gt;
+
+---
+
+## Puntos de referencia 3
+
+&lt;img src="images/viz/puntos_referencia.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Puntos de referencia 4
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-14-1.svg" width="100%" /&gt;
+
+---
+
+## Puntos de referencia 5
+
+&lt;img src="images/viz/average_female_height.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+
+&lt;small&gt;https://twitter.com/lizardbill/status/1127005323636686848&lt;/small&gt;
+---
+
+## Convenciones: Encuentre las anomalías
+
+&lt;img src="images/viz/ejes.jpg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Convenciones: ¿Dónde se produce el máximo?
+
+&lt;img src="images/viz/gun.jpg" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Tipografía
+
+¿Conocen a ...?
+
+&lt;span class="fragment"&gt;&lt;h1&gt;&lt;font face="Arial"&gt;Arial&lt;/font&gt;&lt;/h1&gt;&lt;/span&gt;
+&lt;span class="fragment"&gt;&lt;h1&gt;&lt;font face="Times New Roman"&gt;Times New Roman&lt;/font&gt;&lt;/h1&gt;&lt;/span&gt;
+&lt;span class="fragment"&gt;&lt;h1&gt;&lt;font face="Comic Sans MS"&gt;Comic Sans&lt;/font&gt;&lt;/h1&gt;&lt;/span&gt;
+
+Fuentes tienen personalidad y un propósito.
+
+---
+
+## Tipografía2
+
+Fuente: https://comicsanscriminal.com/
+
+&lt;img src="images/viz/comicsanscriminal.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Colores
+
+La misma idea de las convenciones!
+
+- Dar foco y llamar la atención
+- Debiesen ser corcondantes con el dato
+
+---
+
+## Colores 2
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-19-1.svg" width="100%" /&gt;
+
+---
+
+## Colores 3
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-20-1.svg" width="100%" /&gt;
+
+---
+
+## Etiquetas
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-21-1.svg" width="100%" /&gt;
+
+---
+
+## Etiquetas 2
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-22-1.svg" width="100%" /&gt;
+
+---
+
+## Etiquetas 3
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-23-1.svg" width="100%" /&gt;
+
+---
+
+## Etiquetas 4
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-24-1.svg" width="100%" /&gt;
+
+---
+
+## Estadística Descriptiva: Ejercicio motivacional
+
+Supongamos que debemos decidir en curso debe ir nuestro hijo/sobrino/simil, entre el curso _naranjo_ o _azul_. Nos dicen que el promedio de notas finales del año anterior para cada curso fue.
+
+
+|curso   | cantidad_de_alumnos| promedio|
+|:-------|-------------------:|--------:|
+|azul    |                  50|     5.23|
+|naranjo |                  50|     4.99|
+
+---
+
+## Ejercicio motivacional cont
+
+Más información, mínimo y máximos:
+
+
+|curso   | cantidad_de_alumnos| promedio| maxima_nota|
+|:-------|-------------------:|--------:|-----------:|
+|azul    |                  50|     5.23|        7.00|
+|naranjo |                  50|     4.99|        5.53|
+
+---
+
+## Ejercicio motivacional cont 2
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-27-1.svg" width="100%" /&gt;
+
+---
+
+## Ejercicio motivacional cont 3
+
+Quizás un poco más de información ayuda:
+
+
+|estadistico          |  azul| naranjo|
+|:--------------------|-----:|-------:|
+|cantidad_de_alumnos  | 50.00|   50.00|
+|desviacion_estandiar |  1.33|    0.27|
+|maximo               |  7.00|    5.53|
+|mediana              |  4.65|    5.00|
+|minimo               |  4.00|    4.40|
+|promedio             |  5.23|    4.99|
+
+---
+
+## Las moralejas de los resúmenes
+
+- El promedio no vale mucho sin un indicador de variablidad.
+
+- Guiarse por un valor solamente es usualmente peligroso para tomar de decisiones.
+
+- No es _no fiarse_ del promedio u otro indicador, sino hay que
+saber que es lo que (mide|nos dice|cuenta).
+
+- Es recomendable siempre visualizar la información, que de alguna forma, también resume información.
+
+
+---
+
+## Sobre: saber lo que mide, cuentan o dicen...
+
+**Correlación** es una _métrica_ de asociación lineal. Nos ayuda a _cuantificar_ la asociación.
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/corr-1.svg" width="100%" /&gt;
+
+---
+
+## Sobre: saber lo que mide, cuentan o dicen...
+
+Un valor calculado con dos valores numéricos. Va de -1 a 1.
+
+&lt;img src="03-AED-Viz-Estadística-Descriptiva-ggplot2_files/figure-html/unnamed-chunk-29-1.svg" width="100%" /&gt;
+
+
+---
+
+## Estadística Descriptiva: Definición
+
+La estadística descriptiva es un conjunto de técnicas numéricas y gráficas para describir y analizar un grupo de datos, **sin extraer conclusiones (inferencias)** sobre la población a la que pertenecen.
+
+
+&lt;img src="images/viz/stats_process.gif" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+
+count: false
+ 
+## Descriptivos sobre datos no disponibles (Not Available)
+.panel1-nas-auto[
+
+```r
+*edades &lt;- c(26, 30, NA, 33, 33,
+*           45, 37, 50, NA, 32)
+```
+]
+ 
+.panel2-nas-auto[
+
+]
+
+---
+count: false
+ 
+## Descriptivos sobre datos no disponibles (Not Available)
+.panel1-nas-auto[
+
+```r
+edades &lt;- c(26, 30, NA, 33, 33,
+            45, 37, 50, NA, 32)
+
+*edades
+```
+]
+ 
+.panel2-nas-auto[
+
+```
+##  [1] 26 30 NA 33 33 45 37 50 NA 32
+```
+]
+
+---
+count: false
+ 
+## Descriptivos sobre datos no disponibles (Not Available)
+.panel1-nas-auto[
+
+```r
+edades &lt;- c(26, 30, NA, 33, 33,
+            45, 37, 50, NA, 32)
+
+edades
+
+*# mean(edades)  # mean(edades)
+```
+]
+ 
+.panel2-nas-auto[
+
+```
+##  [1] 26 30 NA 33 33 45 37 50 NA 32
+```
+]
+
+---
+count: false
+ 
+## Descriptivos sobre datos no disponibles (Not Available)
+.panel1-nas-auto[
+
+```r
+edades &lt;- c(26, 30, NA, 33, 33,
+            45, 37, 50, NA, 32)
+
+edades
+
+# mean(edades)  # mean(edades)
+*mean(edades)
+```
+]
+ 
+.panel2-nas-auto[
+
+```
+##  [1] 26 30 NA 33 33 45 37 50 NA 32
+```
+
+```
+## [1] NA
+```
+]
+
+---
+count: false
+ 
+## Descriptivos sobre datos no disponibles (Not Available)
+.panel1-nas-auto[
+
+```r
+edades &lt;- c(26, 30, NA, 33, 33,
+            45, 37, 50, NA, 32)
+
+edades
+
+# mean(edades)  # mean(edades)
+mean(edades)
+
+*mean(edades, na.rm = TRUE)
+```
+]
+ 
+.panel2-nas-auto[
+
+```
+##  [1] 26 30 NA 33 33 45 37 50 NA 32
+```
+
+```
+## [1] NA
+```
+
+```
+## [1] 35.75
+```
+]
+
+---
+count: false
+ 
+## Descriptivos sobre datos no disponibles (Not Available)
+.panel1-nas-auto[
+
+```r
+edades &lt;- c(26, 30, NA, 33, 33,
+            45, 37, 50, NA, 32)
+
+edades
+
+# mean(edades)  # mean(edades)
+mean(edades)
+
+mean(edades, na.rm = TRUE)
+
+*edades
+```
+]
+ 
+.panel2-nas-auto[
+
+```
+##  [1] 26 30 NA 33 33 45 37 50 NA 32
+```
+
+```
+## [1] NA
+```
+
+```
+## [1] 35.75
+```
+
+```
+##  [1] 26 30 NA 33 33 45 37 50 NA 32
+```
+]
+
+---
+count: false
+ 
+## Descriptivos sobre datos no disponibles (Not Available)
+.panel1-nas-auto[
+
+```r
+edades &lt;- c(26, 30, NA, 33, 33,
+            45, 37, 50, NA, 32)
+
+edades
+
+# mean(edades)  # mean(edades)
+mean(edades)
+
+mean(edades, na.rm = TRUE)
+
+edades |&gt;
+* is.na()
+```
+]
+ 
+.panel2-nas-auto[
+
+```
+##  [1] 26 30 NA 33 33 45 37 50 NA 32
+```
+
+```
+## [1] NA
+```
+
+```
+## [1] 35.75
+```
+
+```
+##  [1] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+```
+]
+
+---
+count: false
+ 
+## Descriptivos sobre datos no disponibles (Not Available)
+.panel1-nas-auto[
+
+```r
+edades &lt;- c(26, 30, NA, 33, 33,
+            45, 37, 50, NA, 32)
+
+edades
+
+# mean(edades)  # mean(edades)
+mean(edades)
+
+mean(edades, na.rm = TRUE)
+
+edades |&gt;
+  is.na() |&gt;
+* table()
+```
+]
+ 
+.panel2-nas-auto[
+
+```
+##  [1] 26 30 NA 33 33 45 37 50 NA 32
+```
+
+```
+## [1] NA
+```
+
+```
+## [1] 35.75
+```
+
+```
+## 
+## FALSE  TRUE 
+##     8     2
+```
+]
+
+---
+count: false
+ 
+## Descriptivos sobre datos no disponibles (Not Available)
+.panel1-nas-auto[
+
+```r
+edades &lt;- c(26, 30, NA, 33, 33,
+            45, 37, 50, NA, 32)
+
+edades
+
+# mean(edades)  # mean(edades)
+mean(edades)
+
+mean(edades, na.rm = TRUE)
+
+edades |&gt;
+  is.na() |&gt;
+  table() |&gt;
+* prop.table()
+```
+]
+ 
+.panel2-nas-auto[
+
+```
+##  [1] 26 30 NA 33 33 45 37 50 NA 32
+```
+
+```
+## [1] NA
+```
+
+```
+## [1] 35.75
+```
+
+```
+## 
+## FALSE  TRUE 
+##   0.8   0.2
+```
+]
+
+&lt;style&gt;
+.panel1-nas-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-nas-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-nas-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+---
+
+## Más info y links
+
+
+- Visualizando distribuciones. Darkhorse Analytics. [Link](https://www.darkhorseanalytics.com/blog/visualizing-distributions-3).
+
+- Comunicar con gráficos. R4DS. [Link](https://es.r4ds.hadley.nz/comunicar-con-gr%C3%A1ficos.html)
+
+- Estadística descriptiva. [Link](http://eio.usc.es/eipc1/BASE/BASEMASTER/FORMULARIOS-PHP-DPTO/MATERIALES/Mat_G2021103104_EstadisticaTema1.pdf)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

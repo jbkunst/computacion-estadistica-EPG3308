@@ -130,6 +130,21 @@ theme_slides <- ggplot2::theme_minimal(
 theme_flipboork <- ggplot2::theme_gray(base_size = 5) +
   ggplot2::theme(legend.position = "bottom")
 
+theme_null <- ggplot2::theme(
+  legend.position  = "none",
+  axis.line        = ggplot2::element_blank(),
+  axis.text.x      = ggplot2::element_blank(),
+  axis.text.y      = ggplot2::element_blank(),
+  axis.ticks       = ggplot2::element_blank(),
+  axis.title.x     = ggplot2::element_blank(),
+  axis.title.y     = ggplot2::element_blank(),
+  panel.background = ggplot2::element_blank(),
+  panel.border     = ggplot2::element_blank(),
+  panel.grid.major = ggplot2::element_blank(),
+  panel.grid.minor = ggplot2::element_blank(),
+  plot.background  = ggplot2::element_blank()
+  )
+
 ggplot2::theme_set(
   theme_slides
 )
