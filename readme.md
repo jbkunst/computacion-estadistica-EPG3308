@@ -56,6 +56,8 @@ En particular, las clases están planificadas de la siguiente manera:
     <code><small>ggplot2</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/02-AED-Viz-ggplot2.html)
 3.  [AED Viz Estadística Descriptiva
     <code><small>ggplot2</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/03-AED-Viz-Estadística-Descriptiva-ggplot2.html)
+4.  [Transformación de datos <code><small>dplyr</small></code>,
+    <code><small>\|\></small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/04-AED-Transformacion-de-datos-dplyr.html)
 
 ### Repositorio
 
