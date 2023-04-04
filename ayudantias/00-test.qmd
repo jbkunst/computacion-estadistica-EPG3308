@@ -1,0 +1,113 @@
+---
+title: "Untitled"
+format: 
+  html:
+    self-contained: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Datos
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+
+datos <- data.table::fread("https://github.com/jbkunst/computacion-estadistica-EPG3308/raw/main/data/subidas_paradero_cluster.gz")
+
+datos <- datos |> 
+  as_tibble() |>  # por que? más adelante!
+  mutate(cluster = LETTERS[cluster]) # simplemente para trabajar con una categoria
+
+glimpse(datos)
+
+datos
+```
+
+## Replicar:
+
+```{r, echo=FALSE}
+ggplot(datos, aes(mediahora, subidas_laboral_promedio)) +
+  geom_line(aes(group = paraderosubida), alpha = 0.1, linewidth = 0.8) +
+  geom_smooth(
+    aes(color = cluster),
+    se = FALSE, 
+    linewidth = 2,
+    method = 'gam',
+    formula = y ~ s(x, bs = "cs")
+    ) + 
+  scale_color_viridis_d() +
+  facet_wrap(vars(cluster), ncol = 2) +
+  scale_x_datetime(date_labels = "%R") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(x = "Hora", y = "Subidas promedios", color = NULL)
+```
+
+## Intentos
+
+### 1
+
+```{r}
+datos_sanjoaquin <- datos |> 
+  filter(paraderosubida == "SAN JOAQUIN")
+
+ggplot(datos_sanjoaquin) +
+  geom_line(aes(mediahora, subidas_laboral_promedio))
+```
+
+### 2
+
+```{r}
+datos_sanjoaquin_uchile <- datos |> 
+  filter(paraderosubida %in% c("SAN JOAQUIN", "UNIVERSIDAD DE CHILE"))
+
+# ? por que?! 
+ggplot(datos_sanjoaquin_uchile) +
+  geom_line(aes(mediahora, subidas_laboral_promedio))
+
+# En clases vimos group!
+ggplot(datos_sanjoaquin_uchile) +
+  geom_line(
+    aes(x = mediahora, 
+        y = subidas_laboral_promedio,
+        group = paraderosubida)
+  )
+
+```
+
+### 3, con smooth!
+
+- Que hace smooth? 
+- Que hace smooth cuando se utiliza sin/con el mapping group?
+
+```{r}
+ggplot(datos_sanjoaquin_uchile,
+       aes(x = mediahora, y = subidas_laboral_promedio, group = paraderosubida)) +
+  geom_line() +
+  geom_smooth()
+
+# En clases vimos group!
+ggplot(datos_sanjoaquin_uchile,
+       aes(x = mediahora, y = subidas_laboral_promedio, group = paraderosubida)) +
+  geom_line() +
+  geom_smooth(aes(group = NULL))
+
+# Mejor que la versión anterior
+ggplot(datos_sanjoaquin_uchile,
+       aes(x = mediahora, y = subidas_laboral_promedio)) +
+  geom_line(aes(group = paraderosubida)) +
+  geom_smooth()
+```
+
+
+### 4 Ahora con facet?
+
+```{r}
+ggplot(datos_sanjoaquin_uchile,
+       aes(x = mediahora, y = subidas_laboral_promedio)) +
+  geom_line(aes(group = paraderosubida)) +
+  geom_smooth() +
+  facet_wrap(vars(cluster))# son del mismo cluster XD
+```
+
