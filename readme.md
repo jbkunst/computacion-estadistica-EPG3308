@@ -60,6 +60,8 @@ En particular, las clases están planificadas de la siguiente manera:
     <code><small>\|\></small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/04-AED-Transformacion-de-datos-dplyr.html)
 5.  [Manipulación de datos <code><small>dplyr
     tidyr</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/05-Manipulacion-de-datos-dplyr-tidyr.html)
+6.  [Importación de datos <code><small>readr readxl httr
+    dbplyr</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest.html)
 
 ### Repositorio
 

@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>06-Importación-de-datos-readr-readxl-httr-rvest-dbplyr</title>
+    <meta charset="utf-8" />
+    <meta name="author" content=" Joshua Kunst @jbkunst" />
+    <meta name="date" content="2023-04-04" />
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+.title[
+# Computación Estadística EPG3308
+]
+.subtitle[
+## 06 Importación de datos <code><small>readr readxl httr dbplyr</small></code>
+]
+.author[
+### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
+]
+.date[
+### 2023-04-04
+]
+
+---
+
+
+
+
+
+class: inverse center middle
+
+# Importación de datos
+
+---
+
+## Orígenes de información
+
+Los datos puden venir de muchas fuentes:
+
+- Archivo de texto.
+  https://raw.githubusercontent.com/jbkunst/usach-ingemat-intro-elementos-ds-202201/main/data/pollution.csv
+- Planillas, archivos excel.
+- SPSS (?).
+- Bases de Datos. Esto es todo un mundo, existen muchos motores de bases de datos.
+- Desde una página web: https://www.reclamos.cl/empresa/uber-eats
+- Una API: https://climatologia.meteochile.gob.cl/application/productos/datosRecientesEma/330020/2022/05
+- Algo más?
+  
+---
+  
+## `paquete::funcion` para cada tipo de origen
+
+Origen  | `paquete::funcion`
+--------|---------
+`xlsx`  |  `readxl::read_excel`
+`txt`   |  `readr::read_delim` / `data.table::fread`
+`csv`   |  `readr::read_csv` / `data.table::fread`
+Bases de datos   | Paquete `dbplyr`
+Archivo SPSS`sav`|  `haven::read_sav`
+API              |  `httr::GET`
+Página web       |  `rvest::read_html`
+
+En general Bases de datos es más general dado que existen distintos motores de bases
+de datos. Más info en https://dbplyr.tidyverse.org/articles/dbplyr.html
+
+---
+
+## `read_csv` / `read_delim`
+
+&lt;img src="images/readr/readr.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## `read_csv` / `read_delim` parámetros
+
+&lt;br/&gt;
+
+&lt;img src="images/readr/readr-pars.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+count: false
+ 
+## &lt;code&gt;readxl::read_excel&lt;/code&gt;
+.panel1-read_excel-auto[
+
+```r
+*library(readxl)
+```
+]
+ 
+.panel2-read_excel-auto[
+
+]
+
+---
+count: false
+ 
+## &lt;code&gt;readxl::read_excel&lt;/code&gt;
+.panel1-read_excel-auto[
+
+```r
+library(readxl)
+
+*ruta &lt;- here::here("data/muestrame_los_numeros.xlsx")
+```
+]
+ 
+.panel2-read_excel-auto[
+
+]
+
+---
+count: false
+ 
+## &lt;code&gt;readxl::read_excel&lt;/code&gt;
+.panel1-read_excel-auto[
+
+```r
+library(readxl)
+
+ruta &lt;- here::here("data/muestrame_los_numeros.xlsx")
+
+*ruta
+```
+]
+ 
+.panel2-read_excel-auto[
+
+```
+## [1] "D:/git/computacion-estadistica-EPG3308/data/muestrame_los_numeros.xlsx"
+```
+]
+
+---
+count: false
+ 
+## &lt;code&gt;readxl::read_excel&lt;/code&gt;
+.panel1-read_excel-auto[
+
+```r
+library(readxl)
+
+ruta &lt;- here::here("data/muestrame_los_numeros.xlsx")
+
+ruta
+
+*read_excel(ruta)
+```
+]
+ 
+.panel2-read_excel-auto[
+
+```
+## [1] "D:/git/computacion-estadistica-EPG3308/data/muestrame_los_numeros.xlsx"
+```
+
+```
+## # A tibble: 16 × 3
+##    region cuarto valor
+##    &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt;
+##  1 sur    Q1       100
+##  2 sur    Q2       150
+##  3 sur    Q3       225
+##  4 sur    Q4       290
+##  5 norte  Q1       150
+##  6 norte  Q2       160
+##  7 norte  Q3       180
+##  8 norte  Q4       300
+##  9 este   Q1       180
+## 10 este   Q2       200
+## 11 este   Q3       200
+## 12 este   Q4       240
+## 13 oeste  Q1       250
+## 14 oeste  Q2       250
+## 15 oeste  Q3       300
+## 16 oeste  Q4       170
+```
+]
+
+&lt;style&gt;
+.panel1-read_excel-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-read_excel-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-read_excel-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## &lt;code&gt;readr::read_csv&lt;/code&gt;
+.panel1-read_csv-auto[
+
+```r
+*library(readr)
+```
+]
+ 
+.panel2-read_csv-auto[
+
+]
+
+---
+count: false
+ 
+## &lt;code&gt;readr::read_csv&lt;/code&gt;
+.panel1-read_csv-auto[
+
+```r
+library(readr)
+
+*ruta &lt;- here::here("data/pollution.csv")
+```
+]
+ 
+.panel2-read_csv-auto[
+
+]
+
+---
+count: false
+ 
+## &lt;code&gt;readr::read_csv&lt;/code&gt;
+.panel1-read_csv-auto[
+
+```r
+library(readr)
+
+ruta &lt;- here::here("data/pollution.csv")
+
+*ruta
+```
+]
+ 
+.panel2-read_csv-auto[
+
+```
+## [1] "D:/git/computacion-estadistica-EPG3308/data/pollution.csv"
+```
+]
+
+---
+count: false
+ 
+## &lt;code&gt;readr::read_csv&lt;/code&gt;
+.panel1-read_csv-auto[
+
+```r
+library(readr)
+
+ruta &lt;- here::here("data/pollution.csv")
+
+ruta
+
+*read_csv(ruta)
+```
+]
+ 
+.panel2-read_csv-auto[
+
+```
+## [1] "D:/git/computacion-estadistica-EPG3308/data/pollution.csv"
+```
+
+```
+## # A tibble: 6 × 3
+##   city     size  amount
+##   &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt;
+## 1 New York large     23
+## 2 New York small     14
+## 3 London   large     22
+## 4 London   small     16
+## 5 Beijing  large    121
+## 6 Beijing  small     56
+```
+]
+
+&lt;style&gt;
+.panel1-read_csv-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-read_csv-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-read_csv-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## &lt;code&gt;httr::GET&lt;/code&gt;
+.panel1-GET-auto[
+
+```r
+*library(httr)
+```
+]
+ 
+.panel2-GET-auto[
+
+]
+
+---
+count: false
+ 
+## &lt;code&gt;httr::GET&lt;/code&gt;
+.panel1-GET-auto[
+
+```r
+library(httr)
+*library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
+```
+]
+ 
+.panel2-GET-auto[
+
+]
+
+---
+count: false
+ 
+## &lt;code&gt;httr::GET&lt;/code&gt;
+.panel1-GET-auto[
+
+```r
+library(httr)
+library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
+
+*url &lt;- "https://api.gael.cloud/general/public/sismos"
+```
+]
+ 
+.panel2-GET-auto[
+
+]
+
+---
+count: false
+ 
+## &lt;code&gt;httr::GET&lt;/code&gt;
+.panel1-GET-auto[
+
+```r
+library(httr)
+library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
+
+url &lt;- "https://api.gael.cloud/general/public/sismos"
+
+*content(httr::GET(url))
+```
+]
+ 
+.panel2-GET-auto[
+
+```
+## [[1]]
+## [[1]]$Fecha
+## [1] "2023-04-04 21:11:35"
+## 
+## [[1]]$Profundidad
+## [1] "55"
+## 
+## [[1]]$Magnitud
+## [1] "2.5"
+## 
+## [[1]]$RefGeografica
+## [1] "47 km al S de Caldera"
+## 
+## [[1]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.140Z"
+## 
+## 
+## [[2]]
+## [[2]]$Fecha
+## [1] "2023-04-04 18:47:20"
+## 
+## [[2]]$Profundidad
+## [1] "115"
+## 
+## [[2]]$Magnitud
+## [1] "2.7"
+## 
+## [[2]]$RefGeografica
+## [1] "26 km al NE de Rancagua"
+## 
+## [[2]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.140Z"
+## 
+## 
+## [[3]]
+## [[3]]$Fecha
+## [1] "2023-04-04 18:10:58"
+## 
+## [[3]]$Profundidad
+## [1] "61"
+## 
+## [[3]]$Magnitud
+## [1] "3.2"
+## 
+## [[3]]$RefGeografica
+## [1] "49 km al S de Caldera"
+## 
+## [[3]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.140Z"
+## 
+## 
+## [[4]]
+## [[4]]$Fecha
+## [1] "2023-04-04 17:19:59"
+## 
+## [[4]]$Profundidad
+## [1] "56"
+## 
+## [[4]]$Magnitud
+## [1] "2.8"
+## 
+## [[4]]$RefGeografica
+## [1] "49 km al S de Caldera"
+## 
+## [[4]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.140Z"
+## 
+## 
+## [[5]]
+## [[5]]$Fecha
+## [1] "2023-04-04 16:43:08"
+## 
+## [[5]]$Profundidad
+## [1] "53"
+## 
+## [[5]]$Magnitud
+## [1] "3.1"
+## 
+## [[5]]$RefGeografica
+## [1] "42 km al SO de Caldera"
+## 
+## [[5]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.143Z"
+## 
+## 
+## [[6]]
+## [[6]]$Fecha
+## [1] "2023-04-04 16:22:31"
+## 
+## [[6]]$Profundidad
+## [1] "52"
+## 
+## [[6]]$Magnitud
+## [1] "2.9"
+## 
+## [[6]]$RefGeografica
+## [1] "42 km al SO de Caldera"
+## 
+## [[6]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.143Z"
+## 
+## 
+## [[7]]
+## [[7]]$Fecha
+## [1] "2023-04-04 16:07:12"
+## 
+## [[7]]$Profundidad
+## [1] "54"
+## 
+## [[7]]$Magnitud
+## [1] "2.9"
+## 
+## [[7]]$RefGeografica
+## [1] "46 km al S de Caldera"
+## 
+## [[7]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.143Z"
+## 
+## 
+## [[8]]
+## [[8]]$Fecha
+## [1] "2023-04-04 16:02:45"
+## 
+## [[8]]$Profundidad
+## [1] "53"
+## 
+## [[8]]$Magnitud
+## [1] "3.9"
+## 
+## [[8]]$RefGeografica
+## [1] "47 km al S de Caldera"
+## 
+## [[8]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.143Z"
+## 
+## 
+## [[9]]
+## [[9]]$Fecha
+## [1] "2023-04-04 15:56:45"
+## 
+## [[9]]$Profundidad
+## [1] "59"
+## 
+## [[9]]$Magnitud
+## [1] "2.6"
+## 
+## [[9]]$RefGeografica
+## [1] "38 km al S de Caldera"
+## 
+## [[9]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.143Z"
+## 
+## 
+## [[10]]
+## [[10]]$Fecha
+## [1] "2023-04-04 15:36:36"
+## 
+## [[10]]$Profundidad
+## [1] "54"
+## 
+## [[10]]$Magnitud
+## [1] "2.6"
+## 
+## [[10]]$RefGeografica
+## [1] "39 km al SO de Caldera"
+## 
+## [[10]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.147Z"
+## 
+## 
+## [[11]]
+## [[11]]$Fecha
+## [1] "2023-04-04 15:27:00"
+## 
+## [[11]]$Profundidad
+## [1] "57"
+## 
+## [[11]]$Magnitud
+## [1] "4.1"
+## 
+## [[11]]$RefGeografica
+## [1] "39 km al S de Caldera"
+## 
+## [[11]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.147Z"
+## 
+## 
+## [[12]]
+## [[12]]$Fecha
+## [1] "2023-04-04 15:12:39"
+## 
+## [[12]]$Profundidad
+## [1] "54"
+## 
+## [[12]]$Magnitud
+## [1] "2.9"
+## 
+## [[12]]$RefGeografica
+## [1] "41 km al S de Caldera"
+## 
+## [[12]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.147Z"
+## 
+## 
+## [[13]]
+## [[13]]$Fecha
+## [1] "2023-04-04 15:08:46"
+## 
+## [[13]]$Profundidad
+## [1] "52"
+## 
+## [[13]]$Magnitud
+## [1] "5.8"
+## 
+## [[13]]$RefGeografica
+## [1] "47 km al SO de Caldera"
+## 
+## [[13]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.150Z"
+## 
+## 
+## [[14]]
+## [[14]]$Fecha
+## [1] "2023-04-04 12:40:01"
+## 
+## [[14]]$Profundidad
+## [1] "9"
+## 
+## [[14]]$Magnitud
+## [1] "3.2"
+## 
+## [[14]]$RefGeografica
+## [1] "131 km al NO de Bahía Mansa"
+## 
+## [[14]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.150Z"
+## 
+## 
+## [[15]]
+## [[15]]$Fecha
+## [1] "2023-04-04 12:03:48"
+## 
+## [[15]]$Profundidad
+## [1] "89"
+## 
+## [[15]]$Magnitud
+## [1] "2.9"
+## 
+## [[15]]$RefGeografica
+## [1] "17 km al S de Mina La Escondida."
+## 
+## [[15]]$FechaUpdate
+## [1] "2023-04-04T22:30:02.150Z"
+```
+]
+
+---
+count: false
+ 
+## &lt;code&gt;httr::GET&lt;/code&gt;
+.panel1-GET-auto[
+
+```r
+library(httr)
+library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
+
+url &lt;- "https://api.gael.cloud/general/public/sismos"
+
+content(httr::GET(url)) |&gt;
+* purrr::map_df(tibble::as_tibble)
+```
+]
+ 
+.panel2-GET-auto[
+
+```
+## # A tibble: 15 × 5
+##    Fecha               Profundidad Magnitud RefGeografica                Fecha…¹
+##    &lt;chr&gt;               &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;                        &lt;chr&gt;  
+##  1 2023-04-04 21:11:35 55          2.5      47 km al S de Caldera        2023-0…
+##  2 2023-04-04 18:47:20 115         2.7      26 km al NE de Rancagua      2023-0…
+##  3 2023-04-04 18:10:58 61          3.2      49 km al S de Caldera        2023-0…
+##  4 2023-04-04 17:19:59 56          2.8      49 km al S de Caldera        2023-0…
+##  5 2023-04-04 16:43:08 53          3.1      42 km al SO de Caldera       2023-0…
+##  6 2023-04-04 16:22:31 52          2.9      42 km al SO de Caldera       2023-0…
+##  7 2023-04-04 16:07:12 54          2.9      46 km al S de Caldera        2023-0…
+##  8 2023-04-04 16:02:45 53          3.9      47 km al S de Caldera        2023-0…
+##  9 2023-04-04 15:56:45 59          2.6      38 km al S de Caldera        2023-0…
+## 10 2023-04-04 15:36:36 54          2.6      39 km al SO de Caldera       2023-0…
+## 11 2023-04-04 15:27:00 57          4.1      39 km al S de Caldera        2023-0…
+## 12 2023-04-04 15:12:39 54          2.9      41 km al S de Caldera        2023-0…
+## 13 2023-04-04 15:08:46 52          5.8      47 km al SO de Caldera       2023-0…
+## 14 2023-04-04 12:40:01 9           3.2      131 km al NO de Bahía Mansa  2023-0…
+## 15 2023-04-04 12:03:48 89          2.9      17 km al S de Mina La Escon… 2023-0…
+## # … with abbreviated variable name ¹​FechaUpdate
+```
+]
+
+---
+count: false
+ 
+## &lt;code&gt;httr::GET&lt;/code&gt;
+.panel1-GET-auto[
+
+```r
+library(httr)
+library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
+
+url &lt;- "https://api.gael.cloud/general/public/sismos"
+
+content(httr::GET(url)) |&gt;
+  purrr::map_df(tibble::as_tibble) |&gt;
+* mutate(across(everything(), readr::parse_guess))
+```
+]
+ 
+.panel2-GET-auto[
+
+```
+## # A tibble: 15 × 5
+##    Fecha               Profundidad Magnitud RefGeografica    FechaUpdate        
+##    &lt;dttm&gt;                    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;            &lt;dttm&gt;             
+##  1 2023-04-04 21:11:35          55      2.5 47 km al S de C… 2023-04-04 22:30:02
+##  2 2023-04-04 18:47:20         115      2.7 26 km al NE de … 2023-04-04 22:30:02
+##  3 2023-04-04 18:10:58          61      3.2 49 km al S de C… 2023-04-04 22:30:02
+##  4 2023-04-04 17:19:59          56      2.8 49 km al S de C… 2023-04-04 22:30:02
+##  5 2023-04-04 16:43:08          53      3.1 42 km al SO de … 2023-04-04 22:30:02
+##  6 2023-04-04 16:22:31          52      2.9 42 km al SO de … 2023-04-04 22:30:02
+##  7 2023-04-04 16:07:12          54      2.9 46 km al S de C… 2023-04-04 22:30:02
+##  8 2023-04-04 16:02:45          53      3.9 47 km al S de C… 2023-04-04 22:30:02
+##  9 2023-04-04 15:56:45          59      2.6 38 km al S de C… 2023-04-04 22:30:02
+## 10 2023-04-04 15:36:36          54      2.6 39 km al SO de … 2023-04-04 22:30:02
+## 11 2023-04-04 15:27:00          57      4.1 39 km al S de C… 2023-04-04 22:30:02
+## 12 2023-04-04 15:12:39          54      2.9 41 km al S de C… 2023-04-04 22:30:02
+## 13 2023-04-04 15:08:46          52      5.8 47 km al SO de … 2023-04-04 22:30:02
+## 14 2023-04-04 12:40:01           9      3.2 131 km al NO de… 2023-04-04 22:30:02
+## 15 2023-04-04 12:03:48          89      2.9 17 km al S de M… 2023-04-04 22:30:02
+```
+]
+
+---
+count: false
+ 
+## &lt;code&gt;httr::GET&lt;/code&gt;
+.panel1-GET-auto[
+
+```r
+library(httr)
+library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
+
+url &lt;- "https://api.gael.cloud/general/public/sismos"
+
+content(httr::GET(url)) |&gt;
+  purrr::map_df(tibble::as_tibble) |&gt;
+  mutate(across(everything(), readr::parse_guess)) |&gt;
+* ggplot(aes(Fecha, Magnitud))
+```
+]
+ 
+.panel2-GET-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/GET_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## &lt;code&gt;httr::GET&lt;/code&gt;
+.panel1-GET-auto[
+
+```r
+library(httr)
+library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
+
+url &lt;- "https://api.gael.cloud/general/public/sismos"
+
+content(httr::GET(url)) |&gt;
+  purrr::map_df(tibble::as_tibble) |&gt;
+  mutate(across(everything(), readr::parse_guess)) |&gt;
+  ggplot(aes(Fecha, Magnitud)) +
+* geom_col()
+```
+]
+ 
+.panel2-GET-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/GET_auto_08_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-GET-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-GET-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-GET-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+*library(dplyr)
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+]
+
+---
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+library(dplyr)
+*library(dbplyr)
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+]
+
+---
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+library(dplyr)
+library(dbplyr)
+*library(DBI)
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+]
+
+---
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+library(dplyr)
+library(dbplyr)
+library(DBI)
+*library(RMariaDB)
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+]
+
+---
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+library(dplyr)
+library(dbplyr)
+library(DBI)
+library(RMariaDB)
+
+*con &lt;-  dbConnect(
+* RMariaDB::MariaDB(),
+* host = "mysql-rfam-public.ebi.ac.uk",
+* db = "Rfam",
+* user = "rfamro",
+* port = 4497
+* )
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+]
+
+---
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+library(dplyr)
+library(dbplyr)
+library(DBI)
+library(RMariaDB)
+
+con &lt;-  dbConnect(
+  RMariaDB::MariaDB(),
+  host = "mysql-rfam-public.ebi.ac.uk",
+  db = "Rfam",
+  user = "rfamro",
+  port = 4497
+  )
+
+*tbl(con, "taxonomy")
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+```
+## # Source:   table&lt;taxonomy&gt; [?? x 5]
+## # Database: mysql  [rfamro@mysql-rfam-public.ebi.ac.uk:NA/Rfam]
+##    ncbi_id species                      tax_string               tree_…¹ align…²
+##      &lt;int&gt; &lt;chr&gt;                        &lt;chr&gt;                    &lt;chr&gt;   &lt;chr&gt;  
+##  1       7 Azorhizobium caulinodans     Bacteria; Proteobacteri… Azorhi… Azorhi…
+##  2       9 Buchnera aphidicola          Bacteria; Proteobacteri… Buchne… Buchne…
+##  3      11 [Cellvibrio] gilvus          Bacteria; Actinobacteri… [Cellv… [Cellv…
+##  4      14 Dictyoglomus thermophilum    Bacteria; Dictyoglomi; … Dictyo… Dictyo…
+##  5      17 Methylophilus methylotrophus Bacteria; Proteobacteri… Methyl… Methyl…
+##  6      19 Pelobacter carbinolicus      Bacteria; Proteobacteri… Peloba… Peloba…
+##  7      21 Phenylobacterium immobile    Bacteria; Proteobacteri… Phenyl… Phenyl…
+##  8      23 Shewanella colwelliana       Bacteria; Proteobacteri… Shewan… Shewan…
+##  9      24 Shewanella putrefaciens      Bacteria; Proteobacteri… Shewan… Shewan…
+## 10      25 Shewanella hanedai           Bacteria; Proteobacteri… Shewan… Shewan…
+## # … with more rows, and abbreviated variable names ¹​tree_display_name,
+## #   ²​align_display_name
+```
+]
+
+---
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+library(dplyr)
+library(dbplyr)
+library(DBI)
+library(RMariaDB)
+
+con &lt;-  dbConnect(
+  RMariaDB::MariaDB(),
+  host = "mysql-rfam-public.ebi.ac.uk",
+  db = "Rfam",
+  user = "rfamro",
+  port = 4497
+  )
+
+tbl(con, "taxonomy") |&gt;
+* select(ncbi_id, species, tax_string)
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+```
+## # Source:   SQL [?? x 3]
+## # Database: mysql  [rfamro@mysql-rfam-public.ebi.ac.uk:NA/Rfam]
+##    ncbi_id species                      tax_string                              
+##      &lt;int&gt; &lt;chr&gt;                        &lt;chr&gt;                                   
+##  1       7 Azorhizobium caulinodans     Bacteria; Proteobacteria; Alphaproteoba…
+##  2       9 Buchnera aphidicola          Bacteria; Proteobacteria; Gammaproteoba…
+##  3      11 [Cellvibrio] gilvus          Bacteria; Actinobacteria; Actinobacteri…
+##  4      14 Dictyoglomus thermophilum    Bacteria; Dictyoglomi; Dictyoglomales; …
+##  5      17 Methylophilus methylotrophus Bacteria; Proteobacteria; Betaproteobac…
+##  6      19 Pelobacter carbinolicus      Bacteria; Proteobacteria; Deltaproteoba…
+##  7      21 Phenylobacterium immobile    Bacteria; Proteobacteria; Alphaproteoba…
+##  8      23 Shewanella colwelliana       Bacteria; Proteobacteria; Gammaproteoba…
+##  9      24 Shewanella putrefaciens      Bacteria; Proteobacteria; Gammaproteoba…
+## 10      25 Shewanella hanedai           Bacteria; Proteobacteria; Gammaproteoba…
+## # … with more rows
+```
+]
+
+---
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+library(dplyr)
+library(dbplyr)
+library(DBI)
+library(RMariaDB)
+
+con &lt;-  dbConnect(
+  RMariaDB::MariaDB(),
+  host = "mysql-rfam-public.ebi.ac.uk",
+  db = "Rfam",
+  user = "rfamro",
+  port = 4497
+  )
+
+tbl(con, "taxonomy") |&gt;
+  select(ncbi_id, species, tax_string) |&gt;
+* filter(ncbi_id == 10116)
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+```
+## # Source:   SQL [1 x 3]
+## # Database: mysql  [rfamro@mysql-rfam-public.ebi.ac.uk:NA/Rfam]
+##   ncbi_id species                        tax_string                             
+##     &lt;int&gt; &lt;chr&gt;                          &lt;chr&gt;                                  
+## 1   10116 Rattus norvegicus (Norway rat) Eukaryota; Metazoa; Chordata; Craniata…
+```
+]
+
+---
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+library(dplyr)
+library(dbplyr)
+library(DBI)
+library(RMariaDB)
+
+con &lt;-  dbConnect(
+  RMariaDB::MariaDB(),
+  host = "mysql-rfam-public.ebi.ac.uk",
+  db = "Rfam",
+  user = "rfamro",
+  port = 4497
+  )
+
+tbl(con, "taxonomy") |&gt;
+  select(ncbi_id, species, tax_string) |&gt;
+  filter(ncbi_id == 10116) |&gt;
+* show_query()
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+```
+## &lt;SQL&gt;
+## SELECT `ncbi_id`, `species`, `tax_string`
+## FROM `taxonomy`
+## WHERE (`ncbi_id` = 10116.0)
+```
+]
+
+---
+count: false
+ 
+## Bases de datos &lt;code&gt;dbplyr&lt;/code&gt;
+.panel1-dbplyr-auto[
+
+```r
+library(dplyr)
+library(dbplyr)
+library(DBI)
+library(RMariaDB)
+
+con &lt;-  dbConnect(
+  RMariaDB::MariaDB(),
+  host = "mysql-rfam-public.ebi.ac.uk",
+  db = "Rfam",
+  user = "rfamro",
+  port = 4497
+  )
+
+tbl(con, "taxonomy") |&gt;
+  select(ncbi_id, species, tax_string) |&gt;
+  filter(ncbi_id == 10116) |&gt;
+  show_query() |&gt;
+* collect()
+```
+]
+ 
+.panel2-dbplyr-auto[
+
+```
+## &lt;SQL&gt;
+## SELECT `ncbi_id`, `species`, `tax_string`
+## FROM `taxonomy`
+## WHERE (`ncbi_id` = 10116.0)
+```
+
+```
+## # A tibble: 1 × 3
+##   ncbi_id species                        tax_string                             
+##     &lt;int&gt; &lt;chr&gt;                          &lt;chr&gt;                                  
+## 1   10116 Rattus norvegicus (Norway rat) Eukaryota; Metazoa; Chordata; Craniata…
+```
+]
+
+&lt;style&gt;
+.panel1-dbplyr-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-dbplyr-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-dbplyr-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Más detalles de la BBDD
+
+https://relational.fit.cvut.cz/dataset/Financial
+
+&lt;img src="images/bbdd-financial.svg" width="27%" style="display: block; margin: auto;" /&gt;
+
+---
+
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+*library(rvest)
+```
+]
+ 
+.panel2-rvest-auto[
+
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+*library(lubridate)
+```
+]
+ 
+.panel2-rvest-auto[
+
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+*url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+```
+]
+ 
+.panel2-rvest-auto[
+
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+*read_html(url)
+```
+]
+ 
+.panel2-rvest-auto[
+
+```
+## {html_document}
+## &lt;html lang="es"&gt;
+## [1] &lt;head&gt;\n&lt;meta charset="utf-8"&gt;\n&lt;meta name="viewport" content="width=devi ...
+## [2] &lt;body&gt;\n\n&lt;noscript&gt;&lt;iframe src="https://www.googletagmanager.com/ns.html ...
+```
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+* html_table()
+```
+]
+ 
+.panel2-rvest-auto[
+
+```
+## [[1]]
+## # A tibble: 27 × 3
+##    Fecha    `Empresa y razón de reclamo`                                      ``
+##    &lt;chr&gt;    &lt;chr&gt;                                                          &lt;int&gt;
+##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        106
+##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     159
+##  3 06-01-21 Universidad Católica de Chile - No me llegó libro                303
+##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            681
+##  5 07-06-19 salud                                                            409
+##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilidad…   779
+##  7 08-02-18 No Resuelto Salud - No pagó de licencia                          575
+##  8 06-01-18 puc - deuda                                                      780
+##  9 30-03-17 No Resuelto Pontificia Universidad Católica de Chile - Falta …  1360
+## 10 29-12-16 No Resuelto Pontificia Universidad Católica - Crédito UC Desp…  1019
+## # … with 17 more rows
+```
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+  html_table() |&gt;
+* first()
+```
+]
+ 
+.panel2-rvest-auto[
+
+```
+## # A tibble: 27 × 3
+##    Fecha    `Empresa y razón de reclamo`                                      ``
+##    &lt;chr&gt;    &lt;chr&gt;                                                          &lt;int&gt;
+##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        106
+##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     159
+##  3 06-01-21 Universidad Católica de Chile - No me llegó libro                303
+##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            681
+##  5 07-06-19 salud                                                            409
+##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilidad…   779
+##  7 08-02-18 No Resuelto Salud - No pagó de licencia                          575
+##  8 06-01-18 puc - deuda                                                      780
+##  9 30-03-17 No Resuelto Pontificia Universidad Católica de Chile - Falta …  1360
+## 10 29-12-16 No Resuelto Pontificia Universidad Católica - Crédito UC Desp…  1019
+## # … with 17 more rows
+```
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+  html_table() |&gt;
+  first() |&gt;
+* set_names(c("fecha", "reclamo", "cantidad"))
+```
+]
+ 
+.panel2-rvest-auto[
+
+```
+## # A tibble: 27 × 3
+##    fecha    reclamo                                                      canti…¹
+##    &lt;chr&gt;    &lt;chr&gt;                                                          &lt;int&gt;
+##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        106
+##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     159
+##  3 06-01-21 Universidad Católica de Chile - No me llegó libro                303
+##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            681
+##  5 07-06-19 salud                                                            409
+##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilid…     779
+##  7 08-02-18 No Resuelto Salud - No pagó de licencia                          575
+##  8 06-01-18 puc - deuda                                                      780
+##  9 30-03-17 No Resuelto Pontificia Universidad Católica de Chile - Falt…    1360
+## 10 29-12-16 No Resuelto Pontificia Universidad Católica - Crédito UC De…    1019
+## # … with 17 more rows, and abbreviated variable name ¹​cantidad
+```
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+  html_table() |&gt;
+  first() |&gt;
+  set_names(c("fecha", "reclamo", "cantidad")) |&gt;
+* mutate(fecha = dmy(fecha))
+```
+]
+ 
+.panel2-rvest-auto[
+
+```
+## # A tibble: 27 × 3
+##    fecha      reclamo                                                    canti…¹
+##    &lt;date&gt;     &lt;chr&gt;                                                        &lt;int&gt;
+##  1 2022-11-28 Pontificia Universidad Católica - Cuenta correo Exalumnos      106
+##  2 2022-10-13 No Resuelto Pontificia Universidad Católica - Discriminac…     159
+##  3 2021-01-06 Universidad Católica de Chile - No me llegó libro              303
+##  4 2019-08-15 No Resuelto universidad católica - falta de seguridad          681
+##  5 2019-06-07 salud                                                          409
+##  6 2019-06-06 No Resuelto Universidad católica de Chile - Irresponsabil…     779
+##  7 2018-02-08 No Resuelto Salud - No pagó de licencia                        575
+##  8 2018-01-06 puc - deuda                                                    780
+##  9 2017-03-30 No Resuelto Pontificia Universidad Católica de Chile - Fa…    1360
+## 10 2016-12-29 No Resuelto Pontificia Universidad Católica - Crédito UC …    1019
+## # … with 17 more rows, and abbreviated variable name ¹​cantidad
+```
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+  html_table() |&gt;
+  first() |&gt;
+  set_names(c("fecha", "reclamo", "cantidad")) |&gt;
+  mutate(fecha = dmy(fecha)) |&gt;
+* arrange(fecha, cantidad)
+```
+]
+ 
+.panel2-rvest-auto[
+
+```
+## # A tibble: 27 × 3
+##    fecha      reclamo                                                    canti…¹
+##    &lt;date&gt;     &lt;chr&gt;                                                        &lt;int&gt;
+##  1 2013-04-12 Universidad Católica de Chile - Falta a la ética profesio…    4471
+##  2 2013-05-24 Pontificia Universidad Católica - Sin Respuesta de Reclam…    2674
+##  3 2013-07-11 Pontificia Universidad Católica - termino repentino de su…    1569
+##  4 2013-10-16 pontificia Universidad Católica (salud) - no respetar con…    2044
+##  5 2014-01-02 Pontificia Universidad Católica red salud uc - Discrimina…    2627
+##  6 2014-04-07 Salud - Robo                                                  1075
+##  7 2014-07-29 salud - demora resolución licencia                             983
+##  8 2014-08-10 Pontificia Universidad Católica - Pérdida IRRESPONSABLE d…    1404
+##  9 2014-09-16 Pontificia Universidad Católica de Chile - Falta de plata…    1301
+## 10 2015-02-18 salud - mala atención                                         1620
+## # … with 17 more rows, and abbreviated variable name ¹​cantidad
+```
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+  html_table() |&gt;
+  first() |&gt;
+  set_names(c("fecha", "reclamo", "cantidad")) |&gt;
+  mutate(fecha = dmy(fecha)) |&gt;
+  arrange(fecha, cantidad) |&gt;
+* ggplot(aes(fecha, cantidad))
+```
+]
+ 
+.panel2-rvest-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest_auto_10_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+  html_table() |&gt;
+  first() |&gt;
+  set_names(c("fecha", "reclamo", "cantidad")) |&gt;
+  mutate(fecha = dmy(fecha)) |&gt;
+  arrange(fecha, cantidad) |&gt;
+  ggplot(aes(fecha, cantidad)) +
+* geom_line(color = "gray80", size = 1.2)
+```
+]
+ 
+.panel2-rvest-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest_auto_11_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+  html_table() |&gt;
+  first() |&gt;
+  set_names(c("fecha", "reclamo", "cantidad")) |&gt;
+  mutate(fecha = dmy(fecha)) |&gt;
+  arrange(fecha, cantidad) |&gt;
+  ggplot(aes(fecha, cantidad)) +
+  geom_line(color = "gray80", size = 1.2) +
+* geom_smooth(alpha = 0.25, size = 1.2)
+```
+]
+ 
+.panel2-rvest-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest_auto_12_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+  html_table() |&gt;
+  first() |&gt;
+  set_names(c("fecha", "reclamo", "cantidad")) |&gt;
+  mutate(fecha = dmy(fecha)) |&gt;
+  arrange(fecha, cantidad) |&gt;
+  ggplot(aes(fecha, cantidad)) +
+  geom_line(color = "gray80", size = 1.2) +
+  geom_smooth(alpha = 0.25, size = 1.2) +
+* coord_cartesian(ylim = c(0, NA))
+```
+]
+ 
+.panel2-rvest-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest_auto_13_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## HTML &lt;code&gt;rvest::read_html&lt;/code&gt;
+.panel1-rvest-auto[
+
+```r
+library(rvest)
+library(lubridate)
+
+url &lt;- "https://www.reclamos.cl/empresa/pontificia_universidad_catolica"
+
+read_html(url) |&gt;
+  html_table() |&gt;
+  first() |&gt;
+  set_names(c("fecha", "reclamo", "cantidad")) |&gt;
+  mutate(fecha = dmy(fecha)) |&gt;
+  arrange(fecha, cantidad) |&gt;
+  ggplot(aes(fecha, cantidad)) +
+  geom_line(color = "gray80", size = 1.2) +
+  geom_smooth(alpha = 0.25, size = 1.2) +
+  coord_cartesian(ylim = c(0, NA)) +
+* theme_minimal()
+```
+]
+ 
+.panel2-rvest-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest_auto_14_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-rvest-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-rvest-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-rvest-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
