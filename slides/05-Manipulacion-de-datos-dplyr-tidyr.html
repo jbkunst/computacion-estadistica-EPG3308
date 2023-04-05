@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>05-Manipulación-de-datos-tidyr</title>
+    <meta charset="utf-8" />
+    <meta name="author" content=" Joshua Kunst @jbkunst" />
+    <meta name="date" content="2023-04-04" />
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+.title[
+# Computación Estadística EPG3308
+]
+.subtitle[
+## 05 Manipulación de datos <code><small>dplyr tidyr</small></code>
+]
+.author[
+### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
+]
+.date[
+### 2023-04-04
+]
+
+---
+
+
+
+
+
+class: inverse center middle
+
+# Datos ordenados
+
+---
+
+## Datos ordenados
+
+En este capítulo aprenderás una manera consistente para organizar tus datos en R a la que llamaremos tidy data (datos ordenados). Llevar tus datos a este formato requiere algo de trabajo previo; sin embargo, dicho trabajo tiene retorno positivo en el largo plazo. Una vez que tengas tus datos ordenados y las herramientas para ordenar datos que provee el tidyverse, vas a gastar mucho menos tiempo pasando de una forma de representar datos a otra, lo que te permitirá destinar más tiempo a las preguntas analíticas.
+
+Lo anterior viene de [datos ordenados](https://es.r4ds.hadley.nz/datos-ordenados.html) de
+R4DS.
+
+---
+
+## Tabla 1
+
+Puedes representar los mismos datos subyacentes de múltiples formas. El ejemplo a continuación muestra los mismos datos organizados de cuatro maneras distintas. Cada dataset muestra los mismos valores de cuatro variables —pais, anio, poblacion y casos (de tuberculosis)—, pero cada uno organiza los valores de forma distinta.
+
+
+```r
+library(datos)
+
+tabla1
+```
+
+```
+## # A tibble: 6 × 4
+##   pais        anio  casos  poblacion
+##   &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Afganistán  1999    745   19987071
+## 2 Afganistán  2000   2666   20595360
+## 3 Brasil      1999  37737  172006362
+## 4 Brasil      2000  80488  174504898
+## 5 China       1999 212258 1272915272
+## 6 China       2000 213766 1280428583
+```
+
+---
+
+## Tabla 2
+
+Identifiquemos los valores asociados a pais, anio, poblacion y casos.
+
+
+```r
+tabla2
+```
+
+```
+## # A tibble: 12 × 4
+##    pais        anio tipo          cuenta
+##    &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;
+##  1 Afganistán  1999 casos            745
+##  2 Afganistán  1999 población   19987071
+##  3 Afganistán  2000 casos           2666
+##  4 Afganistán  2000 población   20595360
+##  5 Brasil      1999 casos          37737
+##  6 Brasil      1999 población  172006362
+##  7 Brasil      2000 casos          80488
+##  8 Brasil      2000 población  174504898
+##  9 China       1999 casos         212258
+## 10 China       1999 población 1272915272
+## 11 China       2000 casos         213766
+## 12 China       2000 población 1280428583
+```
+
+---
+
+## Tabla 3
+
+Identifiquemos los valores asociados a pais, anio, poblacion y casos.
+
+
+```r
+tabla3
+```
+
+```
+## # A tibble: 6 × 3
+##   pais        anio tasa             
+##   &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;            
+## 1 Afganistán  1999 745/19987071     
+## 2 Afganistán  2000 2666/20595360    
+## 3 Brasil      1999 37737/172006362  
+## 4 Brasil      2000 80488/174504898  
+## 5 China       1999 212258/1272915272
+## 6 China       2000 213766/1280428583
+```
+
+---
+
+## Tabla 4a y 4b
+
+Identifiquemos los valores asociados a pais, anio, poblacion y casos.
+
+
+```r
+tabla4a
+```
+
+```
+## # A tibble: 3 × 3
+##   pais       `1999` `2000`
+##   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Afganistán    745   2666
+## 2 Brasil      37737  80488
+## 3 China      212258 213766
+```
+
+```r
+tabla4b
+```
+
+```
+## # A tibble: 3 × 3
+##   pais           `1999`     `2000`
+##   &lt;chr&gt;           &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Afganistán   19987071   20595360
+## 2 Brasil      172006362  174504898
+## 3 China      1272915272 1280428583
+```
+
+---
+
+# Varias representaciones/misma información
+
+Las tablas:
+
+- `tabla1`
+- `tabla2`
+- `tabla3`
+- `tabla4a` y `tabla4b`
+
+Son representaciones de los mismos datos subyacentes, pero no todas son igualmente fáciles de usar. Por ejemplo, revisemos nuevamente las tablas y _obtenga la tasa de tuberculosis para cada país/año_.
+
+Un tipo de conjunto de datos, el conjunto de **datos ordenado**, será mucho más fácil de trabajar.
+
+
+---
+
+# Definición Datos ordenados
+
+Existen tres reglas interrelacionadas que hacen que un conjunto de datos sea ordenado:
+
+- Cada variable debe tener su propia columna.
+- Cada observación debe tener su propia fila.
+- Cada valor debe tener su propia celda.
+
+
+&lt;img src="images/tidy-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Pivotar
+
+Como previamente vimos ciertas tablas poseen los siguientes problemas.
+
+1. Una variable se extiende por varias columnas, por ejemplo `tabla4a`.
+1. Una observación está dispersa entre múltiples filas, por ejemplo la `tabla2`.
+
+Para solucionar estos problemas revisaremos dos funciones del paquete **tidyr** (que viene incluído en el paquet **tidyverse**, asi que cargas solamente este último), que son:
+
+- `pivot_longer` que es para pivotar a lo largo.
+- `pivot_wider` para pivotar a lo ancho.
+
+---
+
+## Datos largos
+
+Un problema común es cuando en un dataset los nombres de las columnas no representan nombres de variables, sino que representan los valores de una variable. Tomando el caso de la `tabla4a`: los nombres de las columnas `1999` y `2000` representan los valores de la variable año, los valores en las columnas `1999` y `2000` representan los valores de la variable casos.
+
+Para ordenar un dataset como este necesitamos tres parámetros:
+
+- El conjunto de columnas cuyos nombres son valores y no variables. En este ejemplo son las columnas `1999` y `2000`. Argumento `cols` que se refiere a las columnas a trabajar.
+- El nombre de la variable cuyos valores forman los nombres de las columnas. Argumento `names_to`.
+- El nombre de la variable cuyos valores están repartidos por las celdas. Argumento `values_to`.
+
+Con estos parámetros podemos utilizar la función `pivot_longer()` (pivotar a lo largo).
+
+
+---
+
+count: false
+ 
+## Ejemplo &lt;code&gt;pivot_longer&lt;/code&gt;
+.panel1-pivot_longer-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-pivot_longer-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;pivot_longer&lt;/code&gt;
+.panel1-pivot_longer-auto[
+
+```r
+library(tidyverse)
+*library(datos)
+```
+]
+ 
+.panel2-pivot_longer-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;pivot_longer&lt;/code&gt;
+.panel1-pivot_longer-auto[
+
+```r
+library(tidyverse)
+library(datos)
+
+*tabla4a
+```
+]
+ 
+.panel2-pivot_longer-auto[
+
+```
+## # A tibble: 3 × 3
+##   pais       `1999` `2000`
+##   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Afganistán    745   2666
+## 2 Brasil      37737  80488
+## 3 China      212258 213766
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;pivot_longer&lt;/code&gt;
+.panel1-pivot_longer-auto[
+
+```r
+library(tidyverse)
+library(datos)
+
+tabla4a |&gt;
+* pivot_longer(
+*   cols = c(`1999`, `2000`),
+*   names_to = "anio",
+*   values_to = "casos"
+*   )
+```
+]
+ 
+.panel2-pivot_longer-auto[
+
+```
+## # A tibble: 6 × 3
+##   pais       anio   casos
+##   &lt;chr&gt;      &lt;chr&gt;  &lt;dbl&gt;
+## 1 Afganistán 1999     745
+## 2 Afganistán 2000    2666
+## 3 Brasil     1999   37737
+## 4 Brasil     2000   80488
+## 5 China      1999  212258
+## 6 China      2000  213766
+```
+]
+
+&lt;style&gt;
+.panel1-pivot_longer-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-pivot_longer-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-pivot_longer-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Datos anchos
+
+`pivot_wider()` (pivotar a lo ancho) es lo opuesto de `pivot_longer()`. Se usa cuando una observación aparece en múltiples filas. Por ejemplo, considera la `tabla2`: una observación es un país en un año, pero cada observación aparece en dos filas.
+
+Para ordenar esto, primero analizamos la representación de un modo similar a cómo se haría con pivot_longer(). Esta vez, sin embargo, necesitamos únicamente dos parámetros:
+
+- La columna desde la que obtener los nombres de las variables. En este caso corresponde a tipo, argumento `names_from`.
+- La columna desde la que obtener los valores. En este caso corresponde a cuenta,
+argumento `values_from`.
+
+Una vez resuelto esto, podemos usar `pivot_wider()`, como se muestra en el siguiente ejemplo.
+
+---
+
+count: false
+ 
+## Ejemplo &lt;code&gt;pivot_wider&lt;/code&gt;
+.panel1-pivot_wider-auto[
+
+```r
+*tabla2
+```
+]
+ 
+.panel2-pivot_wider-auto[
+
+```
+## # A tibble: 12 × 4
+##    pais        anio tipo          cuenta
+##    &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;
+##  1 Afganistán  1999 casos            745
+##  2 Afganistán  1999 población   19987071
+##  3 Afganistán  2000 casos           2666
+##  4 Afganistán  2000 población   20595360
+##  5 Brasil      1999 casos          37737
+##  6 Brasil      1999 población  172006362
+##  7 Brasil      2000 casos          80488
+##  8 Brasil      2000 población  174504898
+##  9 China       1999 casos         212258
+## 10 China       1999 población 1272915272
+## 11 China       2000 casos         213766
+## 12 China       2000 población 1280428583
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;pivot_wider&lt;/code&gt;
+.panel1-pivot_wider-auto[
+
+```r
+tabla2 |&gt;
+* pivot_wider(
+*   names_from = tipo,
+*   values_from = cuenta
+*   )
+```
+]
+ 
+.panel2-pivot_wider-auto[
+
+```
+## # A tibble: 6 × 4
+##   pais        anio  casos  población
+##   &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Afganistán  1999    745   19987071
+## 2 Afganistán  2000   2666   20595360
+## 3 Brasil      1999  37737  172006362
+## 4 Brasil      2000  80488  174504898
+## 5 China       1999 212258 1272915272
+## 6 China       2000 213766 1280428583
+```
+]
+
+&lt;style&gt;
+.panel1-pivot_wider-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-pivot_wider-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-pivot_wider-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## &lt;code&gt;pivot_longer&lt;/code&gt; y &lt;code&gt;pivot_wider&lt;/code&gt; no son simétricas
+.panel1-pivot_longesr_wider_example-auto[
+
+```r
+# no son perfectanente simétricas
+*acciones &lt;- tibble(
+* anio = c(2015, 2015, 2016, 2016),
+* semestre = c(1, 2, 1, 2),
+* retorno = c(1.88, 0.59, 0.92, 0.17)
+*) 
+```
+]
+ 
+.panel2-pivot_longesr_wider_example-auto[
+
+]
+
+---
+count: false
+ 
+## &lt;code&gt;pivot_longer&lt;/code&gt; y &lt;code&gt;pivot_wider&lt;/code&gt; no son simétricas
+.panel1-pivot_longesr_wider_example-auto[
+
+```r
+# no son perfectanente simétricas
+acciones &lt;- tibble(
+  anio = c(2015, 2015, 2016, 2016),
+  semestre = c(1, 2, 1, 2),
+  retorno = c(1.88, 0.59, 0.92, 0.17)
+)
+
+*acciones
+```
+]
+ 
+.panel2-pivot_longesr_wider_example-auto[
+
+```
+## # A tibble: 4 × 3
+##    anio semestre retorno
+##   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+## 1  2015        1    1.88
+## 2  2015        2    0.59
+## 3  2016        1    0.92
+## 4  2016        2    0.17
+```
+]
+
+---
+count: false
+ 
+## &lt;code&gt;pivot_longer&lt;/code&gt; y &lt;code&gt;pivot_wider&lt;/code&gt; no son simétricas
+.panel1-pivot_longesr_wider_example-auto[
+
+```r
+# no son perfectanente simétricas
+acciones &lt;- tibble(
+  anio = c(2015, 2015, 2016, 2016),
+  semestre = c(1, 2, 1, 2),
+  retorno = c(1.88, 0.59, 0.92, 0.17)
+)
+
+acciones %&gt;%
+* pivot_wider(
+*   names_from = anio,
+*   values_from = retorno
+*   )
+```
+]
+ 
+.panel2-pivot_longesr_wider_example-auto[
+
+```
+## # A tibble: 2 × 3
+##   semestre `2015` `2016`
+##      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1        1   1.88   0.92
+## 2        2   0.59   0.17
+```
+]
+
+---
+count: false
+ 
+## &lt;code&gt;pivot_longer&lt;/code&gt; y &lt;code&gt;pivot_wider&lt;/code&gt; no son simétricas
+.panel1-pivot_longesr_wider_example-auto[
+
+```r
+# no son perfectanente simétricas
+acciones &lt;- tibble(
+  anio = c(2015, 2015, 2016, 2016),
+  semestre = c(1, 2, 1, 2),
+  retorno = c(1.88, 0.59, 0.92, 0.17)
+)
+
+acciones %&gt;%
+  pivot_wider(
+    names_from = anio,
+    values_from = retorno
+    ) %&gt;%
+* pivot_longer(
+*   cols = `2015`:`2016`,
+*   names_to = "anio",
+*   values_to = "retorno"
+*   )
+```
+]
+ 
+.panel2-pivot_longesr_wider_example-auto[
+
+```
+## # A tibble: 4 × 3
+##   semestre anio  retorno
+##      &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
+## 1        1 2015     1.88
+## 2        1 2016     0.92
+## 3        2 2015     0.59
+## 4        2 2016     0.17
+```
+]
+
+&lt;style&gt;
+.panel1-pivot_longesr_wider_example-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-pivot_longesr_wider_example-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-pivot_longesr_wider_example-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+## Separar (y Unir)
+
+¿Qué pasa con `tabla3`? Ésta tiene un ~problema~ característica diferente: una columna
+contiene dos valores `casos` y `población`.
+
+Para solucionar este problema, necesitamos la función `separate()` (separar). También aprenderás acerca del complemento de `separate()`: `unite()` (unir), que se usa cuando una única variable se reparte en varias columnas.
+
+---
+
+count: false
+ 
+## Ejemplo &lt;code&gt;separate unite&lt;/code&gt;
+.panel1-separate_unite-auto[
+
+```r
+*tabla3
+```
+]
+ 
+.panel2-separate_unite-auto[
+
+```
+## # A tibble: 6 × 3
+##   pais        anio tasa             
+##   &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;            
+## 1 Afganistán  1999 745/19987071     
+## 2 Afganistán  2000 2666/20595360    
+## 3 Brasil      1999 37737/172006362  
+## 4 Brasil      2000 80488/174504898  
+## 5 China       1999 212258/1272915272
+## 6 China       2000 213766/1280428583
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;separate unite&lt;/code&gt;
+.panel1-separate_unite-auto[
+
+```r
+tabla3 %&gt;%
+* separate(
+*   tasa,
+*   into = c("casos", "poblacion"),
+*   convert = TRUE  # convierte al tipo adecuado
+* )
+```
+]
+ 
+.panel2-separate_unite-auto[
+
+```
+## # A tibble: 6 × 4
+##   pais        anio  casos  poblacion
+##   &lt;chr&gt;      &lt;dbl&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afganistán  1999    745   19987071
+## 2 Afganistán  2000   2666   20595360
+## 3 Brasil      1999  37737  172006362
+## 4 Brasil      2000  80488  174504898
+## 5 China       1999 212258 1272915272
+## 6 China       2000 213766 1280428583
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;separate unite&lt;/code&gt;
+.panel1-separate_unite-auto[
+
+```r
+tabla3 %&gt;%
+  separate(
+    tasa,
+    into = c("casos", "poblacion"),
+    convert = TRUE  # convierte al tipo adecuado
+  ) |&gt;
+* unite(
+*   nueva_tasa,
+*   casos, poblacion,
+*   sep = " dividido "
+*   )
+```
+]
+ 
+.panel2-separate_unite-auto[
+
+```
+## # A tibble: 6 × 3
+##   pais        anio nueva_tasa                
+##   &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;                     
+## 1 Afganistán  1999 745 dividido 19987071     
+## 2 Afganistán  2000 2666 dividido 20595360    
+## 3 Brasil      1999 37737 dividido 172006362  
+## 4 Brasil      2000 80488 dividido 174504898  
+## 5 China       1999 212258 dividido 1272915272
+## 6 China       2000 213766 dividido 1280428583
+```
+]
+
+&lt;style&gt;
+.panel1-separate_unite-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-separate_unite-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-separate_unite-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Ejercicios &lt;small&gt;`pivot_wider` / `pivot_longer` / `separate`&lt;/small&gt;
+
+1. Para cada una de las tablas, realizar las transformaciones necesarias
+para obtener la tasa de casos de tuberculosis:
+
+  - `tabla1`
+  - `tabla2`
+  - `tabla3`
+  - `tabla4a` y `tabla4b`
+
+1. Para `tabla1` graficar la evolución de la tasa para cada país. ¿Qué
+observa?
+
+---
+
+class: inverse center middle
+
+# Datos relacionales
+
+---
+
+## Datos relacionales
+
+Es raro que un análisis de datos involucre una única tabla de datos. Lo típico es que tengas muchas tablas que debes combinar para responder a tus preguntas de interés. De manera colectiva, se le llama datos relacionales a esas múltiples tablas de datos, ya que sus relaciones, y no solo los conjuntos de datos individuales, son importantes.
+
+Las relaciones siempre se definen sobre un par de tablas. Todas las otras relaciones se construyen sobre esta idea simple: las relaciones entre tres o más tablas son siempre una propiedad de las relaciones entre cada par. ¡A veces ambos elementos de un par pueden ser la misma tabla! Esto se necesita si, por ejemplo, tienes una tabla de personas y cada persona tiene una referencia a sus padres.
+
+Lo anterior viene de [datos relacionales](https://es.r4ds.hadley.nz/datos-relacionales.html) de
+R4DS.
+
+---
+
+## Tipos de opearciones entre 2 tablas
+
+Existen distintas formas de operar con 2 data frames:
+
+- **Uniones de transformación** (del inglés _mutating joins_), que agregan nuevas variables a un data frame a partir de las observaciones coincidentes en otra tabla.
+
+- **Uniones de filtro** (del inglés _filtering joins_), que filtran observaciones en un data frame con base en si coinciden o no con una observación de otra tabla.
+
+- **Operaciones de conjuntos** (del inglés _set operations_), que tratan las observaciones como elementos de un conjunto.
+
+
+Los _mutating joins_ (en adelante _joins_) serán los más usuales
+y los que estudiaremos con más detalle.
+
+
+---
+
+## De forma visual
+
+&lt;img src="images/dplyr/joins2.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Un poco más ejemplificado
+
+&lt;img src="images/dplyr/all-dplyr-joins.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## El famoso `left_join`
+
+Este es el _join_ más usual dado que **fija** la tabla de la izquierda (**left**) y agrega la información de la tabla derecha.
+
+De **forma general** para realizar un _join_ necesitaremos:
+
+- Dos tablas. Parámetros `x` e `y`.
+- Definir que columnas serán las utilizadas para realizar el _match_.
+En la mayoría de casos es una columna en cada tabla, pero no siempre es así, por ejemplo en ciertos casos se requiere juntar información por _rut_ y _fecha_. Parámetro `by`.
+
+(El 2do en popularidad en mi opinión es el `full_join`)
+
+
+---
+
+count: false
+ 
+## Ejemplo &lt;code&gt;left_join&lt;/code&gt;
+.panel1-left_join-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-left_join-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;left_join&lt;/code&gt;
+.panel1-left_join-auto[
+
+```r
+library(tidyverse)
+
+*band_members
+```
+]
+ 
+.panel2-left_join-auto[
+
+```
+## # A tibble: 3 × 2
+##   name  band   
+##   &lt;chr&gt; &lt;chr&gt;  
+## 1 Mick  Stones 
+## 2 John  Beatles
+## 3 Paul  Beatles
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;left_join&lt;/code&gt;
+.panel1-left_join-auto[
+
+```r
+library(tidyverse)
+
+band_members
+
+*band_instruments
+```
+]
+ 
+.panel2-left_join-auto[
+
+```
+## # A tibble: 3 × 2
+##   name  band   
+##   &lt;chr&gt; &lt;chr&gt;  
+## 1 Mick  Stones 
+## 2 John  Beatles
+## 3 Paul  Beatles
+```
+
+```
+## # A tibble: 3 × 2
+##   name  plays 
+##   &lt;chr&gt; &lt;chr&gt; 
+## 1 John  guitar
+## 2 Paul  bass  
+## 3 Keith guitar
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;left_join&lt;/code&gt;
+.panel1-left_join-auto[
+
+```r
+library(tidyverse)
+
+band_members
+
+band_instruments
+
+*left_join(
+* band_members,
+* band_instruments,
+* by = "name"
+* )
+```
+]
+ 
+.panel2-left_join-auto[
+
+```
+## # A tibble: 3 × 2
+##   name  band   
+##   &lt;chr&gt; &lt;chr&gt;  
+## 1 Mick  Stones 
+## 2 John  Beatles
+## 3 Paul  Beatles
+```
+
+```
+## # A tibble: 3 × 2
+##   name  plays 
+##   &lt;chr&gt; &lt;chr&gt; 
+## 1 John  guitar
+## 2 Paul  bass  
+## 3 Keith guitar
+```
+
+```
+## # A tibble: 3 × 3
+##   name  band    plays 
+##   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+## 1 Mick  Stones  &lt;NA&gt;  
+## 2 John  Beatles guitar
+## 3 Paul  Beatles bass
+```
+]
+
+&lt;style&gt;
+.panel1-left_join-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-left_join-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-left_join-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## Ejemplo &lt;code&gt;full_join&lt;/code&gt;
+.panel1-full_join-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-full_join-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;full_join&lt;/code&gt;
+.panel1-full_join-auto[
+
+```r
+library(tidyverse)
+
+*band_members
+```
+]
+ 
+.panel2-full_join-auto[
+
+```
+## # A tibble: 3 × 2
+##   name  band   
+##   &lt;chr&gt; &lt;chr&gt;  
+## 1 Mick  Stones 
+## 2 John  Beatles
+## 3 Paul  Beatles
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;full_join&lt;/code&gt;
+.panel1-full_join-auto[
+
+```r
+library(tidyverse)
+
+band_members
+
+*band_instruments
+```
+]
+ 
+.panel2-full_join-auto[
+
+```
+## # A tibble: 3 × 2
+##   name  band   
+##   &lt;chr&gt; &lt;chr&gt;  
+## 1 Mick  Stones 
+## 2 John  Beatles
+## 3 Paul  Beatles
+```
+
+```
+## # A tibble: 3 × 2
+##   name  plays 
+##   &lt;chr&gt; &lt;chr&gt; 
+## 1 John  guitar
+## 2 Paul  bass  
+## 3 Keith guitar
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;full_join&lt;/code&gt;
+.panel1-full_join-auto[
+
+```r
+library(tidyverse)
+
+band_members
+
+band_instruments
+
+*full_join(
+* band_members,
+* band_instruments,
+* by = "name"
+* )
+```
+]
+ 
+.panel2-full_join-auto[
+
+```
+## # A tibble: 3 × 2
+##   name  band   
+##   &lt;chr&gt; &lt;chr&gt;  
+## 1 Mick  Stones 
+## 2 John  Beatles
+## 3 Paul  Beatles
+```
+
+```
+## # A tibble: 3 × 2
+##   name  plays 
+##   &lt;chr&gt; &lt;chr&gt; 
+## 1 John  guitar
+## 2 Paul  bass  
+## 3 Keith guitar
+```
+
+```
+## # A tibble: 4 × 3
+##   name  band    plays 
+##   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+## 1 Mick  Stones  &lt;NA&gt;  
+## 2 John  Beatles guitar
+## 3 Paul  Beatles bass  
+## 4 Keith &lt;NA&gt;    guitar
+```
+]
+
+&lt;style&gt;
+.panel1-full_join-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-full_join-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-full_join-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+## Ejercicios
+
+1. Considere las tablas `band_members`, `band_instruments` y `band_instruments2`.
+
+  - Realice un `left_join` entre `band_members`, `band_instruments`.
+  - Realice un `left_join` entre `band_members`, `band_instruments2`.
+  - ¿Cuál es la diferencia?
+  
+1. Vuelva a los datos de `vuelos` y `aeropuertos` y grafique 
+en el mapa los segmentos que corresponden a los viajes entre un
+areopuerto y el otro.
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
