@@ -31,7 +31,7 @@ storms    <- readr::read_csv(here::here("data/storms.csv"))
 pollution <- readr::read_csv(here::here("data/pollution.csv"))
 ```
 
-class: center, middle
+class: inverse center middle
 
 # Programar (y el _pipe_)
 
@@ -186,15 +186,13 @@ x |>
 De forma general veremos que `z |> f()` es equivalente a `f(z)` y en el caso 
 de aplicar parámetros extras tenemos que `z |> g(y)` es `g(x, y)`.
 
-En el próximo ejemplo veremos que el **pipe** (`|>` o `%>%`) ayuda a la 
-legibilidad del código.
+--
 
-
----
-  
-## Diferencias entre `|>` y `%>%`
+#### Diferencias entre `|>` y `%>%`
 
 En el 99% de los códigos estos _pipes_ son intercambiables, i.e., hacen lo mismo.
+
+--
 
 `%>%`:
 - Primero en aparecer a través del paquete `magrittr` (`dplyr`, lo carga).
@@ -208,7 +206,7 @@ En el 99% de los códigos estos _pipes_ son intercambiables, i.e., hacen lo mism
 
 ---
 
-class: center, middle
+class: inverse center middle
 
 # Transformación de datos
 
@@ -219,13 +217,13 @@ class: center, middle
 
 > La visualización es una herramienta importante para la generación de conocimiento; sin embargo, es raro que obtengas los datos exactamente en la forma en que los necesitas. A menudo tendrás que crear algunas variables nuevas o resúmenes, o tal vez solo quieras cambiar el nombre de las variables o reordenar las observaciones para facilitar el trabajo con los datos.
 
-Lo anterior es un _copy & paste_ desde [R4DS](https://es.r4ds.hadley.nz/transform.html).
+<small>[R4DS](https://es.r4ds.hadley.nz/transform.html).</small>
 
 ---
 
 ## `dplyr` Lo básico
 
-En este capítulo, aprenderás las cinco funciones clave de **dplyr** que te permiten resolver la gran mayoría de tus desafíos de manipulación de datos:
+Revisaremos 5 funciones claves de **dplyr** que permiten resolver una gran parte de tus desafíos de manipulación de datos:
 
 * **Filtrar** o elegir las observaciones por sus valores (`filter()` — del inglés filtrar).
 * **Reordenar** las filas (`arrange()` — del inglés organizar).
@@ -557,6 +555,28 @@ df |>
 
 ---
 
+## [Tidy data tutor](https://tidydatatutor.com/vis.html)
+
+Con _Tidy data tutor_ analice el siguiente código.
+
+```{r, eval=FALSE}
+library(dplyr)
+library(palmerpenguins)
+
+data(penguins)
+
+penguins %>%
+  filter(species == "Gentoo") %>%
+  mutate(body_mass_kg = body_mass_g/1000) %>%
+  filter(sex == "male" | sex == "female")  %>%
+  group_by(year, sex) %>%
+  summarise(body_mass_kg_mean = mean(body_mass_kg)) %>% 
+  arrange(desc(body_mass_kg_mean))
+```
+
+
+---
+
 ## Ejercicio en grupo! Un solo grupo!
 
 1. Cargue **tidyverse** y el paquete **datos**. Explore las tablas `vuelos`, `aeropuertos`, `aerolineas`, `clima` y `aviones`. 
@@ -637,7 +657,7 @@ vuelos |>
 
 ## `dplyr` Lo menos básico
 
-`dplyr` ofrece todo un grupo de helpers para realizar el análsis más textual (verbose). Se recomienda buscar:
+`dplyr` ofrece todo un grupo de funciones/helpers para realizar el análsis más textual (verbose). Se recomienda buscar:
 
 - `contains`, `start_with`
 - `across`, `where`
@@ -654,6 +674,7 @@ vuelos |>
 - [Tidy data tutor](https://tidydatatutor.com/vis.html), visualizar _pipelines_ de 
 transformación de datos.
 
+- Buenos artículos de dplyr en la página de [documentación](https://dplyr.tidyverse.org/articles/index.html) partiendo por [acá](https://dplyr.tidyverse.org/articles/dplyr.html#single-table-verbs).
  
 
 
