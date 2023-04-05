@@ -32,7 +32,7 @@ class: left, middle, title-slide
 
 
 
-class: center, middle
+class: inverse center middle
 
 # Programar (y el _pipe_)
 
@@ -1084,15 +1084,13 @@ x |&gt;
 De forma general veremos que `z |&gt; f()` es equivalente a `f(z)` y en el caso 
 de aplicar parámetros extras tenemos que `z |&gt; g(y)` es `g(x, y)`.
 
-En el próximo ejemplo veremos que el **pipe** (`|&gt;` o `%&gt;%`) ayuda a la 
-legibilidad del código.
+--
 
-
----
-  
-## Diferencias entre `|&gt;` y `%&gt;%`
+#### Diferencias entre `|&gt;` y `%&gt;%`
 
 En el 99% de los códigos estos _pipes_ son intercambiables, i.e., hacen lo mismo.
+
+--
 
 `%&gt;%`:
 - Primero en aparecer a través del paquete `magrittr` (`dplyr`, lo carga).
@@ -1106,7 +1104,7 @@ En el 99% de los códigos estos _pipes_ son intercambiables, i.e., hacen lo mism
 
 ---
 
-class: center, middle
+class: inverse center middle
 
 # Transformación de datos
 
@@ -1117,13 +1115,13 @@ class: center, middle
 
 &gt; La visualización es una herramienta importante para la generación de conocimiento; sin embargo, es raro que obtengas los datos exactamente en la forma en que los necesitas. A menudo tendrás que crear algunas variables nuevas o resúmenes, o tal vez solo quieras cambiar el nombre de las variables o reordenar las observaciones para facilitar el trabajo con los datos.
 
-Lo anterior es un _copy &amp; paste_ desde [R4DS](https://es.r4ds.hadley.nz/transform.html).
+&lt;small&gt;[R4DS](https://es.r4ds.hadley.nz/transform.html).&lt;/small&gt;
 
 ---
 
 ## `dplyr` Lo básico
 
-En este capítulo, aprenderás las cinco funciones clave de **dplyr** que te permiten resolver la gran mayoría de tus desafíos de manipulación de datos:
+Revisaremos 5 funciones claves de **dplyr** que permiten resolver una gran parte de tus desafíos de manipulación de datos:
 
 * **Filtrar** o elegir las observaciones por sus valores (`filter()` — del inglés filtrar).
 * **Reordenar** las filas (`arrange()` — del inglés organizar).
@@ -3216,6 +3214,29 @@ df |&gt;
 
 ---
 
+## [Tidy data tutor](https://tidydatatutor.com/vis.html)
+
+Con _Tidy data tutor_ analice el siguiente código.
+
+
+```r
+library(dplyr)
+library(palmerpenguins)
+
+data(penguins)
+
+penguins %&gt;%
+  filter(species == "Gentoo") %&gt;%
+  mutate(body_mass_kg = body_mass_g/1000) %&gt;%
+  filter(sex == "male" | sex == "female")  %&gt;%
+  group_by(year, sex) %&gt;%
+  summarise(body_mass_kg_mean = mean(body_mass_kg)) %&gt;% 
+  arrange(desc(body_mass_kg_mean))
+```
+
+
+---
+
 ## Ejercicio en grupo! Un solo grupo!
 
 1. Cargue **tidyverse** y el paquete **datos**. Explore las tablas `vuelos`, `aeropuertos`, `aerolineas`, `clima` y `aviones`. 
@@ -3899,7 +3920,7 @@ vuelos |&gt;
 
 ## `dplyr` Lo menos básico
 
-`dplyr` ofrece todo un grupo de helpers para realizar el análsis más textual (verbose). Se recomienda buscar:
+`dplyr` ofrece todo un grupo de funciones/helpers para realizar el análsis más textual (verbose). Se recomienda buscar:
 
 - `contains`, `start_with`
 - `across`, `where`
@@ -3916,6 +3937,7 @@ vuelos |&gt;
 - [Tidy data tutor](https://tidydatatutor.com/vis.html), visualizar _pipelines_ de 
 transformación de datos.
 
+- Buenos artículos de dplyr en la página de [documentación](https://dplyr.tidyverse.org/articles/index.html) partiendo por [acá](https://dplyr.tidyverse.org/articles/dplyr.html#single-table-verbs).
  
 
 
