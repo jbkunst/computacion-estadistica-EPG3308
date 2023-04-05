@@ -1,0 +1,372 @@
+---
+title: "Computación Estadística EPG3308"
+pagetitle: "05-Manipulación-de-datos-tidyr"
+subtitle: "05 Manipulación de datos <code><small>dplyr tidyr</small></code>"
+author: "<br>Joshua Kunst<br>@jbkunst"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    self_contained: no
+    css: ["css/xaringan-themer.css", "css/styles.css"]
+    lib_dir: libs    
+    nature:
+      titleSlideClass: ["left", "middle"]
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+source(here::here("slides/xaringan-knitr-setup.R"))
+```
+
+class: inverse center middle
+
+# Datos ordenados
+
+---
+
+## Datos ordenados
+
+En este capítulo aprenderás una manera consistente para organizar tus datos en R a la que llamaremos tidy data (datos ordenados). Llevar tus datos a este formato requiere algo de trabajo previo; sin embargo, dicho trabajo tiene retorno positivo en el largo plazo. Una vez que tengas tus datos ordenados y las herramientas para ordenar datos que provee el tidyverse, vas a gastar mucho menos tiempo pasando de una forma de representar datos a otra, lo que te permitirá destinar más tiempo a las preguntas analíticas.
+
+Lo anterior viene de [datos ordenados](https://es.r4ds.hadley.nz/datos-ordenados.html) de
+R4DS.
+
+---
+
+## Tabla 1
+
+Puedes representar los mismos datos subyacentes de múltiples formas. El ejemplo a continuación muestra los mismos datos organizados de cuatro maneras distintas. Cada dataset muestra los mismos valores de cuatro variables —pais, anio, poblacion y casos (de tuberculosis)—, pero cada uno organiza los valores de forma distinta.
+
+```{r}
+library(datos)
+
+tabla1
+```
+
+---
+
+## Tabla 2
+
+Identifiquemos los valores asociados a pais, anio, poblacion y casos.
+
+```{r}
+tabla2
+```
+
+---
+
+## Tabla 3
+
+Identifiquemos los valores asociados a pais, anio, poblacion y casos.
+
+```{r}
+tabla3
+```
+
+---
+
+## Tabla 4a y 4b
+
+Identifiquemos los valores asociados a pais, anio, poblacion y casos.
+
+```{r}
+tabla4a
+
+tabla4b
+```
+
+---
+
+# Varias representaciones/misma información
+
+Las tablas:
+
+- `tabla1`
+- `tabla2`
+- `tabla3`
+- `tabla4a` y `tabla4b`
+
+Son representaciones de los mismos datos subyacentes, pero no todas son igualmente fáciles de usar. Por ejemplo, revisemos nuevamente las tablas y _obtenga la tasa de tuberculosis para cada país/año_.
+
+Un tipo de conjunto de datos, el conjunto de **datos ordenado**, será mucho más fácil de trabajar.
+
+
+---
+
+# Definición Datos ordenados
+
+Existen tres reglas interrelacionadas que hacen que un conjunto de datos sea ordenado:
+
+- Cada variable debe tener su propia columna.
+- Cada observación debe tener su propia fila.
+- Cada valor debe tener su propia celda.
+
+
+```{r out.width="70%", fig.align='center', echo=FALSE}
+knitr::include_graphics("images/tidy-1.svg")
+```
+
+---
+
+## Pivotar
+
+Como previamente vimos ciertas tablas poseen los siguientes problemas.
+
+1. Una variable se extiende por varias columnas, por ejemplo `tabla4a`.
+1. Una observación está dispersa entre múltiples filas, por ejemplo la `tabla2`.
+
+Para solucionar estos problemas revisaremos dos funciones del paquete **tidyr** (que viene incluído en el paquet **tidyverse**, asi que cargas solamente este último), que son:
+
+- `pivot_longer` que es para pivotar a lo largo.
+- `pivot_wider` para pivotar a lo ancho.
+
+---
+
+## Datos largos
+
+Un problema común es cuando en un dataset los nombres de las columnas no representan nombres de variables, sino que representan los valores de una variable. Tomando el caso de la `tabla4a`: los nombres de las columnas `1999` y `2000` representan los valores de la variable año, los valores en las columnas `1999` y `2000` representan los valores de la variable casos.
+
+Para ordenar un dataset como este necesitamos tres parámetros:
+
+- El conjunto de columnas cuyos nombres son valores y no variables. En este ejemplo son las columnas `1999` y `2000`. Argumento `cols` que se refiere a las columnas a trabajar.
+- El nombre de la variable cuyos valores forman los nombres de las columnas. Argumento `names_to`.
+- El nombre de la variable cuyos valores están repartidos por las celdas. Argumento `values_to`.
+
+Con estos parámetros podemos utilizar la función `pivot_longer()` (pivotar a lo largo).
+
+
+---
+
+`r flipbookr::chunk_reveal("pivot_longer", title = "## Ejemplo <code>pivot_longer</code>", widths = c(1, 1))`
+
+```{r pivot_longer, include = FALSE}
+library(tidyverse)
+library(datos)
+
+tabla4a |> 
+  pivot_longer(
+    cols = c(`1999`, `2000`), 
+    names_to = "anio",
+    values_to = "casos"
+    )
+```
+
+---
+
+## Datos anchos
+
+`pivot_wider()` (pivotar a lo ancho) es lo opuesto de `pivot_longer()`. Se usa cuando una observación aparece en múltiples filas. Por ejemplo, considera la `tabla2`: una observación es un país en un año, pero cada observación aparece en dos filas.
+
+Para ordenar esto, primero analizamos la representación de un modo similar a cómo se haría con pivot_longer(). Esta vez, sin embargo, necesitamos únicamente dos parámetros:
+
+- La columna desde la que obtener los nombres de las variables. En este caso corresponde a tipo, argumento `names_from`.
+- La columna desde la que obtener los valores. En este caso corresponde a cuenta,
+argumento `values_from`.
+
+Una vez resuelto esto, podemos usar `pivot_wider()`, como se muestra en el siguiente ejemplo.
+
+---
+
+`r flipbookr::chunk_reveal("pivot_wider", title = "## Ejemplo <code>pivot_wider</code>", widths = c(1, 1))`
+
+```{r pivot_wider, include = FALSE}
+tabla2 |> 
+  pivot_wider(
+    names_from = tipo, 
+    values_from = cuenta
+    )
+```
+
+---
+
+`r flipbookr::chunk_reveal("pivot_longesr_wider_example", title = "## <code>pivot_longer</code> y <code>pivot_wider</code> no son simétricas", widths = c(1, 1))`
+
+```{r pivot_longesr_wider_example, include = FALSE}
+# no son perfectanente simétricas
+acciones <- tibble(
+  anio = c(2015, 2015, 2016, 2016),
+  semestre = c(1, 2, 1, 2),
+  retorno = c(1.88, 0.59, 0.92, 0.17)
+)
+
+acciones %>%
+  pivot_wider(
+    names_from = anio, 
+    values_from = retorno
+    ) %>% 
+  pivot_longer(
+    cols = `2015`:`2016`,
+    names_to = "anio",
+    values_to = "retorno"
+    )
+```
+
+
+---
+
+## Separar (y Unir)
+
+¿Qué pasa con `tabla3`? Ésta tiene un ~problema~ característica diferente: una columna
+contiene dos valores `casos` y `población`.
+
+Para solucionar este problema, necesitamos la función `separate()` (separar). También aprenderás acerca del complemento de `separate()`: `unite()` (unir), que se usa cuando una única variable se reparte en varias columnas.
+
+---
+
+`r flipbookr::chunk_reveal("separate_unite", title = "## Ejemplo <code>separate unite</code>", widths = c(1, 1))`
+
+```{r separate_unite, include = FALSE}
+tabla3 %>%
+  separate(
+    tasa, 
+    into = c("casos", "poblacion"), 
+    convert = TRUE # convierte al tipo adecuado
+  ) |> 
+  unite(
+    nueva_tasa, 
+    casos, poblacion,
+    sep = " dividido "
+    )
+```
+
+---
+
+# Ejercicios <small>`pivot_wider` / `pivot_longer` / `separate`</small>
+
+1. Para cada una de las tablas, realizar las transformaciones necesarias
+para obtener la tasa de casos de tuberculosis:
+
+  - `tabla1`
+  - `tabla2`
+  - `tabla3`
+  - `tabla4a` y `tabla4b`
+
+1. Para `tabla1` graficar la evolución de la tasa para cada país. ¿Qué
+observa?
+
+---
+
+class: inverse center middle
+
+# Datos relacionales
+
+---
+
+## Datos relacionales
+
+Es raro que un análisis de datos involucre una única tabla de datos. Lo típico es que tengas muchas tablas que debes combinar para responder a tus preguntas de interés. De manera colectiva, se le llama datos relacionales a esas múltiples tablas de datos, ya que sus relaciones, y no solo los conjuntos de datos individuales, son importantes.
+
+Las relaciones siempre se definen sobre un par de tablas. Todas las otras relaciones se construyen sobre esta idea simple: las relaciones entre tres o más tablas son siempre una propiedad de las relaciones entre cada par. ¡A veces ambos elementos de un par pueden ser la misma tabla! Esto se necesita si, por ejemplo, tienes una tabla de personas y cada persona tiene una referencia a sus padres.
+
+Lo anterior viene de [datos relacionales](https://es.r4ds.hadley.nz/datos-relacionales.html) de
+R4DS.
+
+---
+
+## Tipos de opearciones entre 2 tablas
+
+Existen distintas formas de operar con 2 data frames:
+
+- **Uniones de transformación** (del inglés _mutating joins_), que agregan nuevas variables a un data frame a partir de las observaciones coincidentes en otra tabla.
+
+- **Uniones de filtro** (del inglés _filtering joins_), que filtran observaciones en un data frame con base en si coinciden o no con una observación de otra tabla.
+
+- **Operaciones de conjuntos** (del inglés _set operations_), que tratan las observaciones como elementos de un conjunto.
+
+
+Los _mutating joins_ (en adelante _joins_) serán los más usuales
+y los que estudiaremos con más detalle.
+
+
+---
+
+## De forma visual
+
+```{r out.width="70%", fig.align='center', echo=FALSE}
+knitr::include_graphics("images/dplyr/joins2.png")
+```
+
+---
+
+## Un poco más ejemplificado
+
+```{r out.width="70%", fig.align='center', echo=FALSE}
+knitr::include_graphics("images/dplyr/all-dplyr-joins.png")
+```
+
+
+---
+
+## El famoso `left_join`
+
+Este es el _join_ más usual dado que **fija** la tabla de la izquierda (**left**) y agrega la información de la tabla derecha.
+
+De **forma general** para realizar un _join_ necesitaremos:
+
+- Dos tablas. Parámetros `x` e `y`.
+- Definir que columnas serán las utilizadas para realizar el _match_.
+En la mayoría de casos es una columna en cada tabla, pero no siempre es así, por ejemplo en ciertos casos se requiere juntar información por _rut_ y _fecha_. Parámetro `by`.
+
+(El 2do en popularidad en mi opinión es el `full_join`)
+
+
+---
+
+`r flipbookr::chunk_reveal("left_join", title = "## Ejemplo <code>left_join</code>", widths = c(1, 1))`
+
+```{r left_join, include = FALSE}
+library(tidyverse)
+
+band_members
+
+band_instruments
+
+left_join(
+  band_members,
+  band_instruments,
+  by = "name"
+  )
+```
+
+---
+
+`r flipbookr::chunk_reveal("full_join", title = "## Ejemplo <code>full_join</code>", widths = c(1, 1))`
+
+```{r full_join, include = FALSE}
+library(tidyverse)
+
+band_members
+
+band_instruments
+
+full_join(
+  band_members,
+  band_instruments,
+  by = "name"
+  )
+```
+
+
+---
+
+## Ejercicios
+
+1. Considere las tablas `band_members`, `band_instruments` y `band_instruments2`.
+
+  - Realice un `left_join` entre `band_members`, `band_instruments`.
+  - Realice un `left_join` entre `band_members`, `band_instruments2`.
+  - ¿Cuál es la diferencia?
+  
+1. Vuelva a los datos de `vuelos` y `aeropuertos` y grafique 
+en el mapa los segmentos que corresponden a los viajes entre un
+areopuerto y el otro.
+
+
+
