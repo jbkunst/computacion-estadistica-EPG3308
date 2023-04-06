@@ -4,7 +4,7 @@
     <title>04-AED-Transformación-de-datos-dplyr-|&gt;</title>
     <meta charset="utf-8" />
     <meta name="author" content=" Joshua Kunst @jbkunst" />
-    <meta name="date" content="2023-04-04" />
+    <meta name="date" content="2023-04-06" />
     <script src="libs/header-attrs-2.20/header-attrs.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" />
@@ -23,7 +23,7 @@ class: left, middle, title-slide
 ### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
 ]
 .date[
-### 2023-04-04
+### 2023-04-06
 ]
 
 ---
@@ -2534,6 +2534,7 @@ con `x = fila` e `y = 4 * convergencia`.
 ---
 
 
+
 count: false
  
 ## Posible solución
@@ -2556,7 +2557,6 @@ count: false
 
 ```r
 library(tidyverse)
-
 *set.seed(123)
 ```
 ]
@@ -2573,37 +2573,12 @@ count: false
 
 ```r
 library(tidyverse)
-
 set.seed(123)
 
-*df &lt;- tibble(
+*tibble(
 * x = runif(1000, -1, 1),
 * y = runif(1000, -1, 1)
 *) 
-```
-]
- 
-.panel2-solucion-auto[
-
-]
-
----
-count: false
- 
-## Posible solución
-.panel1-solucion-auto[
-
-```r
-library(tidyverse)
-
-set.seed(123)
-
-df &lt;- tibble(
-  x = runif(1000, -1, 1),
-  y = runif(1000, -1, 1)
-)
-
-*df
 ```
 ]
  
@@ -2635,145 +2610,18 @@ count: false
 
 ```r
 library(tidyverse)
-
 set.seed(123)
 
-df &lt;- tibble(
+tibble(
   x = runif(1000, -1, 1),
   y = runif(1000, -1, 1)
-)
-
-df |&gt;
-* mutate(r = x^2 + y^2)
-```
-]
- 
-.panel2-solucion-auto[
-
-```
-## # A tibble: 1,000 × 3
-##          x       y      r
-##      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
-##  1 -0.425  -0.453  0.385 
-##  2  0.577   0.188  0.368 
-##  3 -0.182  -0.680  0.495 
-##  4  0.766   0.707  1.09  
-##  5  0.881   0.695  1.26  
-##  6 -0.909  -0.0442 0.828 
-##  7  0.0562  0.547  0.303 
-##  8  0.785  -0.409  0.783 
-##  9  0.103  -0.869  0.765 
-## 10 -0.0868 -0.119  0.0217
-## # … with 990 more rows
-```
-]
-
----
-count: false
- 
-## Posible solución
-.panel1-solucion-auto[
-
-```r
-library(tidyverse)
-
-set.seed(123)
-
-df &lt;- tibble(
-  x = runif(1000, -1, 1),
-  y = runif(1000, -1, 1)
-)
-
-df |&gt;
-  mutate(r = x^2 + y^2) |&gt;
-* mutate(r2 = if_else(r &gt; 1, "A", "B"))
-```
-]
- 
-.panel2-solucion-auto[
-
-```
-## # A tibble: 1,000 × 4
-##          x       y      r r2   
-##      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;
-##  1 -0.425  -0.453  0.385  B    
-##  2  0.577   0.188  0.368  B    
-##  3 -0.182  -0.680  0.495  B    
-##  4  0.766   0.707  1.09   A    
-##  5  0.881   0.695  1.26   A    
-##  6 -0.909  -0.0442 0.828  B    
-##  7  0.0562  0.547  0.303  B    
-##  8  0.785  -0.409  0.783  B    
-##  9  0.103  -0.869  0.765  B    
-## 10 -0.0868 -0.119  0.0217 B    
-## # … with 990 more rows
-```
-]
-
----
-count: false
- 
-## Posible solución
-.panel1-solucion-auto[
-
-```r
-library(tidyverse)
-
-set.seed(123)
-
-df &lt;- tibble(
-  x = runif(1000, -1, 1),
-  y = runif(1000, -1, 1)
-)
-
-df |&gt;
-  mutate(r = x^2 + y^2) |&gt;
-  mutate(r2 = if_else(r &gt; 1, "A", "B")) |&gt;
-* mutate(es_b = if_else(r2 == "B", 1, 0))
-```
-]
- 
-.panel2-solucion-auto[
-
-```
-## # A tibble: 1,000 × 5
-##          x       y      r r2     es_b
-##      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
-##  1 -0.425  -0.453  0.385  B         1
-##  2  0.577   0.188  0.368  B         1
-##  3 -0.182  -0.680  0.495  B         1
-##  4  0.766   0.707  1.09   A         0
-##  5  0.881   0.695  1.26   A         0
-##  6 -0.909  -0.0442 0.828  B         1
-##  7  0.0562  0.547  0.303  B         1
-##  8  0.785  -0.409  0.783  B         1
-##  9  0.103  -0.869  0.765  B         1
-## 10 -0.0868 -0.119  0.0217 B         1
-## # … with 990 more rows
-```
-]
-
----
-count: false
- 
-## Posible solución
-.panel1-solucion-auto[
-
-```r
-library(tidyverse)
-
-set.seed(123)
-
-df &lt;- tibble(
-  x = runif(1000, -1, 1),
-  y = runif(1000, -1, 1)
-)
-
-df |&gt;
-  mutate(r = x^2 + y^2) |&gt;
-  mutate(r2 = if_else(r &gt; 1, "A", "B")) |&gt;
-  mutate(es_b = if_else(r2 == "B", 1, 0)) |&gt;
-* mutate(convergencia = cummean(es_b))
+) |&gt;
+* mutate(
+*   r = x^2 + y^2,
+*   ri = r &lt; 1,
+*   convergencia = cummean(ri),
+*   row = row_number()
+*   )
 ```
 ]
  
@@ -2781,18 +2629,18 @@ df |&gt;
 
 ```
 ## # A tibble: 1,000 × 6
-##          x       y      r r2     es_b convergencia
-##      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;        &lt;dbl&gt;
-##  1 -0.425  -0.453  0.385  B         1        1    
-##  2  0.577   0.188  0.368  B         1        1    
-##  3 -0.182  -0.680  0.495  B         1        1    
-##  4  0.766   0.707  1.09   A         0        0.75 
-##  5  0.881   0.695  1.26   A         0        0.6  
-##  6 -0.909  -0.0442 0.828  B         1        0.667
-##  7  0.0562  0.547  0.303  B         1        0.714
-##  8  0.785  -0.409  0.783  B         1        0.75 
-##  9  0.103  -0.869  0.765  B         1        0.778
-## 10 -0.0868 -0.119  0.0217 B         1        0.8  
+##          x       y      r ri    convergencia   row
+##      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;        &lt;dbl&gt; &lt;int&gt;
+##  1 -0.425  -0.453  0.385  TRUE         1         1
+##  2  0.577   0.188  0.368  TRUE         1         2
+##  3 -0.182  -0.680  0.495  TRUE         1         3
+##  4  0.766   0.707  1.09   FALSE        0.75      4
+##  5  0.881   0.695  1.26   FALSE        0.6       5
+##  6 -0.909  -0.0442 0.828  TRUE         0.667     6
+##  7  0.0562  0.547  0.303  TRUE         0.714     7
+##  8  0.785  -0.409  0.783  TRUE         0.75      8
+##  9  0.103  -0.869  0.765  TRUE         0.778     9
+## 10 -0.0868 -0.119  0.0217 TRUE         0.8      10
 ## # … with 990 more rows
 ```
 ]
@@ -2805,41 +2653,149 @@ count: false
 
 ```r
 library(tidyverse)
-
 set.seed(123)
 
-df &lt;- tibble(
+tibble(
   x = runif(1000, -1, 1),
   y = runif(1000, -1, 1)
-)
-
-df |&gt;
-  mutate(r = x^2 + y^2) |&gt;
-  mutate(r2 = if_else(r &gt; 1, "A", "B")) |&gt;
-  mutate(es_b = if_else(r2 == "B", 1, 0)) |&gt;
-  mutate(convergencia = cummean(es_b)) |&gt;
-* mutate(fila = row_number())
+) |&gt;
+  mutate(
+    r = x^2 + y^2,
+    ri = r &lt; 1,
+    convergencia = cummean(ri),
+    row = row_number()
+    ) |&gt;
+* ggplot()
 ```
 ]
  
 .panel2-solucion-auto[
+&lt;img src="04-AED-Transformacion-de-datos-dplyr_files/figure-html/solucion_auto_05_output-1.svg" width="100%" /&gt;
+]
 
+---
+count: false
+ 
+## Posible solución
+.panel1-solucion-auto[
+
+```r
+library(tidyverse)
+set.seed(123)
+
+tibble(
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |&gt;
+  mutate(
+    r = x^2 + y^2,
+    ri = r &lt; 1,
+    convergencia = cummean(ri),
+    row = row_number()
+    ) |&gt;
+  ggplot() +
+* geom_line(aes(row, 4 * convergencia))
 ```
-## # A tibble: 1,000 × 7
-##          x       y      r r2     es_b convergencia  fila
-##      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;        &lt;dbl&gt; &lt;int&gt;
-##  1 -0.425  -0.453  0.385  B         1        1         1
-##  2  0.577   0.188  0.368  B         1        1         2
-##  3 -0.182  -0.680  0.495  B         1        1         3
-##  4  0.766   0.707  1.09   A         0        0.75      4
-##  5  0.881   0.695  1.26   A         0        0.6       5
-##  6 -0.909  -0.0442 0.828  B         1        0.667     6
-##  7  0.0562  0.547  0.303  B         1        0.714     7
-##  8  0.785  -0.409  0.783  B         1        0.75      8
-##  9  0.103  -0.869  0.765  B         1        0.778     9
-## 10 -0.0868 -0.119  0.0217 B         1        0.8      10
-## # … with 990 more rows
+]
+ 
+.panel2-solucion-auto[
+&lt;img src="04-AED-Transformacion-de-datos-dplyr_files/figure-html/solucion_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Posible solución
+.panel1-solucion-auto[
+
+```r
+library(tidyverse)
+set.seed(123)
+
+tibble(
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |&gt;
+  mutate(
+    r = x^2 + y^2,
+    ri = r &lt; 1,
+    convergencia = cummean(ri),
+    row = row_number()
+    ) |&gt;
+  ggplot() +
+  geom_line(aes(row, 4 * convergencia)) +
+* geom_hline(yintercept = pi, color = "darkred")
 ```
+]
+ 
+.panel2-solucion-auto[
+&lt;img src="04-AED-Transformacion-de-datos-dplyr_files/figure-html/solucion_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Posible solución
+.panel1-solucion-auto[
+
+```r
+library(tidyverse)
+set.seed(123)
+
+tibble(
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |&gt;
+  mutate(
+    r = x^2 + y^2,
+    ri = r &lt; 1,
+    convergencia = cummean(ri),
+    row = row_number()
+    ) |&gt;
+  ggplot() +
+  geom_line(aes(row, 4 * convergencia)) +
+  geom_hline(yintercept = pi, color = "darkred")  +
+* scale_x_continuous(labels = scales::comma_format())
+```
+]
+ 
+.panel2-solucion-auto[
+&lt;img src="04-AED-Transformacion-de-datos-dplyr_files/figure-html/solucion_auto_08_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Posible solución
+.panel1-solucion-auto[
+
+```r
+library(tidyverse)
+set.seed(123)
+
+tibble(
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |&gt;
+  mutate(
+    r = x^2 + y^2,
+    ri = r &lt; 1,
+    convergencia = cummean(ri),
+    row = row_number()
+    ) |&gt;
+  ggplot() +
+  geom_line(aes(row, 4 * convergencia)) +
+  geom_hline(yintercept = pi, color = "darkred")  +
+  scale_x_continuous(labels = scales::comma_format()) +
+* scale_y_continuous(
+*   position = "right",
+*   sec.axis = sec_axis(trans = ~., breaks = pi, labels = expression(pi))
+* )
+```
+]
+ 
+.panel2-solucion-auto[
+&lt;img src="04-AED-Transformacion-de-datos-dplyr_files/figure-html/solucion_auto_09_output-1.svg" width="100%" /&gt;
 ]
 
 &lt;style&gt;
@@ -2877,7 +2833,7 @@ df |&gt;
 
 count: false
  
-## Posible solución v2
+## Exploratorio previo
 .panel1-solucion2-auto[
 
 ```r
@@ -2892,12 +2848,11 @@ count: false
 ---
 count: false
  
-## Posible solución v2
+## Exploratorio previo
 .panel1-solucion2-auto[
 
 ```r
 library(tidyverse)
-
 *set.seed(123)
 ```
 ]
@@ -2909,17 +2864,16 @@ library(tidyverse)
 ---
 count: false
  
-## Posible solución v2
+## Exploratorio previo
 .panel1-solucion2-auto[
 
 ```r
 library(tidyverse)
-
 set.seed(123)
 
 *df &lt;- tibble(
-* x = runif(10000, -1, 1),
-* y = runif(10000, -1, 1)
+* x = runif(1000, -1, 1),
+* y = runif(1000, -1, 1)
 *) 
 ```
 ]
@@ -2931,60 +2885,17 @@ set.seed(123)
 ---
 count: false
  
-## Posible solución v2
+## Exploratorio previo
 .panel1-solucion2-auto[
 
 ```r
 library(tidyverse)
-
 set.seed(123)
 
 df &lt;- tibble(
-  x = runif(10000, -1, 1),
-  y = runif(10000, -1, 1)
-)
-
-*df
-```
-]
- 
-.panel2-solucion2-auto[
-
-```
-## # A tibble: 10,000 × 2
-##          x      y
-##      &lt;dbl&gt;  &lt;dbl&gt;
-##  1 -0.425  -0.379
-##  2  0.577  -0.351
-##  3 -0.182   0.741
-##  4  0.766  -0.343
-##  5  0.881  -0.749
-##  6 -0.909  -0.288
-##  7  0.0562  0.861
-##  8  0.785   0.750
-##  9  0.103   0.640
-## 10 -0.0868 -0.956
-## # … with 9,990 more rows
-```
-]
-
----
-count: false
- 
-## Posible solución v2
-.panel1-solucion2-auto[
-
-```r
-library(tidyverse)
-
-set.seed(123)
-
-df &lt;- tibble(
-  x = runif(10000, -1, 1),
-  y = runif(10000, -1, 1)
-)
-
-df |&gt;
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |&gt;
 * mutate(
 *   r = x^2 + y^2,
 *   ri = r &lt; 1,
@@ -2996,48 +2907,60 @@ df |&gt;
  
 .panel2-solucion2-auto[
 
-```
-## # A tibble: 10,000 × 6
-##          x      y     r ri    convergencia   row
-##      &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;        &lt;dbl&gt; &lt;int&gt;
-##  1 -0.425  -0.379 0.324 TRUE         1         1
-##  2  0.577  -0.351 0.456 TRUE         1         2
-##  3 -0.182   0.741 0.581 TRUE         1         3
-##  4  0.766  -0.343 0.704 TRUE         1         4
-##  5  0.881  -0.749 1.34  FALSE        0.8       5
-##  6 -0.909  -0.288 0.909 TRUE         0.833     6
-##  7  0.0562  0.861 0.745 TRUE         0.857     7
-##  8  0.785   0.750 1.18  FALSE        0.75      8
-##  9  0.103   0.640 0.421 TRUE         0.778     9
-## 10 -0.0868 -0.956 0.922 TRUE         0.8      10
-## # … with 9,990 more rows
-```
 ]
 
 ---
 count: false
  
-## Posible solución v2
+## Exploratorio previo
 .panel1-solucion2-auto[
 
 ```r
 library(tidyverse)
-
 set.seed(123)
 
 df &lt;- tibble(
-  x = runif(10000, -1, 1),
-  y = runif(10000, -1, 1)
-)
-
-df |&gt;
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |&gt;
   mutate(
     r = x^2 + y^2,
     ri = r &lt; 1,
     convergencia = cummean(ri),
     row = row_number()
-    ) |&gt;
-* ggplot()
+    )
+
+*ggplot(df)
+```
+]
+ 
+.panel2-solucion2-auto[
+&lt;img src="04-AED-Transformacion-de-datos-dplyr_files/figure-html/solucion2_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Exploratorio previo
+.panel1-solucion2-auto[
+
+```r
+library(tidyverse)
+set.seed(123)
+
+df &lt;- tibble(
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |&gt;
+  mutate(
+    r = x^2 + y^2,
+    ri = r &lt; 1,
+    convergencia = cummean(ri),
+    row = row_number()
+    )
+
+ggplot(df) +
+* geom_point(aes(x, y, color = r))
 ```
 ]
  
@@ -3048,28 +2971,27 @@ df |&gt;
 ---
 count: false
  
-## Posible solución v2
+## Exploratorio previo
 .panel1-solucion2-auto[
 
 ```r
 library(tidyverse)
-
 set.seed(123)
 
 df &lt;- tibble(
-  x = runif(10000, -1, 1),
-  y = runif(10000, -1, 1)
-)
-
-df |&gt;
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |&gt;
   mutate(
     r = x^2 + y^2,
     ri = r &lt; 1,
     convergencia = cummean(ri),
     row = row_number()
-    ) |&gt;
-  ggplot() +
-* geom_line(aes(row, 4 * convergencia))
+    )
+
+ggplot(df) +
+  geom_point(aes(x, y, color = r)) +
+* scale_color_viridis_c()
 ```
 ]
  
@@ -3080,105 +3002,34 @@ df |&gt;
 ---
 count: false
  
-## Posible solución v2
+## Exploratorio previo
 .panel1-solucion2-auto[
 
 ```r
 library(tidyverse)
-
 set.seed(123)
 
 df &lt;- tibble(
-  x = runif(10000, -1, 1),
-  y = runif(10000, -1, 1)
-)
-
-df |&gt;
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |&gt;
   mutate(
     r = x^2 + y^2,
     ri = r &lt; 1,
     convergencia = cummean(ri),
     row = row_number()
-    ) |&gt;
-  ggplot() +
-  geom_line(aes(row, 4 * convergencia)) +
-* geom_hline(yintercept = pi, color = "darkred")
+    )
+
+ggplot(df) +
+  geom_point(aes(x, y, color = r)) +
+  scale_color_viridis_c()
+# ahora cambia r por ri
+# y viridis_c por viridis_d
 ```
 ]
  
 .panel2-solucion2-auto[
 &lt;img src="04-AED-Transformacion-de-datos-dplyr_files/figure-html/solucion2_auto_08_output-1.svg" width="100%" /&gt;
-]
-
----
-count: false
- 
-## Posible solución v2
-.panel1-solucion2-auto[
-
-```r
-library(tidyverse)
-
-set.seed(123)
-
-df &lt;- tibble(
-  x = runif(10000, -1, 1),
-  y = runif(10000, -1, 1)
-)
-
-df |&gt;
-  mutate(
-    r = x^2 + y^2,
-    ri = r &lt; 1,
-    convergencia = cummean(ri),
-    row = row_number()
-    ) |&gt;
-  ggplot() +
-  geom_line(aes(row, 4 * convergencia)) +
-  geom_hline(yintercept = pi, color = "darkred")  +
-* scale_x_continuous(labels = scales::comma_format())
-```
-]
- 
-.panel2-solucion2-auto[
-&lt;img src="04-AED-Transformacion-de-datos-dplyr_files/figure-html/solucion2_auto_09_output-1.svg" width="100%" /&gt;
-]
-
----
-count: false
- 
-## Posible solución v2
-.panel1-solucion2-auto[
-
-```r
-library(tidyverse)
-
-set.seed(123)
-
-df &lt;- tibble(
-  x = runif(10000, -1, 1),
-  y = runif(10000, -1, 1)
-)
-
-df |&gt;
-  mutate(
-    r = x^2 + y^2,
-    ri = r &lt; 1,
-    convergencia = cummean(ri),
-    row = row_number()
-    ) |&gt;
-  ggplot() +
-  geom_line(aes(row, 4 * convergencia)) +
-  geom_hline(yintercept = pi, color = "darkred")  +
-  scale_x_continuous(labels = scales::comma_format()) +
-* scale_y_continuous(
-*   sec.axis = sec_axis(trans = ~., breaks = pi, labels = expression(pi))
-* )
-```
-]
- 
-.panel2-solucion2-auto[
-&lt;img src="04-AED-Transformacion-de-datos-dplyr_files/figure-html/solucion2_auto_10_output-1.svg" width="100%" /&gt;
 ]
 
 &lt;style&gt;

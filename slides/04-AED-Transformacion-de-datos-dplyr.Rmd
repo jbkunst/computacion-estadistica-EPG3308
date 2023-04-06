@@ -502,42 +502,20 @@ con `x = fila` e `y = 4 * convergencia`.
 
 ---
 
+```{r, include=FALSE}
+# ggplot2::theme_set(theme_flipboork)
+```
 
-`r flipbookr::chunk_reveal("solucion", title = "## Posible solución", widths = c(1, 1))`
+`r flipbookr::chunk_reveal("solucion", title = "## Posible solución", widths = c(1, 1), chunk_options = "fig.height = 2.7, fig.width = 3")`
 
 ```{r solucion, include = FALSE}
 library(tidyverse)
-
 set.seed(123)
 
-df <- tibble(
+tibble(
   x = runif(1000, -1, 1),
   y = runif(1000, -1, 1)
-)
-
-df |> 
-  mutate(r = x^2 + y^2) |> 
-  mutate(r2 = if_else(r > 1, "A", "B")) |> 
-  mutate(es_b = if_else(r2 == "B", 1, 0)) |> 
-  mutate(convergencia = cummean(es_b)) |> 
-  mutate(fila = row_number()) 
-```
-
----
-
-`r flipbookr::chunk_reveal("solucion2", title = "## Posible solución v2", widths = c(1, 1), chunk_options = "fig.height = 2.7, fig.width = 3")`
-
-```{r solucion2, include = FALSE}
-library(tidyverse)
-
-set.seed(123)
-
-df <- tibble(
-  x = runif(10000, -1, 1),
-  y = runif(10000, -1, 1)
-)
-
-df |> 
+) |> 
   mutate(
     r = x^2 + y^2,
     ri = r < 1,
@@ -549,8 +527,35 @@ df |>
   geom_hline(yintercept = pi, color = "darkred")  +
   scale_x_continuous(labels = scales::comma_format()) +
   scale_y_continuous(
+    position = "right",
     sec.axis = sec_axis(trans = ~., breaks = pi, labels = expression(pi))
   )
+```
+
+---
+
+`r flipbookr::chunk_reveal("solucion2", title = "## Exploratorio previo", widths = c(1, 1), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r solucion2, include = FALSE}
+library(tidyverse)
+set.seed(123)
+
+df <- tibble(
+  x = runif(1000, -1, 1),
+  y = runif(1000, -1, 1)
+) |> 
+  mutate(
+    r = x^2 + y^2,
+    ri = r < 1,
+    convergencia = cummean(ri),
+    row = row_number()
+    ) 
+
+ggplot(df) +
+  geom_point(aes(x, y, color = r)) +
+  scale_color_viridis_c()
+# ahora cambia r por ri
+# y viridis_c por viridis_d
 ```
 
 ---
