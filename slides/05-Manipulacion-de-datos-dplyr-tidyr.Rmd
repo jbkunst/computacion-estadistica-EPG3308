@@ -242,16 +242,12 @@ tabla3 %>%
 
 # Ejercicios <small>`pivot_wider` / `pivot_longer` / `separate`</small>
 
-1. Para cada una de las tablas, realizar las transformaciones necesarias
-para obtener la tasa de casos de tuberculosis:
+1. Para cada una de las tablas: `tabla1`, `tabla2`, `tabla3`, `tabla4a` y `tabla4b`
+realizar las transformaciones necesarias para obtener la tasa de casos de tuberculosis.
 
-  - `tabla1`
-  - `tabla2`
-  - `tabla3`
-  - `tabla4a` y `tabla4b`
+1. Para `tabla1` graficar la evolución de la tasa para cada país. ¿Qué observa?
 
-1. Para `tabla1` graficar la evolución de la tasa para cada país. ¿Qué
-observa?
+1. Grafique un mapa de calor con los datos `relig_income` del paquete `tidyr`.
 
 ---
 
@@ -371,7 +367,6 @@ areopuerto y el otro. En la próxima slide se muestra un _hint_ para graficar un
 
 1. **Avanzado**: Utilice los paquete `ggforce` y `edgebundle` para replicar lo realizado en el ejericio anterior utizando como template el ejemplo mostrado en https://github.com/schochastics/edgebundle.
 
-1. Grafique un mapa de calor con los datos `relig_income` del paquete `tidyr`.
 
 ---
 
