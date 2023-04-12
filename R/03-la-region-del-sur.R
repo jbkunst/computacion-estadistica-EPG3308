@@ -25,15 +25,12 @@ datosq <- datosq |>
 
 glimpse(datosq)
 
-
-
 # grafico 1
 ggplot(datosq) +
   geom_line(aes(x = q, y = valor))
 
 ggplot(datosq) +
   geom_line(aes(x = cuarto, y = valor))
-
 
 datosq
 
