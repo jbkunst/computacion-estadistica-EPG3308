@@ -34,10 +34,11 @@ class: inverse center middle
 
 ## Datos ordenados
 
-En este capítulo aprenderás una manera consistente para organizar tus datos en R a la que llamaremos tidy data (datos ordenados). Llevar tus datos a este formato requiere algo de trabajo previo; sin embargo, dicho trabajo tiene retorno positivo en el largo plazo. Una vez que tengas tus datos ordenados y las herramientas para ordenar datos que provee el tidyverse, vas a gastar mucho menos tiempo pasando de una forma de representar datos a otra, lo que te permitirá destinar más tiempo a las preguntas analíticas.
+En este capítulo aprenderás una manera consistente para organizar tus datos en R a la que llamaremos tidy data (datos ordenados). 
 
-Lo anterior viene de [datos ordenados](https://es.r4ds.hadley.nz/datos-ordenados.html) de
-R4DS.
+Llevar tus datos a este formato requiere algo de trabajo previo; sin embargo, dicho trabajo tiene retorno positivo en el largo plazo. Una vez que tengas tus datos ordenados y las herramientas para ordenar datos que provee el tidyverse, vas a gastar mucho menos tiempo pasando de una forma de representar datos a otra, lo que te permitirá destinar más tiempo a las preguntas analíticas.
+
+[R4DS](https://es.r4ds.hadley.nz/datos-ordenados.html)
 
 ---
 
@@ -362,12 +363,42 @@ full_join(
 1. Considere las tablas `band_members`, `band_instruments` y `band_instruments2`.
 
   - Realice un `left_join` entre `band_members`, `band_instruments`.
-  - Realice un `left_join` entre `band_members`, `band_instruments2`.
-  - ¿Cuál es la diferencia?
+  - Realice un `left_join` entre `band_members`, `band_instruments2`. ¿Cuál es la diferencia?
   
-1. Vuelva a los datos de `vuelos` y `aeropuertos` y grafique 
+1. Vuelva a los datos de `vuelos` y `aeropuertos` (del paquete `datos`) y grafique 
 en el mapa los segmentos que corresponden a los viajes entre un
-areopuerto y el otro.
+areopuerto y el otro. En la próxima slide se muestra un _hint_ para graficar un mapa.
 
+1. **Avanzado**: Utilice los paquete `ggforce` y `edgebundle` para replicar lo realizado en el ejericio anterior utizando como template el ejemplo mostrado en https://github.com/schochastics/edgebundle.
 
+1. Grafique un mapa de calor con los datos `relig_income` del paquete `tidyr`.
 
+---
+
+`r flipbookr::chunk_reveal("hint", title = "## Hint", widths = c(1, 1))`
+
+```{r hint, include=FALSE}
+library(tidyverse)
+library(ggraph)
+
+states <- map_data("state")
+
+ggplot() +
+  geom_polygon(
+    data = states,
+    aes(long, lat, group = group), 
+    col = "gray20", 
+    linewidth = 1, 
+    fill = NA
+    ) +
+  coord_map() +
+  ggraph::theme_graph(background = "black")
+```
+
+---
+
+## Más información sobre transformación de datos
+
+- [Datos ordenados](https://es.r4ds.hadley.nz/datos-ordenados.html) en R4DS.
+
+- Buenos artículos de `tidyr` en la página de [documentación](https://tidyr.tidyverse.org/articles/tidy-data.html).

@@ -679,7 +679,7 @@ vuelos |>
 - [Tidy data tutor](https://tidydatatutor.com/vis.html), visualizar _pipelines_ de 
 transformación de datos.
 
-- Buenos artículos de dplyr en la página de [documentación](https://dplyr.tidyverse.org/articles/index.html) partiendo por [acá](https://dplyr.tidyverse.org/articles/dplyr.html#single-table-verbs).
+- Buenos artículos de `dplyr` en la página de [documentación](https://dplyr.tidyverse.org/articles/index.html) partiendo por [acá](https://dplyr.tidyverse.org/articles/dplyr.html#single-table-verbs).
  
 
 
