@@ -167,17 +167,5 @@ ggplot(data = relig_income_tidy, aes(name, religion)) +
     ) +
   scale_fill_viridis_c()
 
-relig_income_tidy |> 
-  filter)
-ggplot(data = , aes(name, religion)) +
-  geom_tile(aes(fill = p)) +
-  geom_text(
-    aes(label = scales::percent(p, accuracy = 0.1)),
-    color = "white"
-  ) +
-  scale_fill_viridis_c()
-
-
-
 "$" > "&"
 "r"  > "python"
