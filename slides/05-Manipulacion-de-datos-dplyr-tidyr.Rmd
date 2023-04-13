@@ -198,11 +198,11 @@ acciones <- tibble(
   retorno = c(1.88, 0.59, 0.92, 0.17)
 )
 
-acciones %>%
+acciones |>
   pivot_wider(
     names_from = anio, 
     values_from = retorno
-    ) %>% 
+    ) |> 
   pivot_longer(
     cols = `2015`:`2016`,
     names_to = "anio",
@@ -225,7 +225,7 @@ Para solucionar este problema, necesitamos la función `separate()` (separar). T
 `r flipbookr::chunk_reveal("separate_unite", title = "## Ejemplo <code>separate unite</code>", widths = c(1, 1))`
 
 ```{r separate_unite, include = FALSE}
-tabla3 %>%
+tabla3 |>
   separate(
     tasa, 
     into = c("casos", "poblacion"), 
@@ -310,7 +310,7 @@ De **forma general** para realizar un _join_ necesitaremos:
 
 - Dos tablas. Parámetros `x` e `y`.
 - Definir que columnas serán las utilizadas para realizar el _match_.
-En la mayoría de casos es una columna en cada tabla, pero no siempre es así, por ejemplo en ciertos casos se requiere juntar información por _rut_ y _fecha_. Parámetro `by`.
+En la mayoría de casos es una columna en cada tabla, pero no siempre es así, por ejemplo en ciertos casos se requiere juntar información por _rut_ y _fecha_. Parámetro `by = join_by(...)`.
 
 (El 2do en popularidad en mi opinión es el `full_join`)
 
@@ -329,7 +329,7 @@ band_instruments
 left_join(
   band_members,
   band_instruments,
-  by = "name"
+  by = join_by(name)
   )
 ```
 
@@ -347,7 +347,7 @@ band_instruments
 full_join(
   band_members,
   band_instruments,
-  by = "name"
+  by = join_by(name == name)
   )
 ```
 
