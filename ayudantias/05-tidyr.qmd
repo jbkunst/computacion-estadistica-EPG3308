@@ -5,7 +5,6 @@ format:
     toc: true
     toc-title: Tabla de contenidos
     self-contained: true
-
 editor_options: 
   chunk_output_type: console
 ---
@@ -36,7 +35,21 @@ ggplot(ddesempleo) +
 1. La variación porcentual de la tasa de desempleo respecto al mes anterior
 1. La variación porcentual respecto al mismo mes del año anterior.
 1. La variación porcentual respecto a diciembre del año anterior.
-1. Crear 1 gráfico con `ggplot2` mostrando estas 4 series (hint: combo `pivot_longer` + `facet_wrap`).
+1. Crear un gráfico con `ggplot2` mostrando estas 4 series (hint: combo `pivot_longer` + `facet_wrap`).
+1. Qué sucede si se intenta hacer lo mismo pero con los siguientes datos? Cual sería 
+una posible solución?
+
+```{r}
+set.seed(123)
+
+ddesempleo2 <- ddesempleo |> 
+  select(fecha, desempleo) |> 
+  sample_frac(0.8) |> 
+  arrange(fecha)
+
+ddesempleo2
+```
+
 
 ### Solución 
 1. 
@@ -105,6 +118,9 @@ ggplot(ddesempleo_long, aes(fecha, value, group = name)) +
   facet_wrap(vars(name), scales = "free_y") +
   theme_minimal()
 ```
+
+5. <span style="font-size: 25px;">😱😱😱😱😱</span>
+
 
 ## Pregunta 2
 
