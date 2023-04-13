@@ -41,12 +41,15 @@ ggplot() +
   ggraph::theme_graph(background = "black") +
   coord_map() +
   geom_polygon(
-    data = states, aes(long, lat, group = group),  col = "gray20", linewidth = 0.1, fill = NA
+    data = states, 
+    aes(long, lat, group = group), 
+    col = "gray60", 
+    linewidth = 0.1, fill = NA
     ) +
   geom_segment(
     data = dedges2, 
     aes(x = longitud, y = latitud, xend =  longitud_to, yend =  latitud_to),
-    col = "gray70", linewidth = 1, alpha = 0.1
+    col = "white", linewidth = 1, alpha = 0.1
     )
 
 # segundo intento (Force directed edge bundling) --------------------------
