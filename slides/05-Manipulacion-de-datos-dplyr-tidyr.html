@@ -4,7 +4,7 @@
     <title>05-Manipulación-de-datos-tidyr</title>
     <meta charset="utf-8" />
     <meta name="author" content=" Joshua Kunst @jbkunst" />
-    <meta name="date" content="2023-04-12" />
+    <meta name="date" content="2023-04-13" />
     <script src="libs/header-attrs-2.20/header-attrs.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" />
@@ -23,7 +23,7 @@ class: left, middle, title-slide
 ### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
 ]
 .date[
-### 2023-04-12
+### 2023-04-13
 ]
 
 ---
@@ -511,7 +511,7 @@ acciones &lt;- tibble(
   retorno = c(1.88, 0.59, 0.92, 0.17)
 )
 
-acciones %&gt;%
+acciones |&gt;
 * pivot_wider(
 *   names_from = anio,
 *   values_from = retorno
@@ -544,11 +544,11 @@ acciones &lt;- tibble(
   retorno = c(1.88, 0.59, 0.92, 0.17)
 )
 
-acciones %&gt;%
+acciones |&gt;
   pivot_wider(
     names_from = anio,
     values_from = retorno
-    ) %&gt;%
+    ) |&gt;
 * pivot_longer(
 *   cols = `2015`:`2016`,
 *   names_to = "anio",
@@ -645,7 +645,7 @@ count: false
 .panel1-separate_unite-auto[
 
 ```r
-tabla3 %&gt;%
+tabla3 |&gt;
 * separate(
 *   tasa,
 *   into = c("casos", "poblacion"),
@@ -676,7 +676,7 @@ count: false
 .panel1-separate_unite-auto[
 
 ```r
-tabla3 %&gt;%
+tabla3 |&gt;
   separate(
     tasa,
     into = c("casos", "poblacion"),
@@ -804,7 +804,7 @@ De **forma general** para realizar un _join_ necesitaremos:
 
 - Dos tablas. Parámetros `x` e `y`.
 - Definir que columnas serán las utilizadas para realizar el _match_.
-En la mayoría de casos es una columna en cada tabla, pero no siempre es así, por ejemplo en ciertos casos se requiere juntar información por _rut_ y _fecha_. Parámetro `by`.
+En la mayoría de casos es una columna en cada tabla, pero no siempre es así, por ejemplo en ciertos casos se requiere juntar información por _rut_ y _fecha_. Parámetro `by = join_by(...)`.
 
 (El 2do en popularidad en mi opinión es el `full_join`)
 
@@ -902,7 +902,7 @@ band_instruments
 *left_join(
 * band_members,
 * band_instruments,
-* by = "name"
+* by = join_by(name)
 * )
 ```
 ]
@@ -1061,7 +1061,7 @@ band_instruments
 *full_join(
 * band_members,
 * band_instruments,
-* by = "name"
+* by = join_by(name == name)
 * )
 ```
 ]
