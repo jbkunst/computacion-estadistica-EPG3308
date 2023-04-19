@@ -5,6 +5,7 @@ format:
     toc: true
     toc-title: Tabla de contenidos
     self-contained: true
+
 editor_options: 
   chunk_output_type: console
 ---
@@ -16,6 +17,11 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 ## Pregunta 1
 
 Considere los datos y calcule:
+
+1. La variación porcentual de la tasa de desempleo respecto al mes anterior
+1. La variación porcentual respecto al mismo mes del año anterior.
+1. La variación porcentual respecto a diciembre del año anterior.
+1. Crear 1 gráfico con `ggplot2` mostrando estas 4 series (hint: combo `pivot_longer` + `facet_wrap`).
 
 ```{r}
 library(tidyverse)
@@ -31,25 +37,6 @@ ggplot(ddesempleo) +
   scale_x_date(breaks = "year", date_labels = "%Y") +
   theme_minimal()
 ```
-
-1. La variación porcentual de la tasa de desempleo respecto al mes anterior
-1. La variación porcentual respecto al mismo mes del año anterior.
-1. La variación porcentual respecto a diciembre del año anterior.
-1. Crear un gráfico con `ggplot2` mostrando estas 4 series (hint: combo `pivot_longer` + `facet_wrap`).
-1. Qué sucede si se intenta hacer lo mismo pero con los siguientes datos? Cual sería 
-una posible solución?
-
-```{r}
-set.seed(123)
-
-ddesempleo2 <- ddesempleo |> 
-  select(fecha, desempleo) |> 
-  sample_frac(0.8) |> 
-  arrange(fecha)
-
-ddesempleo2
-```
-
 
 ### Solución 
 1. 
@@ -119,9 +106,6 @@ ggplot(ddesempleo_long, aes(fecha, value, group = name)) +
   theme_minimal()
 ```
 
-5. <span style="font-size: 25px;">😱😱😱😱😱</span>
-
-
 ## Pregunta 2
 
 Considere los datos de `vuelos` y `aeropuertos` del paquete datos:
@@ -131,111 +115,13 @@ Considere los datos de `vuelos` y `aeropuertos` del paquete datos:
 1. De la tabla de vuelos obtenga la cantidad de vuelos realizados para cada par `origen` 
 `destino`.
 1. A la tabla anterior incluya las posición geográfica tanto del origen como del destino
-utilizando la tabla `aeropuertos`, considere luego solamente los casos "completos" (sin `NA`s).
+utilizando la tabla `aeropuertos`.
 1. En un mapa muestre los 10 vuelos más largos, y los 10 vuelos más recurrentes.
 
 ### Solución
 
 1. 
 ```{r}
-library(datos)
-vuelos <- select(vuelos, fecha_hora, origen, destino)
-vuelos
-
-aeropuertos <- select(aeropuertos, codigo_aeropuerto, latitud, longitud)
-aeropuertos
+vuelos <- select(vuelos, fecha, origen, destino)
 ```
 
-2. 
-```{r}
-vuelos_conteos <- vuelos |> 
-  group_by(origen, destino) |> 
-  summarise(viajes = n(), .groups = "drop")
-
-# drop es para que la tabla no que _agrupada_
-vuelos_conteos
-```
-
-3.
-```{r}
-vuelos_conteos <- vuelos_conteos |> 
-  left_join(aeropuertos, by = join_by(origen  == codigo_aeropuerto)) |> 
-  left_join(aeropuertos, by = join_by(destino == codigo_aeropuerto), suffix = c("_ori", "_des"))
-
-vuelos_conteos
-
-vuelos_conteos <- vuelos_conteos |> 
-  filter(complete.cases(vuelos_conteos))
-```
-
-4. Acá se intentan 3 formas de obtener distancia, 2 con el paquete geodist y una  con pitágoras no más,
-pues lo que importa es la magnitud.
-```{r}
-library(geodist)
-
-geodist_mts_tidy <- function(lat1 = 40.7, lon1 = -74.2, lat2 = 42.7, lon2 = -73.8){
-  
-  x <- matrix(c(lon1, lat1), nrow = 1, dimnames = list(NULL, c("x", "y")))
-  y <- matrix(c(lon2, lat2), nrow = 1, dimnames = list(NULL, c("x", "y")))
-  
-  as.numeric(geodist(x, y, measure =  "haversine"))
-                          
-}
-
-geodist_mts_tidy <- Vectorize(geodist_mts_tidy)
-
-distancias <- geodist(
-  vuelos_conteos |> select(x = longitud_ori, y = latitud_ori) |> as.matrix(), 
-  vuelos_conteos |> select(x = longitud_des, y = latitud_des) |> as.matrix(), 
-  measure =  "haversine"
-  )[1, ]
-
-vuelos_conteos <- vuelos_conteos |> 
-  mutate(
-    distancia  = geodist_mts_tidy(latitud_ori, longitud_ori, latitud_des, longitud_des),
-    distancia2 = distancias,
-    distancia3 = sqrt((longitud_ori - longitud_des)^2 + (latitud_ori - latitud_des)^2)
-  )
-
-vuelos_conteos
-
-vuelos_top10_largos <- vuelos_conteos |> 
-  slice_max(order_by = distancia , n = 10) |> 
-  mutate(tipo = "largo", .before = 1)
-
-vuelos_top10_popular <- vuelos_conteos |> 
-  slice_max(order_by = viajes, n = 10) |> 
-  mutate(tipo = "popular", .before = 1)
-
-vuelos_top10 <- union_all(vuelos_top10_largos, vuelos_top10_popular)
-vuelos_top10
-
-# ? se repite alguno
-vuelos_top10 |> 
-  count(origen, destino, sort = TRUE) |> 
-  filter(n > 1)
-# Los Ángeles, Chile
-# San Francisco, Chile
-
-# Ejemplo de clase 5
-states <- map_data("state")
-
-ggplot() +
-  theme_void() +
-  coord_map() +
-  geom_polygon(
-    data = states, 
-    aes(long, lat, group = group), 
-    col = "gray80", 
-    linewidth = 0.1, fill = NA
-    ) +
-  geom_segment(
-    data = vuelos_top10, 
-    aes(x = longitud_ori,
-        y = latitud_ori,
-        xend =  longitud_des ,
-        yend = latitud_des), 
-    col = "gray40", linewidth = 1, alpha = 1
-    ) +
-  facet_wrap(vars(tipo))
-```
