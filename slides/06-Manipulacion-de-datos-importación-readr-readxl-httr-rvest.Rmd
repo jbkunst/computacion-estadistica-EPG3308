@@ -246,14 +246,9 @@ Lea un archivo de texto utilizando alguna función del paquete `readr` y
 con la funcion `data.table::fread`. Que obtiene con dada una? Existen Diferencas?
 
 
-
-
 ---
 
 ## Más información sobre transformación de datos
-
-
-- 
 
 - Paquete [dbplyr](https://dbplyr.tidyverse.org/articles/dbplyr.html).
 
