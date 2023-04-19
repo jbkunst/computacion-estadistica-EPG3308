@@ -148,21 +148,3 @@ theme_null <- ggplot2::theme(
 ggplot2::theme_set(
   theme_slides
 )
-
-
-
-scale_fill_pres_c <- function(option = "C", begin = 0.05, end = 0.85, ...) {
-  ggplot2::scale_fill_viridis_c(option = option, begin = begin, end = end, ...)
-}
-
-scale_fill_pres_d <- function(option = "C", begin = 0.05, end = 0.85, ...) {
-  ggplot2::scale_fill_viridis_d(option = option, begin = begin, end = end, ...)
-}
-
-scale_color_pres_c <- function(option = "C", begin = 0.05, end = 0.85, ...) {
-  ggplot2::scale_color_viridis_c(option = option, begin = begin, end = end, ...)
-}
-scale_color_pres_d <- function(option = "C", begin = 0.05, end = 0.85, ...) {
-  ggplot2::scale_color_viridis_d(option = option, begin = begin, end = end, ...)
-}
-
