@@ -205,7 +205,7 @@ read_html(url) |>
 `r flipbookr::chunk_reveal("rvestv2", title = "## HTML v2 <code>rvest::read_html</code>", widths = c(1, 1), chunk_options = "fig.height = 2.7, fig.width = 3")`
 
 ```{r rvestv2, include=FALSE}
-library(httr)
+library(rvestv)
 library(tidyverse) # dplyr + ggplot + etc
 library(chilemapas) # gracias Pachá!
 url <- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
