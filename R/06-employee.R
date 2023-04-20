@@ -69,6 +69,29 @@ data_resumida <- dempleados |>
   show_query() |> 
   collect()
 
-data_resumida  
+data_resumida
 
+nm <- scales::comma(as.numeric(sum(data_resumida$n)))
+
+subt <- str_glue("Una muestra de {nm}")
+
+ggplot(data_resumida, aes(gender, salario_mnm/1e3, group = title, color = title)) +
+  geom_line() +
+  geom_point() + 
+  ggrepel::geom_text_repel(
+    aes(label = title),
+    data = filter(data_resumida, gender == "M")
+    ) +
+  scale_color_viridis_d() +
+  scale_y_continuous(labels = scales::dollar_format(suffix = "M")) +
+  theme_minimal() +
+  labs(
+    title = "asdas",
+    x = NULL,
+    y = NULL,
+    subtitle = subt, 
+    color = NULL,
+    caption = "Lo que nadie lee, y revelevante"
+  ) +
+  theme(legend.position = "none")
 
