@@ -173,7 +173,7 @@ con
 
 DBI::dbListTables(con)
 
-
+DBI::dbListFields(con, "taxonomy")
 ```
 
 ---
@@ -194,7 +194,7 @@ read_html(url) |>
   mutate(fecha = dmy(fecha)) |> 
   arrange(fecha, cantidad) |> 
   ggplot(aes(fecha, cantidad)) +
-  geom_line(color = "gray80", size = 1.2) +
+  geom_line(color = "gray80", linewidth = 1.2) +
   geom_smooth(alpha = 0.25, size = 1.2) +
   coord_cartesian(ylim = c(0, NA)) +
   theme_minimal()
@@ -202,10 +202,10 @@ read_html(url) |>
 
 ---
 
-`r flipbookr::chunk_reveal("rvestv2", title = "## HTML v2 <code>rvest::read_html</code>", widths = c(1, 1), chunk_options = "fig.height = 2.7, fig.width = 3")`
+`r flipbookr::chunk_reveal("rvest2", title = "## HTML v2 <code>rvest::read_html</code>", widths = c(1, 1), chunk_options = "fig.height = 2.7, fig.width = 3")`
 
-```{r rvestv2, include=FALSE}
-library(rvestv)
+```{r rvest2, include=FALSE}
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc
 library(chilemapas) # gracias Pachá!
 url <- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
