@@ -4,7 +4,7 @@
     <title>06-Importación-de-datos-readr-readxl-httr-rvest-dbplyr</title>
     <meta charset="utf-8" />
     <meta name="author" content=" Joshua Kunst @jbkunst" />
-    <meta name="date" content="2023-04-19" />
+    <meta name="date" content="2023-04-20" />
     <script src="libs/header-attrs-2.20/header-attrs.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" />
@@ -23,7 +23,7 @@ class: left, middle, title-slide
 ### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
 ]
 .date[
-### 2023-04-19
+### 2023-04-20
 ]
 
 ---
@@ -1589,6 +1589,8 @@ count: false
 con
 
 DBI::dbListTables(con)
+
+*DBI::dbListFields(con, "taxonomy")
 ```
 ]
  
@@ -1634,6 +1636,11 @@ DBI::dbListTables(con)
 ## [59] "taxonomic_tree"              "taxonomy"                   
 ## [61] "taxonomy_websearch"          "version"                    
 ## [63] "wikitext"
+```
+
+```
+## [1] "ncbi_id"            "species"            "tax_string"        
+## [4] "tree_display_name"  "align_display_name"
 ```
 ]
 
@@ -1768,10 +1775,10 @@ read_html(url) |&gt;
 ## # A tibble: 26 × 3
 ##    Fecha    `Empresa y razón de reclamo`                                      ``
 ##    &lt;chr&gt;    &lt;chr&gt;                                                          &lt;int&gt;
-##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        107
-##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     164
+##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        108
+##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     165
 ##  3 06-01-21 Universidad Católica de Chile - No me llegó libro                303
-##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            681
+##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            682
 ##  5 07-06-19 salud                                                            409
 ##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilidad…   779
 ##  7 08-02-18 No Resuelto Salud - No pagó de licencia                          575
@@ -1806,10 +1813,10 @@ read_html(url) |&gt;
 ## # A tibble: 26 × 3
 ##    Fecha    `Empresa y razón de reclamo`                                      ``
 ##    &lt;chr&gt;    &lt;chr&gt;                                                          &lt;int&gt;
-##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        107
-##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     164
+##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        108
+##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     165
 ##  3 06-01-21 Universidad Católica de Chile - No me llegó libro                303
-##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            681
+##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            682
 ##  5 07-06-19 salud                                                            409
 ##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilidad…   779
 ##  7 08-02-18 No Resuelto Salud - No pagó de licencia                          575
@@ -1845,10 +1852,10 @@ read_html(url) |&gt;
 ## # A tibble: 26 × 3
 ##    fecha    reclamo                                                      canti…¹
 ##    &lt;chr&gt;    &lt;chr&gt;                                                          &lt;int&gt;
-##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        107
-##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     164
+##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        108
+##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     165
 ##  3 06-01-21 Universidad Católica de Chile - No me llegó libro                303
-##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            681
+##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            682
 ##  5 07-06-19 salud                                                            409
 ##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilid…     779
 ##  7 08-02-18 No Resuelto Salud - No pagó de licencia                          575
@@ -1885,10 +1892,10 @@ read_html(url) |&gt;
 ## # A tibble: 26 × 3
 ##    fecha      reclamo                                                    canti…¹
 ##    &lt;date&gt;     &lt;chr&gt;                                                        &lt;int&gt;
-##  1 2022-11-28 Pontificia Universidad Católica - Cuenta correo Exalumnos      107
-##  2 2022-10-13 No Resuelto Pontificia Universidad Católica - Discriminac…     164
+##  1 2022-11-28 Pontificia Universidad Católica - Cuenta correo Exalumnos      108
+##  2 2022-10-13 No Resuelto Pontificia Universidad Católica - Discriminac…     165
 ##  3 2021-01-06 Universidad Católica de Chile - No me llegó libro              303
-##  4 2019-08-15 No Resuelto universidad católica - falta de seguridad          681
+##  4 2019-08-15 No Resuelto universidad católica - falta de seguridad          682
 ##  5 2019-06-07 salud                                                          409
 ##  6 2019-06-06 No Resuelto Universidad católica de Chile - Irresponsabil…     779
 ##  7 2018-02-08 No Resuelto Salud - No pagó de licencia                        575
@@ -1930,10 +1937,10 @@ read_html(url) |&gt;
 ##  2 2013-07-11 Pontificia Universidad Católica - termino repentino de su…    1569
 ##  3 2013-10-16 pontificia Universidad Católica (salud) - no respetar con…    2045
 ##  4 2014-01-02 Pontificia Universidad Católica red salud uc - Discrimina…    2628
-##  5 2014-04-07 Salud - Robo                                                  1075
+##  5 2014-04-07 Salud - Robo                                                  1076
 ##  6 2014-07-29 salud - demora resolución licencia                             984
 ##  7 2014-08-10 Pontificia Universidad Católica - Pérdida IRRESPONSABLE d…    1404
-##  8 2014-09-16 Pontificia Universidad Católica de Chile - Falta de plata…    1301
+##  8 2014-09-16 Pontificia Universidad Católica de Chile - Falta de plata…    1302
 ##  9 2015-02-18 salud - mala atención                                         1623
 ## 10 2015-05-12 No Resuelto Pontificia Universidad Católica - Falta de pr…    2737
 ## # … with 16 more rows, and abbreviated variable name ¹​cantidad
@@ -1985,7 +1992,7 @@ read_html(url) |&gt;
   mutate(fecha = dmy(fecha)) |&gt;
   arrange(fecha, cantidad) |&gt;
   ggplot(aes(fecha, cantidad)) +
-* geom_line(color = "gray80", size = 1.2)
+* geom_line(color = "gray80", linewidth = 1.2)
 ```
 ]
  
@@ -2012,7 +2019,7 @@ read_html(url) |&gt;
   mutate(fecha = dmy(fecha)) |&gt;
   arrange(fecha, cantidad) |&gt;
   ggplot(aes(fecha, cantidad)) +
-  geom_line(color = "gray80", size = 1.2) +
+  geom_line(color = "gray80", linewidth = 1.2) +
 * geom_smooth(alpha = 0.25, size = 1.2)
 ```
 ]
@@ -2040,7 +2047,7 @@ read_html(url) |&gt;
   mutate(fecha = dmy(fecha)) |&gt;
   arrange(fecha, cantidad) |&gt;
   ggplot(aes(fecha, cantidad)) +
-  geom_line(color = "gray80", size = 1.2) +
+  geom_line(color = "gray80", linewidth = 1.2) +
   geom_smooth(alpha = 0.25, size = 1.2) +
 * coord_cartesian(ylim = c(0, NA))
 ```
@@ -2069,7 +2076,7 @@ read_html(url) |&gt;
   mutate(fecha = dmy(fecha)) |&gt;
   arrange(fecha, cantidad) |&gt;
   ggplot(aes(fecha, cantidad)) +
-  geom_line(color = "gray80", size = 1.2) +
+  geom_line(color = "gray80", linewidth = 1.2) +
   geom_smooth(alpha = 0.25, size = 1.2) +
   coord_cartesian(ylim = c(0, NA)) +
 * theme_minimal()
@@ -2117,14 +2124,14 @@ read_html(url) |&gt;
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-*library(httr)
+*library(rvest)
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ]
 
@@ -2132,15 +2139,15 @@ count: false
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 *library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ]
 
@@ -2148,16 +2155,16 @@ library(httr)
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 *library(chilemapas)  # gracias Pachá!
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ]
 
@@ -2165,17 +2172,17 @@ library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 *url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ]
 
@@ -2183,10 +2190,10 @@ library(chilemapas)  # gracias Pachá!
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2195,7 +2202,7 @@ url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ```
 ## {html_document}
@@ -2209,10 +2216,10 @@ url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2222,7 +2229,7 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ```
 ## [[1]]
@@ -2232,18 +2239,21 @@ read_html(url) |&gt;
 ## 1 NA    NA    NA    NA    NA    NA   
 ## 
 ## [[2]]
-## # A tibble: 7 × 5
-##   `Fecha Local / Lugar`                         Fecha …¹ Latit…² Profu…³ Magni…⁴
-##   &lt;chr&gt;                                         &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-## 1 2023-04-19 01:30:4975 km al NE de El Salvador 2023-04… -25.67… 15 km   3.6 Ml 
-## 2 2023-04-19 01:28:3680 km al NE de El Salvador 2023-04… -25.68… 18 km   3.8 Ml 
-## 3 2023-04-19 00:24:4024 km al NO de Calama      2023-04… -22.29… 121 km  3.1 Ml 
-## 4 2023-04-18 23:40:3628 km al NE de Calama      2023-04… -22.24… 104 km  3.0 Ml 
-## 5 2023-04-18 21:53:22176 km al O de Melinka     2023-04… -43.33… 25 km   2.9 Ml 
-## 6 2023-04-18 20:52:2632 km al O de La Ligua     2023-04… -32.39… 42 km   2.6 Ml 
-## 7 2023-04-18 20:33:3539 km al S de Socaire      2023-04… -23.93… 146 km  3.4 Ml 
-## # … with abbreviated variable names ¹​`Fecha UTC`, ²​`Latitud / Longitud`,
-## #   ³​Profundidad, ⁴​`Magnitud (2)`
+## # A tibble: 21 × 5
+##    `Fecha Local / Lugar`                         Fecha…¹ Latit…² Profu…³ Magni…⁴
+##    &lt;chr&gt;                                         &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
+##  1 2023-04-19 17:28:0930 km al E de Concepción   2023-0… -36.94… 33 km   3.0 Ml 
+##  2 2023-04-19 17:08:1231 km al SO de Mina Colla… 2023-0… -21.03… 109 km  2.7 Ml 
+##  3 2023-04-19 17:02:5373 km al SE de Camiña      2023-0… -19.86… 99 km   2.8 Ml 
+##  4 2023-04-19 15:28:1675 km al E de Tierra Amar… 2023-0… -27.58… 107 km  3.3 Ml 
+##  5 2023-04-19 14:53:5439 km al O de La Serena    2023-0… -29.82… 30 km   3.0 Ml 
+##  6 2023-04-19 14:04:5441 km al S de Curicó       2023-0… -35.33… 103 km  2.5 Ml 
+##  7 2023-04-19 13:33:09114 km al O de Tirúa       2023-0… -38.47… 9 km    3.3 Ml 
+##  8 2023-04-19 12:00:2582 km al SE de Socaire     2023-0… -24.16… 213 km  2.8 Ml 
+##  9 2023-04-19 10:45:33122 km al SE de Socaire    2023-0… -24.33… 175 km  2.8 Ml 
+## 10 2023-04-19 08:52:0176 km al NE de Calama      2023-0… -21.91… 108 km  2.7 Ml 
+## # … with 11 more rows, and abbreviated variable names ¹​`Fecha UTC`,
+## #   ²​`Latitud / Longitud`, ³​Profundidad, ⁴​`Magnitud (2)`
 ```
 ]
 
@@ -2251,10 +2261,10 @@ read_html(url) |&gt;
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2265,21 +2275,24 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ```
-## # A tibble: 7 × 5
-##   `Fecha Local / Lugar`                         Fecha …¹ Latit…² Profu…³ Magni…⁴
-##   &lt;chr&gt;                                         &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-## 1 2023-04-19 01:30:4975 km al NE de El Salvador 2023-04… -25.67… 15 km   3.6 Ml 
-## 2 2023-04-19 01:28:3680 km al NE de El Salvador 2023-04… -25.68… 18 km   3.8 Ml 
-## 3 2023-04-19 00:24:4024 km al NO de Calama      2023-04… -22.29… 121 km  3.1 Ml 
-## 4 2023-04-18 23:40:3628 km al NE de Calama      2023-04… -22.24… 104 km  3.0 Ml 
-## 5 2023-04-18 21:53:22176 km al O de Melinka     2023-04… -43.33… 25 km   2.9 Ml 
-## 6 2023-04-18 20:52:2632 km al O de La Ligua     2023-04… -32.39… 42 km   2.6 Ml 
-## 7 2023-04-18 20:33:3539 km al S de Socaire      2023-04… -23.93… 146 km  3.4 Ml 
-## # … with abbreviated variable names ¹​`Fecha UTC`, ²​`Latitud / Longitud`,
-## #   ³​Profundidad, ⁴​`Magnitud (2)`
+## # A tibble: 21 × 5
+##    `Fecha Local / Lugar`                         Fecha…¹ Latit…² Profu…³ Magni…⁴
+##    &lt;chr&gt;                                         &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
+##  1 2023-04-19 17:28:0930 km al E de Concepción   2023-0… -36.94… 33 km   3.0 Ml 
+##  2 2023-04-19 17:08:1231 km al SO de Mina Colla… 2023-0… -21.03… 109 km  2.7 Ml 
+##  3 2023-04-19 17:02:5373 km al SE de Camiña      2023-0… -19.86… 99 km   2.8 Ml 
+##  4 2023-04-19 15:28:1675 km al E de Tierra Amar… 2023-0… -27.58… 107 km  3.3 Ml 
+##  5 2023-04-19 14:53:5439 km al O de La Serena    2023-0… -29.82… 30 km   3.0 Ml 
+##  6 2023-04-19 14:04:5441 km al S de Curicó       2023-0… -35.33… 103 km  2.5 Ml 
+##  7 2023-04-19 13:33:09114 km al O de Tirúa       2023-0… -38.47… 9 km    3.3 Ml 
+##  8 2023-04-19 12:00:2582 km al SE de Socaire     2023-0… -24.16… 213 km  2.8 Ml 
+##  9 2023-04-19 10:45:33122 km al SE de Socaire    2023-0… -24.33… 175 km  2.8 Ml 
+## 10 2023-04-19 08:52:0176 km al NE de Calama      2023-0… -21.91… 108 km  2.7 Ml 
+## # … with 11 more rows, and abbreviated variable names ¹​`Fecha UTC`,
+## #   ²​`Latitud / Longitud`, ³​Profundidad, ⁴​`Magnitud (2)`
 ```
 ]
 
@@ -2287,10 +2300,10 @@ read_html(url) |&gt;
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2302,21 +2315,24 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ```
-## # A tibble: 7 × 5
-##   `Fecha Local / Lugar`              `Fecha UTC`         Latit…¹ Profu…² Magni…³
-##   &lt;chr&gt;                              &lt;dttm&gt;              &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-## 1 2023-04-19 01:30:4975 km al NE de… 2023-04-19 05:30:49 -25.67… 15 km   3.6 Ml 
-## 2 2023-04-19 01:28:3680 km al NE de… 2023-04-19 05:28:36 -25.68… 18 km   3.8 Ml 
-## 3 2023-04-19 00:24:4024 km al NO de… 2023-04-19 04:24:40 -22.29… 121 km  3.1 Ml 
-## 4 2023-04-18 23:40:3628 km al NE de… 2023-04-19 03:40:36 -22.24… 104 km  3.0 Ml 
-## 5 2023-04-18 21:53:22176 km al O de… 2023-04-19 01:53:22 -43.33… 25 km   2.9 Ml 
-## 6 2023-04-18 20:52:2632 km al O de … 2023-04-19 00:52:26 -32.39… 42 km   2.6 Ml 
-## 7 2023-04-18 20:33:3539 km al S de … 2023-04-19 00:33:35 -23.93… 146 km  3.4 Ml 
-## # … with abbreviated variable names ¹​`Latitud / Longitud`, ²​Profundidad,
-## #   ³​`Magnitud (2)`
+## # A tibble: 21 × 5
+##    `Fecha Local / Lugar`             `Fecha UTC`         Latit…¹ Profu…² Magni…³
+##    &lt;chr&gt;                             &lt;dttm&gt;              &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
+##  1 2023-04-19 17:28:0930 km al E de… 2023-04-19 21:28:09 -36.94… 33 km   3.0 Ml 
+##  2 2023-04-19 17:08:1231 km al SO d… 2023-04-19 21:08:12 -21.03… 109 km  2.7 Ml 
+##  3 2023-04-19 17:02:5373 km al SE d… 2023-04-19 21:02:53 -19.86… 99 km   2.8 Ml 
+##  4 2023-04-19 15:28:1675 km al E de… 2023-04-19 19:28:16 -27.58… 107 km  3.3 Ml 
+##  5 2023-04-19 14:53:5439 km al O de… 2023-04-19 18:53:54 -29.82… 30 km   3.0 Ml 
+##  6 2023-04-19 14:04:5441 km al S de… 2023-04-19 18:04:54 -35.33… 103 km  2.5 Ml 
+##  7 2023-04-19 13:33:09114 km al O d… 2023-04-19 17:33:09 -38.47… 9 km    3.3 Ml 
+##  8 2023-04-19 12:00:2582 km al SE d… 2023-04-19 16:00:25 -24.16… 213 km  2.8 Ml 
+##  9 2023-04-19 10:45:33122 km al SE … 2023-04-19 14:45:33 -24.33… 175 km  2.8 Ml 
+## 10 2023-04-19 08:52:0176 km al NE d… 2023-04-19 12:52:01 -21.91… 108 km  2.7 Ml 
+## # … with 11 more rows, and abbreviated variable names ¹​`Latitud / Longitud`,
+## #   ²​Profundidad, ³​`Magnitud (2)`
 ```
 ]
 
@@ -2324,10 +2340,10 @@ read_html(url) |&gt;
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2340,21 +2356,24 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ```
-## # A tibble: 7 × 6
-##   `Fecha Local / Lugar`      `Fecha UTC`         Latit…¹ Profu…² Magni…³ Magni…⁴
-##   &lt;chr&gt;                      &lt;dttm&gt;              &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;
-## 1 2023-04-19 01:30:4975 km … 2023-04-19 05:30:49 -25.67… 15 km   3.6 Ml      3.6
-## 2 2023-04-19 01:28:3680 km … 2023-04-19 05:28:36 -25.68… 18 km   3.8 Ml      3.8
-## 3 2023-04-19 00:24:4024 km … 2023-04-19 04:24:40 -22.29… 121 km  3.1 Ml      3.1
-## 4 2023-04-18 23:40:3628 km … 2023-04-19 03:40:36 -22.24… 104 km  3.0 Ml      3  
-## 5 2023-04-18 21:53:22176 km… 2023-04-19 01:53:22 -43.33… 25 km   2.9 Ml      2.9
-## 6 2023-04-18 20:52:2632 km … 2023-04-19 00:52:26 -32.39… 42 km   2.6 Ml      2.6
-## 7 2023-04-18 20:33:3539 km … 2023-04-19 00:33:35 -23.93… 146 km  3.4 Ml      3.4
-## # … with abbreviated variable names ¹​`Latitud / Longitud`, ²​Profundidad,
-## #   ³​`Magnitud (2)`, ⁴​Magnitud
+## # A tibble: 21 × 6
+##    `Fecha Local / Lugar`     `Fecha UTC`         Latit…¹ Profu…² Magni…³ Magni…⁴
+##    &lt;chr&gt;                     &lt;dttm&gt;              &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;
+##  1 2023-04-19 17:28:0930 km… 2023-04-19 21:28:09 -36.94… 33 km   3.0 Ml      3  
+##  2 2023-04-19 17:08:1231 km… 2023-04-19 21:08:12 -21.03… 109 km  2.7 Ml      2.7
+##  3 2023-04-19 17:02:5373 km… 2023-04-19 21:02:53 -19.86… 99 km   2.8 Ml      2.8
+##  4 2023-04-19 15:28:1675 km… 2023-04-19 19:28:16 -27.58… 107 km  3.3 Ml      3.3
+##  5 2023-04-19 14:53:5439 km… 2023-04-19 18:53:54 -29.82… 30 km   3.0 Ml      3  
+##  6 2023-04-19 14:04:5441 km… 2023-04-19 18:04:54 -35.33… 103 km  2.5 Ml      2.5
+##  7 2023-04-19 13:33:09114 k… 2023-04-19 17:33:09 -38.47… 9 km    3.3 Ml      3.3
+##  8 2023-04-19 12:00:2582 km… 2023-04-19 16:00:25 -24.16… 213 km  2.8 Ml      2.8
+##  9 2023-04-19 10:45:33122 k… 2023-04-19 14:45:33 -24.33… 175 km  2.8 Ml      2.8
+## 10 2023-04-19 08:52:0176 km… 2023-04-19 12:52:01 -21.91… 108 km  2.7 Ml      2.7
+## # … with 11 more rows, and abbreviated variable names ¹​`Latitud / Longitud`,
+## #   ²​Profundidad, ³​`Magnitud (2)`, ⁴​Magnitud
 ```
 ]
 
@@ -2362,10 +2381,10 @@ read_html(url) |&gt;
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2379,20 +2398,24 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
+.panel2-rvest2-auto[
 
 ```
-## # A tibble: 7 × 7
-##   `Fecha Local / Lugar`  `Fecha UTC`           lat   lon Profu…¹ Magni…² Magni…³
-##   &lt;chr&gt;                  &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;
-## 1 2023-04-19 01:30:4975… 2023-04-19 05:30:49 -25.7 -69.2 15 km   3.6 Ml      3.6
-## 2 2023-04-19 01:28:3680… 2023-04-19 05:28:36 -25.7 -69.1 18 km   3.8 Ml      3.8
-## 3 2023-04-19 00:24:4024… 2023-04-19 04:24:40 -22.3 -69.1 121 km  3.1 Ml      3.1
-## 4 2023-04-18 23:40:3628… 2023-04-19 03:40:36 -22.2 -68.8 104 km  3.0 Ml      3  
-## 5 2023-04-18 21:53:2217… 2023-04-19 01:53:22 -43.3 -75.8 25 km   2.9 Ml      2.9
-## 6 2023-04-18 20:52:2632… 2023-04-19 00:52:26 -32.4 -71.6 42 km   2.6 Ml      2.6
-## 7 2023-04-18 20:33:3539… 2023-04-19 00:33:35 -23.9 -67.8 146 km  3.4 Ml      3.4
-## # … with abbreviated variable names ¹​Profundidad, ²​`Magnitud (2)`, ³​Magnitud
+## # A tibble: 21 × 7
+##    `Fecha Local / Lugar` `Fecha UTC`           lat   lon Profu…¹ Magni…² Magni…³
+##    &lt;chr&gt;                 &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;
+##  1 2023-04-19 17:28:093… 2023-04-19 21:28:09 -36.9 -72.7 33 km   3.0 Ml      3  
+##  2 2023-04-19 17:08:123… 2023-04-19 21:08:12 -21.0 -68.9 109 km  2.7 Ml      2.7
+##  3 2023-04-19 17:02:537… 2023-04-19 21:02:53 -19.9 -69.0 99 km   2.8 Ml      2.8
+##  4 2023-04-19 15:28:167… 2023-04-19 19:28:16 -27.6 -69.5 107 km  3.3 Ml      3.3
+##  5 2023-04-19 14:53:543… 2023-04-19 18:53:54 -29.8 -71.6 30 km   3.0 Ml      3  
+##  6 2023-04-19 14:04:544… 2023-04-19 18:04:54 -35.3 -71.1 103 km  2.5 Ml      2.5
+##  7 2023-04-19 13:33:091… 2023-04-19 17:33:09 -38.5 -74.8 9 km    3.3 Ml      3.3
+##  8 2023-04-19 12:00:258… 2023-04-19 16:00:25 -24.2 -67.4 213 km  2.8 Ml      2.8
+##  9 2023-04-19 10:45:331… 2023-04-19 14:45:33 -24.3 -67.0 175 km  2.8 Ml      2.8
+## 10 2023-04-19 08:52:017… 2023-04-19 12:52:01 -21.9 -68.5 108 km  2.7 Ml      2.7
+## # … with 11 more rows, and abbreviated variable names ¹​Profundidad,
+## #   ²​`Magnitud (2)`, ³​Magnitud
 ```
 ]
 
@@ -2400,10 +2423,10 @@ read_html(url) |&gt;
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2418,18 +2441,18 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
-&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvestv2_auto_11_output-1.svg" width="100%" /&gt;
+.panel2-rvest2-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest2_auto_11_output-1.svg" width="100%" /&gt;
 ]
 
 ---
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2448,18 +2471,18 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
-&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvestv2_auto_12_output-1.svg" width="100%" /&gt;
+.panel2-rvest2-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest2_auto_12_output-1.svg" width="100%" /&gt;
 ]
 
 ---
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2480,18 +2503,18 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
-&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvestv2_auto_13_output-1.svg" width="100%" /&gt;
+.panel2-rvest2-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest2_auto_13_output-1.svg" width="100%" /&gt;
 ]
 
 ---
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2513,18 +2536,18 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
-&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvestv2_auto_14_output-1.svg" width="100%" /&gt;
+.panel2-rvest2-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest2_auto_14_output-1.svg" width="100%" /&gt;
 ]
 
 ---
 count: false
  
 ## HTML v2 &lt;code&gt;rvest::read_html&lt;/code&gt;
-.panel1-rvestv2-auto[
+.panel1-rvest2-auto[
 
 ```r
-library(httr)
+library(rvest)
 library(tidyverse) # dplyr + ggplot + etc  # dplyr + ggplot + etc
 library(chilemapas)  # gracias Pachá!
 url &lt;- "https://www.sismologia.cl/sismicidad/catalogo/2023/04/20230419.html"
@@ -2547,12 +2570,12 @@ read_html(url) |&gt;
 ```
 ]
  
-.panel2-rvestv2-auto[
-&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvestv2_auto_15_output-1.svg" width="100%" /&gt;
+.panel2-rvest2-auto[
+&lt;img src="06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest_files/figure-html/rvest2_auto_15_output-1.svg" width="100%" /&gt;
 ]
 
 &lt;style&gt;
-.panel1-rvestv2-auto {
+.panel1-rvest2-auto {
   color: black;
   width: 49%;
   hight: 32%;
@@ -2560,7 +2583,7 @@ read_html(url) |&gt;
   padding-left: 1%;
   font-size: 80%
 }
-.panel2-rvestv2-auto {
+.panel2-rvest2-auto {
   color: black;
   width: 49%;
   hight: 32%;
@@ -2568,7 +2591,7 @@ read_html(url) |&gt;
   padding-left: 1%;
   font-size: 80%
 }
-.panel3-rvestv2-auto {
+.panel3-rvest2-auto {
   color: black;
   width: NA%;
   hight: 33%;
