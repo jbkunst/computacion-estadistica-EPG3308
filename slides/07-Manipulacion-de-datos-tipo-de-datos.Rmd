@@ -59,8 +59,9 @@ tipo de dato.
 Tipo de dato           | Paquete
 -----------------------|---------
 `chr`                  | stringr, stringi
-`dttm`, `date`, `time` | lubridate, hms
 `fct`                  | forcats
+`dttm`, `date`, `time` | lubridate, hms
+
 
 
 
@@ -160,6 +161,8 @@ x <- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ", 
        "7", NA)
 
+x
+ 
 cat(x)
 
 tibble(v = x) |> 
@@ -268,8 +271,13 @@ Si bien mostraremos algunos elementos principales. Esto es solo el comienzo...
 - `|` Sirve para como "o" lógico.
 --
 
-<br>
-Revisemos https://support.google.com/a/answer/1371415, https://apuntes.de/golang/expresiones-regulares-sintaxis/, y luego el script `R/07-regex.R`.
+- Más definiciones acá  https://support.google.com/a/answer/1371415.
+--
+
+- Y acá https://apuntes.de/golang/expresiones-regulares-sintaxis/
+--
+
+Revisemos detenidamente ejemplos con `R/07-regex.R`.
 
 
 ---
@@ -299,18 +307,84 @@ tibble(
   )
 ```
 
+---
+
+class: inverse center middle
+
+# Factores
+
+---
+
+## Factores (`forcats`)
+
+los **factores** (`fct`) son  variables que tienen un conjunto fijo y conocido de valores posibles -categorías-. 
+--
+
+* Reordenar categorías de acuerdo a otra variable `fct_reorder(f, x)`.
+--
+
+* Reordenar de acuerdo al orden de aparición `fct_in_order(x)`.
+--
+
+* Agrupar categorías menos frecuentes a una categoría del tipo `"otro"`. `fct_lump_min` Por mínima cantidad `min` de veces que aparecen. `fct_lump_prop` Por proporción `prop`. `fct_lump_n` Retener (quedarse) con las `n` más frecuentes. `fct_lump_lowfreq` Agrupar mientras la categoría `"otro"` siga siendo la menos frecuente.
+--
+
+* Explicitar categoría cuando el valor es `NA`: `fct_na_value_to_level(f, na_level = "Otros tipos")` .
+--
+
+* Transformarla a caracter `as.character(f)`.
+
+---
+
+`r flipbookr::chunk_reveal("forcats", title = "## Motivación Factores", widths = c(5, 6), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r forcats, include=FALSE}
+x1 <- c("Dic", "Abr", "Ene", "Mar")
+x2 <- c("Dic", "Abr", "Eme", "Mar")
+x1
+sort(x1)
+
+niveles_meses <- c(
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+)
+
+
+y1 <- factor(x1, levels = niveles_meses)
+y1
+sort(y1)
+
+y2 <- factor(x2, levels = niveles_meses)
+y2
+
+factor(x1)
+
+levels(y1)
+```
+
+---
+
+# Ejercicios Factores
+
+<small>
+
+Ejercicio de [R4DS](https://es.r4ds.hadley.nz/factores.html). Utilizaremos `datos::encuesta`. Muestra de variables categóricas de una encuesta social.
+
+1. Explore la columna `raza`, realice un gráfico con el conteo. ¿Qué sucede?
+1. Explora la distribución de ingreso. ¿Qué hace que el gráfico de barras por defecto sea tan difícil de comprender? ¿Cómo podrías mejorarlo?
+1. ¿Cuál es la religion más común en esta encuesta? ¿Cuál es el partido más común?
+1. ¿A qué religion se aplica cada denominacion? ¿Cómo puedes descubrirlo con una tabla? ¿Cómo lo puedes descubrir con una visualización?
+1. Calcule un reumen de la encuesta, por `religion` con el promedio de `edad` y`horas_tv`. Grafique
+un scatterplot entre `religion` y `horas_tv`. ¿Es fácil de interpretar? ¿Cómo puede mejorar? Agrupe religiones poco comunes y repita.
+1. Repita lo anterior pero agrupando y graficando por `ingreso` y `edad`. ¿Es buena idea reordenar por el valor de edad?
+
+</small>
 
 ---
 
 class: inverse center middle
 
 # Fecha y hora
-
----
-
-class: inverse center middle
-
-# Factores
 
 ---
 
