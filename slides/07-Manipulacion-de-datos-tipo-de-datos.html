@@ -63,12 +63,13 @@ anteriores, son todo un universo en si mismos:
 De forma general se muestra el paquete destinado a manipular, procesar cada
 tipo de dato.
 
+&lt;br&gt;
+
 Tipo de dato           | Paquete
 -----------------------|---------
 `chr`                  | stringr, stringi
 `fct`                  | forcats
 `dttm`, `date`, `time` | lubridate, hms
-
 
 
 
@@ -1613,10 +1614,13 @@ Si bien mostraremos algunos elementos principales. Esto es solo el comienzo...
 - `|` Sirve para como "o" lógico.
 --
 
-&lt;br&gt;
-&lt;br&gt;
+- Más definiciones acá  https://support.google.com/a/answer/1371415.
+--
 
-Revisemos https://support.google.com/a/answer/1371415, https://apuntes.de/golang/expresiones-regulares-sintaxis/, y luego el script `R/07-regex.R`.
+- Y acá https://apuntes.de/golang/expresiones-regulares-sintaxis/
+--
+
+Revisemos detenidamente ejemplos con `R/07-regex.R`.
 
 
 ---
@@ -2357,11 +2361,1141 @@ class: inverse center middle
 
 # Fecha y hora
 
+
+
 ---
 
-class: inverse center middle
+## Fecha y hora (`lubridate`)
 
-# Coherción
+Hay tres tipos de datos de fechas/horas que se refieren a un instante en el tiempo:
+
+* Una fecha o `date`. Un tibble lo imprime como `&lt;date&gt;`.
+
+* Una hora o `time` dentro de un día. Los tibbles lo imprimen como `&lt;time&gt;`.
+
+* Una fecha-hora o `date-time` es una fecha con una hora adjunta: identifica de forma única un instante en el tiempo. Los tibbles imprimen esto como `&lt;dttm&gt;`.
+
+
+---
+
+count: false
+ 
+## Creando Fechas desde strings
+.panel1-lubridate-auto[
+
+```r
+*library(lubridate)
+```
+]
+ 
+.panel2-lubridate-auto[
+
+]
+
+---
+count: false
+ 
+## Creando Fechas desde strings
+.panel1-lubridate-auto[
+
+```r
+library(lubridate)
+
+*ymd("2017-01-31")
+```
+]
+ 
+.panel2-lubridate-auto[
+
+```
+## [1] "2017-01-31"
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde strings
+.panel1-lubridate-auto[
+
+```r
+library(lubridate)
+
+ymd("2017-01-31")
+
+*ydm("2017-31-01")
+```
+]
+ 
+.panel2-lubridate-auto[
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde strings
+.panel1-lubridate-auto[
+
+```r
+library(lubridate)
+
+ymd("2017-01-31")
+
+ydm("2017-31-01")
+
+*mdy("January 31, 2017")
+```
+]
+ 
+.panel2-lubridate-auto[
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde strings
+.panel1-lubridate-auto[
+
+```r
+library(lubridate)
+
+ymd("2017-01-31")
+
+ydm("2017-31-01")
+
+mdy("January 31, 2017")
+
+*dmy("31-enero-2017", locale = "es_ES.utf8")
+```
+]
+ 
+.panel2-lubridate-auto[
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde strings
+.panel1-lubridate-auto[
+
+```r
+library(lubridate)
+
+ymd("2017-01-31")
+
+ydm("2017-31-01")
+
+mdy("January 31, 2017")
+
+dmy("31-enero-2017", locale = "es_ES.utf8")
+
+*ymd_hms("2017-01-31 20:11:59")
+```
+]
+ 
+.panel2-lubridate-auto[
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31 20:11:59 UTC"
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde strings
+.panel1-lubridate-auto[
+
+```r
+library(lubridate)
+
+ymd("2017-01-31")
+
+ydm("2017-31-01")
+
+mdy("January 31, 2017")
+
+dmy("31-enero-2017", locale = "es_ES.utf8")
+
+ymd_hms("2017-01-31 20:11:59")
+
+*mdy_hm("01/31/2017 08:01")
+```
+]
+ 
+.panel2-lubridate-auto[
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31"
+```
+
+```
+## [1] "2017-01-31 20:11:59 UTC"
+```
+
+```
+## [1] "2017-01-31 08:01:00 UTC"
+```
+]
+
+&lt;style&gt;
+.panel1-lubridate-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-lubridate-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-lubridate-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## Creando Fechas desde componentes
+.panel1-lubridate2-auto[
+
+```r
+*library(dplyr)
+```
+]
+ 
+.panel2-lubridate2-auto[
+
+]
+
+---
+count: false
+ 
+## Creando Fechas desde componentes
+.panel1-lubridate2-auto[
+
+```r
+library(dplyr)
+*library(datos)
+```
+]
+ 
+.panel2-lubridate2-auto[
+
+]
+
+---
+count: false
+ 
+## Creando Fechas desde componentes
+.panel1-lubridate2-auto[
+
+```r
+library(dplyr)
+library(datos)
+
+*vuelos
+```
+]
+ 
+.panel2-lubridate2-auto[
+
+```
+## # A tibble: 336,776 × 19
+##     anio   mes   dia horario_s…¹ salid…² atras…³ horar…⁴ llega…⁵ atras…⁶ aerol…⁷
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+##  1  2013     1     1         517     515       2     830     819      11 UA     
+##  2  2013     1     1         533     529       4     850     830      20 UA     
+##  3  2013     1     1         542     540       2     923     850      33 AA     
+##  4  2013     1     1         544     545      -1    1004    1022     -18 B6     
+##  5  2013     1     1         554     600      -6     812     837     -25 DL     
+##  6  2013     1     1         554     558      -4     740     728      12 UA     
+##  7  2013     1     1         555     600      -5     913     854      19 B6     
+##  8  2013     1     1         557     600      -3     709     723     -14 EV     
+##  9  2013     1     1         557     600      -3     838     846      -8 B6     
+## 10  2013     1     1         558     600      -2     753     745       8 AA     
+## # … with 336,766 more rows, 9 more variables: vuelo &lt;int&gt;, codigo_cola &lt;chr&gt;,
+## #   origen &lt;chr&gt;, destino &lt;chr&gt;, tiempo_vuelo &lt;dbl&gt;, distancia &lt;dbl&gt;,
+## #   hora &lt;dbl&gt;, minuto &lt;dbl&gt;, fecha_hora &lt;dttm&gt;, and abbreviated variable names
+## #   ¹​horario_salida, ²​salida_programada, ³​atraso_salida, ⁴​horario_llegada,
+## #   ⁵​llegada_programada, ⁶​atraso_llegada, ⁷​aerolinea
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde componentes
+.panel1-lubridate2-auto[
+
+```r
+library(dplyr)
+library(datos)
+
+vuelos |&gt;
+* select(anio, mes, dia, hora, minuto)
+```
+]
+ 
+.panel2-lubridate2-auto[
+
+```
+## # A tibble: 336,776 × 5
+##     anio   mes   dia  hora minuto
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1  2013     1     1     5     15
+##  2  2013     1     1     5     29
+##  3  2013     1     1     5     40
+##  4  2013     1     1     5     45
+##  5  2013     1     1     6      0
+##  6  2013     1     1     5     58
+##  7  2013     1     1     6      0
+##  8  2013     1     1     6      0
+##  9  2013     1     1     6      0
+## 10  2013     1     1     6      0
+## # … with 336,766 more rows
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde componentes
+.panel1-lubridate2-auto[
+
+```r
+library(dplyr)
+library(datos)
+
+vuelos |&gt;
+  select(anio, mes, dia, hora, minuto) |&gt;
+* mutate(
+*   salida1 = make_date(anio, mes, dia),
+*   .before = 1
+* )
+```
+]
+ 
+.panel2-lubridate2-auto[
+
+```
+## # A tibble: 336,776 × 6
+##    salida1     anio   mes   dia  hora minuto
+##    &lt;date&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 2013-01-01  2013     1     1     5     15
+##  2 2013-01-01  2013     1     1     5     29
+##  3 2013-01-01  2013     1     1     5     40
+##  4 2013-01-01  2013     1     1     5     45
+##  5 2013-01-01  2013     1     1     6      0
+##  6 2013-01-01  2013     1     1     5     58
+##  7 2013-01-01  2013     1     1     6      0
+##  8 2013-01-01  2013     1     1     6      0
+##  9 2013-01-01  2013     1     1     6      0
+## 10 2013-01-01  2013     1     1     6      0
+## # … with 336,766 more rows
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde componentes
+.panel1-lubridate2-auto[
+
+```r
+library(dplyr)
+library(datos)
+
+vuelos |&gt;
+  select(anio, mes, dia, hora, minuto) |&gt;
+  mutate(
+    salida1 = make_date(anio, mes, dia),
+    .before = 1
+  ) |&gt;
+* mutate(
+*   salida2 = make_datetime(
+*     anio,
+*     mes,
+*     dia,
+*     hora,
+*     minuto),
+*   .after = salida1
+*   )
+```
+]
+ 
+.panel2-lubridate2-auto[
+
+```
+## # A tibble: 336,776 × 7
+##    salida1    salida2              anio   mes   dia  hora minuto
+##    &lt;date&gt;     &lt;dttm&gt;              &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 2013-01-01 2013-01-01 05:15:00  2013     1     1     5     15
+##  2 2013-01-01 2013-01-01 05:29:00  2013     1     1     5     29
+##  3 2013-01-01 2013-01-01 05:40:00  2013     1     1     5     40
+##  4 2013-01-01 2013-01-01 05:45:00  2013     1     1     5     45
+##  5 2013-01-01 2013-01-01 06:00:00  2013     1     1     6      0
+##  6 2013-01-01 2013-01-01 05:58:00  2013     1     1     5     58
+##  7 2013-01-01 2013-01-01 06:00:00  2013     1     1     6      0
+##  8 2013-01-01 2013-01-01 06:00:00  2013     1     1     6      0
+##  9 2013-01-01 2013-01-01 06:00:00  2013     1     1     6      0
+## 10 2013-01-01 2013-01-01 06:00:00  2013     1     1     6      0
+## # … with 336,766 more rows
+```
+]
+
+&lt;style&gt;
+.panel1-lubridate2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-lubridate2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-lubridate2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## Creando Fechas desde otros tipos
+.panel1-lubridate3-auto[
+
+```r
+*t &lt;- today()
+```
+]
+ 
+.panel2-lubridate3-auto[
+
+]
+
+---
+count: false
+ 
+## Creando Fechas desde otros tipos
+.panel1-lubridate3-auto[
+
+```r
+t &lt;- today()
+*t 
+```
+]
+ 
+.panel2-lubridate3-auto[
+
+```
+## [1] "2023-04-26"
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde otros tipos
+.panel1-lubridate3-auto[
+
+```r
+t &lt;- today()
+t
+
+*class(t)
+```
+]
+ 
+.panel2-lubridate3-auto[
+
+```
+## [1] "2023-04-26"
+```
+
+```
+## [1] "Date"
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde otros tipos
+.panel1-lubridate3-auto[
+
+```r
+t &lt;- today()
+t
+
+class(t)
+
+*as_datetime(t)
+```
+]
+ 
+.panel2-lubridate3-auto[
+
+```
+## [1] "2023-04-26"
+```
+
+```
+## [1] "Date"
+```
+
+```
+## [1] "2023-04-26 UTC"
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde otros tipos
+.panel1-lubridate3-auto[
+
+```r
+t &lt;- today()
+t
+
+class(t)
+
+as_datetime(t)
+
+*ahora &lt;- now()
+```
+]
+ 
+.panel2-lubridate3-auto[
+
+```
+## [1] "2023-04-26"
+```
+
+```
+## [1] "Date"
+```
+
+```
+## [1] "2023-04-26 UTC"
+```
+]
+
+---
+count: false
+ 
+## Creando Fechas desde otros tipos
+.panel1-lubridate3-auto[
+
+```r
+t &lt;- today()
+t
+
+class(t)
+
+as_datetime(t)
+
+ahora &lt;- now()
+
+*as_date(t)
+```
+]
+ 
+.panel2-lubridate3-auto[
+
+```
+## [1] "2023-04-26"
+```
+
+```
+## [1] "Date"
+```
+
+```
+## [1] "2023-04-26 UTC"
+```
+
+```
+## [1] "2023-04-26"
+```
+]
+
+&lt;style&gt;
+.panel1-lubridate3-auto {
+  color: black;
+  width: 39.2%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-lubridate3-auto {
+  color: black;
+  width: 58.8%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-lubridate3-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+*fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+]
+
+---
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+
+*year(fechahora)
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+```
+## [1] 2023
+```
+]
+
+---
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+
+year(fechahora)
+
+*month(fechahora)
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+```
+## [1] 2023
+```
+
+```
+## [1] 4
+```
+]
+
+---
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+
+year(fechahora)
+
+month(fechahora)
+*month(fechahora, label = TRUE)
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+```
+## [1] 2023
+```
+
+```
+## [1] 4
+```
+
+```
+## [1] abr
+## 12 Levels: ene &lt; feb &lt; mar &lt; abr &lt; may &lt; jun &lt; jul &lt; ago &lt; sep &lt; ... &lt; dic
+```
+]
+
+---
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+
+year(fechahora)
+
+month(fechahora)
+month(fechahora, label = TRUE)
+*month(fechahora, label = TRUE, locale = "en_US")
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+```
+## [1] 2023
+```
+
+```
+## [1] 4
+```
+
+```
+## [1] abr
+## 12 Levels: ene &lt; feb &lt; mar &lt; abr &lt; may &lt; jun &lt; jul &lt; ago &lt; sep &lt; ... &lt; dic
+```
+
+```
+## [1] Apr
+## 12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec
+```
+]
+
+---
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+
+year(fechahora)
+
+month(fechahora)
+month(fechahora, label = TRUE)
+month(fechahora, label = TRUE, locale = "en_US")
+*month(fechahora, label = TRUE, locale = "fr_FR")
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+```
+## [1] 2023
+```
+
+```
+## [1] 4
+```
+
+```
+## [1] abr
+## 12 Levels: ene &lt; feb &lt; mar &lt; abr &lt; may &lt; jun &lt; jul &lt; ago &lt; sep &lt; ... &lt; dic
+```
+
+```
+## [1] Apr
+## 12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec
+```
+
+```
+## [1] avr
+## 12 Levels: janv &lt; f&lt;e9&gt;vr &lt; mars &lt; avr &lt; mai &lt; juin &lt; juil &lt; ... &lt; d&lt;e9&gt;c
+```
+]
+
+---
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+
+year(fechahora)
+
+month(fechahora)
+month(fechahora, label = TRUE)
+month(fechahora, label = TRUE, locale = "en_US")
+month(fechahora, label = TRUE, locale = "fr_FR")
+
+*mday(fechahora)
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+```
+## [1] 2023
+```
+
+```
+## [1] 4
+```
+
+```
+## [1] abr
+## 12 Levels: ene &lt; feb &lt; mar &lt; abr &lt; may &lt; jun &lt; jul &lt; ago &lt; sep &lt; ... &lt; dic
+```
+
+```
+## [1] Apr
+## 12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec
+```
+
+```
+## [1] avr
+## 12 Levels: janv &lt; f&lt;e9&gt;vr &lt; mars &lt; avr &lt; mai &lt; juin &lt; juil &lt; ... &lt; d&lt;e9&gt;c
+```
+
+```
+## [1] 26
+```
+]
+
+---
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+
+year(fechahora)
+
+month(fechahora)
+month(fechahora, label = TRUE)
+month(fechahora, label = TRUE, locale = "en_US")
+month(fechahora, label = TRUE, locale = "fr_FR")
+
+mday(fechahora)
+
+*yday(fechahora)
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+```
+## [1] 2023
+```
+
+```
+## [1] 4
+```
+
+```
+## [1] abr
+## 12 Levels: ene &lt; feb &lt; mar &lt; abr &lt; may &lt; jun &lt; jul &lt; ago &lt; sep &lt; ... &lt; dic
+```
+
+```
+## [1] Apr
+## 12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec
+```
+
+```
+## [1] avr
+## 12 Levels: janv &lt; f&lt;e9&gt;vr &lt; mars &lt; avr &lt; mai &lt; juin &lt; juil &lt; ... &lt; d&lt;e9&gt;c
+```
+
+```
+## [1] 26
+```
+
+```
+## [1] 116
+```
+]
+
+---
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+
+year(fechahora)
+
+month(fechahora)
+month(fechahora, label = TRUE)
+month(fechahora, label = TRUE, locale = "en_US")
+month(fechahora, label = TRUE, locale = "fr_FR")
+
+mday(fechahora)
+
+yday(fechahora)
+
+*wday(fechahora)
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+```
+## [1] 2023
+```
+
+```
+## [1] 4
+```
+
+```
+## [1] abr
+## 12 Levels: ene &lt; feb &lt; mar &lt; abr &lt; may &lt; jun &lt; jul &lt; ago &lt; sep &lt; ... &lt; dic
+```
+
+```
+## [1] Apr
+## 12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec
+```
+
+```
+## [1] avr
+## 12 Levels: janv &lt; f&lt;e9&gt;vr &lt; mars &lt; avr &lt; mai &lt; juin &lt; juil &lt; ... &lt; d&lt;e9&gt;c
+```
+
+```
+## [1] 26
+```
+
+```
+## [1] 116
+```
+
+```
+## [1] 4
+```
+]
+
+---
+count: false
+ 
+## Extraer componentes de fecha hora
+.panel1-lubridate4-auto[
+
+```r
+fechahora &lt;- ymd_hms("2023-04-26 15:10:30 -04")
+
+year(fechahora)
+
+month(fechahora)
+month(fechahora, label = TRUE)
+month(fechahora, label = TRUE, locale = "en_US")
+month(fechahora, label = TRUE, locale = "fr_FR")
+
+mday(fechahora)
+
+yday(fechahora)
+
+wday(fechahora)
+*wday(
+* fechahora,
+* label = TRUE,
+* abbr = FALSE
+* )
+```
+]
+ 
+.panel2-lubridate4-auto[
+
+```
+## [1] 2023
+```
+
+```
+## [1] 4
+```
+
+```
+## [1] abr
+## 12 Levels: ene &lt; feb &lt; mar &lt; abr &lt; may &lt; jun &lt; jul &lt; ago &lt; sep &lt; ... &lt; dic
+```
+
+```
+## [1] Apr
+## 12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec
+```
+
+```
+## [1] avr
+## 12 Levels: janv &lt; f&lt;e9&gt;vr &lt; mars &lt; avr &lt; mai &lt; juin &lt; juil &lt; ... &lt; d&lt;e9&gt;c
+```
+
+```
+## [1] 26
+```
+
+```
+## [1] 116
+```
+
+```
+## [1] 4
+```
+
+```
+## [1] miércoles
+## 7 Levels: domingo &lt; lunes &lt; martes &lt; miércoles &lt; jueves &lt; ... &lt; sábado
+```
+]
+
+&lt;style&gt;
+.panel1-lubridate4-auto {
+  color: black;
+  width: 39.2%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-lubridate4-auto {
+  color: black;
+  width: 58.8%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-lubridate4-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
 
 ---
 
@@ -2371,7 +3505,8 @@ class: inverse center middle
 1. _Formatee_ a número la pregunta: "Hace cuanto (en años) fue su última evaluación/prueba/test?"
 1. Realice un gráfico que muestre como fue aumentando el número de respuesta desde que se publicó 
 ("21/3/2023 0:00:00") en donde el eje x denote tiempo transcurrido desde la publicación.
-1. Realice un gráfico para mostrar conteos de "De acuerdo a su experiencia previa. ¿Con que área te sientes identificada/o?" pero mostrando los conteos de mayor a menor.
+1. Para el ejercicio anterior utilice el redondeo de horas `ceiling_date`.
+1. Construya un gráfico para mostrar conteos de "De acuerdo a su experiencia previa. ¿Con que área te sientes identificada/o?" pero mostrando los conteos de mayor a menor.
 1. Respecto a la pregunta anterior agrupe a las categorías menos frecuentes y vuelva a ralizar el gráfico.
 
 ---
@@ -2385,6 +3520,8 @@ class: inverse center middle
 - Expresiones regulares:
   - https://support.google.com/a/answer/1371415
   - https://apuntes.de/golang/expresiones-regulares-sintaxis/
+- Coerción en https://bookdown.org/jboscomendoza/r-principiantes4/coercion.html
+- Torpedo `lubridate` https://raw.githubusercontent.com/rstudio/cheatsheets/main/translations/spanish/lubridate_es.pdf
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

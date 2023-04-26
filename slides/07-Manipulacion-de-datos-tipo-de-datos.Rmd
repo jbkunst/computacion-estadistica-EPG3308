@@ -56,12 +56,13 @@ anteriores, son todo un universo en si mismos:
 De forma general se muestra el paquete destinado a manipular, procesar cada
 tipo de dato.
 
+<br>
+
 Tipo de dato           | Paquete
 -----------------------|---------
 `chr`                  | stringr, stringi
 `fct`                  | forcats
 `dttm`, `date`, `time` | lubridate, hms
-
 
 
 
@@ -386,11 +387,108 @@ class: inverse center middle
 
 # Fecha y hora
 
+
+
 ---
 
-class: inverse center middle
+## Fecha y hora (`lubridate`)
 
-# Coherción
+Hay tres tipos de datos de fechas/horas que se refieren a un instante en el tiempo:
+
+* Una fecha o `date`. Un tibble lo imprime como `<date>`.
+
+* Una hora o `time` dentro de un día. Los tibbles lo imprimen como `<time>`.
+
+* Una fecha-hora o `date-time` es una fecha con una hora adjunta: identifica de forma única un instante en el tiempo. Los tibbles imprimen esto como `<dttm>`.
+
+
+---
+
+`r flipbookr::chunk_reveal("lubridate", title = "## Creando Fechas desde strings", widths = c(1, 1), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r lubridate, include=FALSE}
+library(lubridate)
+
+ymd("2017-01-31")
+
+ydm("2017-31-01")
+
+mdy("January 31, 2017")
+
+dmy("31-enero-2017", locale = "es_ES.utf8")
+
+ymd_hms("2017-01-31 20:11:59")
+
+mdy_hm("01/31/2017 08:01")
+```
+
+---
+
+`r flipbookr::chunk_reveal("lubridate2", title = "## Creando Fechas desde componentes", widths = c(1,1), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r lubridate2, include=FALSE}
+library(dplyr)
+library(datos)
+
+vuelos |> 
+  select(anio, mes, dia, hora, minuto) |> 
+  mutate(
+    salida1 = make_date(anio, mes, dia),
+    .before = 1
+  ) |> 
+  mutate(
+    salida2 = make_datetime(
+      anio, 
+      mes, 
+      dia, 
+      hora, 
+      minuto),
+    .after = salida1
+    )
+```
+
+---
+
+`r flipbookr::chunk_reveal("lubridate3", title = "## Creando Fechas desde otros tipos", widths = c(2, 3), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r lubridate3, include=FALSE}
+t <- today()
+t
+
+class(t)
+
+as_datetime(t)
+
+ahora <- now()
+
+as_date(t)
+```
+
+---
+
+`r flipbookr::chunk_reveal("lubridate4", title = "## Extraer componentes de fecha hora", widths = c(2, 3), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r lubridate4, include=FALSE}
+fechahora <- ymd_hms("2023-04-26 15:10:30 -04")
+
+year(fechahora)
+
+month(fechahora)
+month(fechahora, label = TRUE)
+month(fechahora, label = TRUE, locale = "en_US")
+month(fechahora, label = TRUE, locale = "fr_FR")
+
+mday(fechahora)
+
+yday(fechahora)
+
+wday(fechahora)
+wday(
+  fechahora, 
+  label = TRUE, 
+  abbr = FALSE
+  )
+```
 
 ---
 
@@ -400,7 +498,8 @@ class: inverse center middle
 1. _Formatee_ a número la pregunta: "Hace cuanto (en años) fue su última evaluación/prueba/test?"
 1. Realice un gráfico que muestre como fue aumentando el número de respuesta desde que se publicó 
 ("21/3/2023 0:00:00") en donde el eje x denote tiempo transcurrido desde la publicación.
-1. Realice un gráfico para mostrar conteos de "De acuerdo a su experiencia previa. ¿Con que área te sientes identificada/o?" pero mostrando los conteos de mayor a menor.
+1. Para el ejercicio anterior utilice el redondeo de horas `ceiling_date`.
+1. Construya un gráfico para mostrar conteos de "De acuerdo a su experiencia previa. ¿Con que área te sientes identificada/o?" pero mostrando los conteos de mayor a menor.
 1. Respecto a la pregunta anterior agrupe a las categorías menos frecuentes y vuelva a ralizar el gráfico.
 
 ---
@@ -414,4 +513,6 @@ class: inverse center middle
 - Expresiones regulares:
   - https://support.google.com/a/answer/1371415
   - https://apuntes.de/golang/expresiones-regulares-sintaxis/
+- Coerción en https://bookdown.org/jboscomendoza/r-principiantes4/coercion.html
+- Torpedo `lubridate` https://raw.githubusercontent.com/rstudio/cheatsheets/main/translations/spanish/lubridate_es.pdf
 
