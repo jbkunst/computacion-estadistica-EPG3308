@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>07-Tipos-de-datos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content=" Joshua Kunst @jbkunst" />
+    <meta name="date" content="2023-04-26" />
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+.title[
+# Computación Estadística EPG3308
+]
+.subtitle[
+## 07 Tipos de datos <code><small>stringr forcats lubridate</small></code>
+]
+.author[
+### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
+]
+.date[
+### 2023-04-26
+]
+
+---
+
+
+
+
+
+## Tipos (clase/class) de datos
+
+Gran parte de nuestro análisis procesamos datos numéricos o carácteres, pero
+existen otros tipos de datos, que si bien pueden se casos particuales de los
+anteriores, son todo un universo en si mismos:
+--
+
+- Numéricos, enteros, flotantes: `dbl`, `int`, `int64`.
+--
+
+- Cadena de carácteres o strings: `chr`.
+--
+
+- Fechas, horas: `date`, `dttm`, `time`, `Period`.
+--
+
+- Factores: `fct`, `ord`.
+--
+
+- Booleanos: `lgl`.
+--
+
+- Algo más?
+  
+---
+  
+## Tipo de dato vs paquete
+
+De forma general se muestra el paquete destinado a manipular, procesar cada
+tipo de dato.
+
+Tipo de dato           | Paquete
+-----------------------|---------
+`chr`                  | stringr, stringi
+`dttm`, `date`, `time` | lubridate, hms
+`fct`                  | forcats
+
+
+
+---
+
+class: inverse center middle
+
+# Cadena de carácteres (Strings) / Expresiones Regulares
+
+---
+
+count: false
+ 
+## Para simplificar trabajaremos fuera de un data frame
+.panel1-example-auto[
+
+```r
+*library(dplyr)
+```
+]
+ 
+.panel2-example-auto[
+
+]
+
+---
+count: false
+ 
+## Para simplificar trabajaremos fuera de un data frame
+.panel1-example-auto[
+
+```r
+library(dplyr)
+*library(stringr)
+```
+]
+ 
+.panel2-example-auto[
+
+]
+
+---
+count: false
+ 
+## Para simplificar trabajaremos fuera de un data frame
+.panel1-example-auto[
+
+```r
+library(dplyr)
+library(stringr)
+
+*x &lt;- c("eSta", "  es    uña",
+*      "cadena  de carácteres   ",
+*      "7", NA)
+```
+]
+ 
+.panel2-example-auto[
+
+]
+
+---
+count: false
+ 
+## Para simplificar trabajaremos fuera de un data frame
+.panel1-example-auto[
+
+```r
+library(dplyr)
+library(stringr)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+*x 
+```
+]
+ 
+.panel2-example-auto[
+
+```
+## [1] "eSta"                     "  es    uña"             
+## [3] "cadena  de carácteres   " "7"                       
+## [5] NA
+```
+]
+
+---
+count: false
+ 
+## Para simplificar trabajaremos fuera de un data frame
+.panel1-example-auto[
+
+```r
+library(dplyr)
+library(stringr)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+x
+
+*class(x)
+```
+]
+ 
+.panel2-example-auto[
+
+```
+## [1] "eSta"                     "  es    uña"             
+## [3] "cadena  de carácteres   " "7"                       
+## [5] NA
+```
+
+```
+## [1] "character"
+```
+]
+
+---
+count: false
+ 
+## Para simplificar trabajaremos fuera de un data frame
+.panel1-example-auto[
+
+```r
+library(dplyr)
+library(stringr)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+x
+
+class(x)
+
+*str_to_upper(x)
+```
+]
+ 
+.panel2-example-auto[
+
+```
+## [1] "eSta"                     "  es    uña"             
+## [3] "cadena  de carácteres   " "7"                       
+## [5] NA
+```
+
+```
+## [1] "character"
+```
+
+```
+## [1] "ESTA"                     "  ES    UÑA"             
+## [3] "CADENA  DE CARÁCTERES   " "7"                       
+## [5] NA
+```
+]
+
+---
+count: false
+ 
+## Para simplificar trabajaremos fuera de un data frame
+.panel1-example-auto[
+
+```r
+library(dplyr)
+library(stringr)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+x
+
+class(x)
+
+str_to_upper(x)
+
+*tibble(v = x)
+```
+]
+ 
+.panel2-example-auto[
+
+```
+## [1] "eSta"                     "  es    uña"             
+## [3] "cadena  de carácteres   " "7"                       
+## [5] NA
+```
+
+```
+## [1] "character"
+```
+
+```
+## [1] "ESTA"                     "  ES    UÑA"             
+## [3] "CADENA  DE CARÁCTERES   " "7"                       
+## [5] NA
+```
+
+```
+## # A tibble: 5 × 1
+##   v                         
+##   &lt;chr&gt;                     
+## 1 "eSta"                    
+## 2 "  es    uña"             
+## 3 "cadena  de carácteres   "
+## 4 "7"                       
+## 5  &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Para simplificar trabajaremos fuera de un data frame
+.panel1-example-auto[
+
+```r
+library(dplyr)
+library(stringr)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+x
+
+class(x)
+
+str_to_upper(x)
+
+tibble(v = x) |&gt;
+* mutate(v2 = str_to_upper(v))
+```
+]
+ 
+.panel2-example-auto[
+
+```
+## [1] "eSta"                     "  es    uña"             
+## [3] "cadena  de carácteres   " "7"                       
+## [5] NA
+```
+
+```
+## [1] "character"
+```
+
+```
+## [1] "ESTA"                     "  ES    UÑA"             
+## [3] "CADENA  DE CARÁCTERES   " "7"                       
+## [5] NA
+```
+
+```
+## # A tibble: 5 × 2
+##   v                          v2                        
+##   &lt;chr&gt;                      &lt;chr&gt;                     
+## 1 "eSta"                     "ESTA"                    
+## 2 "  es    uña"              "  ES    UÑA"             
+## 3 "cadena  de carácteres   " "CADENA  DE CARÁCTERES   "
+## 4 "7"                        "7"                       
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+&lt;style&gt;
+.panel1-example-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-example-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-example-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Funciones útiles del paquete `stringr`
+
+Dentro de las funciones más útiles de para procesar (limpiar!) las siguientes:
+--
+
+- `str_length`: Cuenta la cantidad de carácteres de cada elemento.
+--
+
+- `str_trim`: Remueve espacios en blanco de la izquierda y derecha.
+--
+
+- `str_squish`: Lo mismo que `str_trim` pero adicionalmente remueve reemplaza multiples 
+espacio con un solo espacio.
+--
+
+- `str_to_lower`/`str_to_upper`/`str_to_title`: Transforma todo a minusculas/mayúsculas/títulos.
+--
+
+- `str_sub(x, start, end)`: Extrae los elementos de `x` desde la posición `start` hasta `end`.
+--
+
+- `stringi::stri_trans_general(x, id = "Latin-ASCII")`: Remueve tildes ([Link](https://stackoverflow.com/a/56595128/829971)
+para los favoritos).
+
+
+---
+
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;
+.panel1-stringr-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-stringr-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;
+.panel1-stringr-auto[
+
+```r
+library(tidyverse)
+
+*x &lt;- c("eSta", "  es    uña",
+*      "cadena  de carácteres   ",
+*      "7", NA)
+```
+]
+ 
+.panel2-stringr-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;
+.panel1-stringr-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+*tibble(v = x)
+```
+]
+ 
+.panel2-stringr-auto[
+
+```
+## # A tibble: 5 × 1
+##   v                         
+##   &lt;chr&gt;                     
+## 1 "eSta"                    
+## 2 "  es    uña"             
+## 3 "cadena  de carácteres   "
+## 4 "7"                       
+## 5  &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;
+.panel1-stringr-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+* mutate(v2 = str_length(v))
+```
+]
+ 
+.panel2-stringr-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                             v2
+##   &lt;chr&gt;                      &lt;int&gt;
+## 1 "eSta"                         4
+## 2 "  es    uña"                 11
+## 3 "cadena  de carácteres   "    24
+## 4 "7"                            1
+## 5  &lt;NA&gt;                         NA
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;
+.panel1-stringr-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+* mutate(v2 = str_trim(v))
+```
+]
+ 
+.panel2-stringr-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2                   
+##   &lt;chr&gt;                      &lt;chr&gt;                
+## 1 "eSta"                     eSta                 
+## 2 "  es    uña"              es    uña            
+## 3 "cadena  de carácteres   " cadena  de carácteres
+## 4 "7"                        7                    
+## 5  &lt;NA&gt;                      &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;
+.panel1-stringr-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+  mutate(v2 = str_trim(v)) |&gt;
+* mutate(v2 = str_squish(v))
+```
+]
+ 
+.panel2-stringr-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2                  
+##   &lt;chr&gt;                      &lt;chr&gt;               
+## 1 "eSta"                     eSta                
+## 2 "  es    uña"              es uña              
+## 3 "cadena  de carácteres   " cadena de carácteres
+## 4 "7"                        7                   
+## 5  &lt;NA&gt;                      &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;
+.panel1-stringr-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+  mutate(v2 = str_trim(v)) |&gt;
+  mutate(v2 = str_squish(v)) |&gt;
+* mutate(v2 = str_to_title(v))
+```
+]
+ 
+.panel2-stringr-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2                        
+##   &lt;chr&gt;                      &lt;chr&gt;                     
+## 1 "eSta"                     "Esta"                    
+## 2 "  es    uña"              "  Es    Uña"             
+## 3 "cadena  de carácteres   " "Cadena  De Carácteres   "
+## 4 "7"                        "7"                       
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;
+.panel1-stringr-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+  mutate(v2 = str_trim(v)) |&gt;
+  mutate(v2 = str_squish(v)) |&gt;
+  mutate(v2 = str_to_title(v)) |&gt;
+* mutate(v2 = str_sub(v, 1, 3))
+```
+]
+ 
+.panel2-stringr-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2   
+##   &lt;chr&gt;                      &lt;chr&gt;
+## 1 "eSta"                     "eSt"
+## 2 "  es    uña"              "  e"
+## 3 "cadena  de carácteres   " "cad"
+## 4 "7"                        "7"  
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;
+.panel1-stringr-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+  mutate(v2 = str_trim(v)) |&gt;
+  mutate(v2 = str_squish(v)) |&gt;
+  mutate(v2 = str_to_title(v)) |&gt;
+  mutate(v2 = str_sub(v, 1, 3)) |&gt;
+* mutate(
+*   v2 = stringi::stri_trans_general(
+*     v, id = "Latin-ASCII"
+*     )
+*   )
+```
+]
+ 
+.panel2-stringr-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2                        
+##   &lt;chr&gt;                      &lt;chr&gt;                     
+## 1 "eSta"                     "eSta"                    
+## 2 "  es    uña"              "  es    una"             
+## 3 "cadena  de carácteres   " "cadena  de caracteres   "
+## 4 "7"                        "7"                       
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+&lt;style&gt;
+.panel1-stringr-auto {
+  color: black;
+  width: 39.2%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-stringr-auto {
+  color: black;
+  width: 58.8%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-stringr-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Carácteres Especiales
+
+En algunos casos, cuando el dato proviene de un texto se encuentra con *tabulaciones* `\t` y 
+*saltos de líneas* `\n`.
+
+---
+
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-stringr2-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+*x &lt;- c("eSta", "  es\tuña",
+*      "cadena  de\ncarácteres   ",
+*      "7", NA)
+```
+]
+ 
+.panel2-stringr2-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+*cat(x)
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## eSta   es	uña cadena  de
+## carácteres    7 NA
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+cat(x)
+
+*tibble(v = x)
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## eSta   es	uña cadena  de
+## carácteres    7 NA
+```
+
+```
+## # A tibble: 5 × 1
+##   v                          
+##   &lt;chr&gt;                      
+## 1 "eSta"                     
+## 2 "  es\tuña"                
+## 3 "cadena  de\ncarácteres   "
+## 4 "7"                        
+## 5  &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+cat(x)
+
+tibble(v = x) |&gt;
+* mutate(v2 = str_length(v))
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## eSta   es	uña cadena  de
+## carácteres    7 NA
+```
+
+```
+## # A tibble: 5 × 2
+##   v                              v2
+##   &lt;chr&gt;                       &lt;int&gt;
+## 1 "eSta"                          4
+## 2 "  es\tuña"                     8
+## 3 "cadena  de\ncarácteres   "    24
+## 4 "7"                             1
+## 5  &lt;NA&gt;                          NA
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+cat(x)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+* mutate(v2 = str_trim(v))
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## eSta   es	uña cadena  de
+## carácteres    7 NA
+```
+
+```
+## # A tibble: 5 × 2
+##   v                           v2                      
+##   &lt;chr&gt;                       &lt;chr&gt;                   
+## 1 "eSta"                      "eSta"                  
+## 2 "  es\tuña"                 "es\tuña"               
+## 3 "cadena  de\ncarácteres   " "cadena  de\ncarácteres"
+## 4 "7"                         "7"                     
+## 5  &lt;NA&gt;                        &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+cat(x)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+  mutate(v2 = str_trim(v)) |&gt;
+* mutate(v2 = str_squish(v))
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## eSta   es	uña cadena  de
+## carácteres    7 NA
+```
+
+```
+## # A tibble: 5 × 2
+##   v                           v2                  
+##   &lt;chr&gt;                       &lt;chr&gt;               
+## 1 "eSta"                      eSta                
+## 2 "  es\tuña"                 es uña              
+## 3 "cadena  de\ncarácteres   " cadena de carácteres
+## 4 "7"                         7                   
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+cat(x)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+  mutate(v2 = str_trim(v)) |&gt;
+  mutate(v2 = str_squish(v)) |&gt;
+* mutate(v2 = str_to_title(v))
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## eSta   es	uña cadena  de
+## carácteres    7 NA
+```
+
+```
+## # A tibble: 5 × 2
+##   v                           v2                         
+##   &lt;chr&gt;                       &lt;chr&gt;                      
+## 1 "eSta"                      "Esta"                     
+## 2 "  es\tuña"                 "  Es\tUña"                
+## 3 "cadena  de\ncarácteres   " "Cadena  De\nCarácteres   "
+## 4 "7"                         "7"                        
+## 5  &lt;NA&gt;                        &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+cat(x)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+  mutate(v2 = str_trim(v)) |&gt;
+  mutate(v2 = str_squish(v)) |&gt;
+  mutate(v2 = str_to_title(v)) |&gt;
+* mutate(v2 = str_sub(v, 1, 3))
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## eSta   es	uña cadena  de
+## carácteres    7 NA
+```
+
+```
+## # A tibble: 5 × 2
+##   v                           v2   
+##   &lt;chr&gt;                       &lt;chr&gt;
+## 1 "eSta"                      "eSt"
+## 2 "  es\tuña"                 "  e"
+## 3 "cadena  de\ncarácteres   " "cad"
+## 4 "7"                         "7"  
+## 5  &lt;NA&gt;                        &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+cat(x)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+  mutate(v2 = str_trim(v)) |&gt;
+  mutate(v2 = str_squish(v)) |&gt;
+  mutate(v2 = str_to_title(v)) |&gt;
+  mutate(v2 = str_sub(v, 1, 3)) |&gt;
+* mutate(v2 = str_sub(v, -3, -2))
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## eSta   es	uña cadena  de
+## carácteres    7 NA
+```
+
+```
+## # A tibble: 5 × 2
+##   v                           v2   
+##   &lt;chr&gt;                       &lt;chr&gt;
+## 1 "eSta"                      "St" 
+## 2 "  es\tuña"                 "uñ" 
+## 3 "cadena  de\ncarácteres   " "  " 
+## 4 "7"                         ""   
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+cat(x)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_length(v)) |&gt;
+  mutate(v2 = str_trim(v)) |&gt;
+  mutate(v2 = str_squish(v)) |&gt;
+  mutate(v2 = str_to_title(v)) |&gt;
+  mutate(v2 = str_sub(v, 1, 3)) |&gt;
+  mutate(v2 = str_sub(v, -3, -2)) |&gt;
+* mutate(
+*   v2 = stringi::stri_trans_general(
+*     v, id = "Latin-ASCII"
+*     )
+*   )
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## eSta   es	uña cadena  de
+## carácteres    7 NA
+```
+
+```
+## # A tibble: 5 × 2
+##   v                           v2                         
+##   &lt;chr&gt;                       &lt;chr&gt;                      
+## 1 "eSta"                      "eSta"                     
+## 2 "  es\tuña"                 "  es\tuna"                
+## 3 "cadena  de\ncarácteres   " "cadena  de\ncaracteres   "
+## 4 "7"                         "7"                        
+## 5  &lt;NA&gt;                        &lt;NA&gt;
+```
+]
+
+&lt;style&gt;
+.panel1-stringr2-auto {
+  color: black;
+  width: 39.2%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-stringr2-auto {
+  color: black;
+  width: 58.8%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-stringr2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Funciones útiles del paquete `stringr` (ver. 2)
+
+- `str_remove(x, pattern)`: Remueve de los elementos de `x` la primera coincidencia con `pattern`.
+--
+
+- `str_remove_all(x, pattern)`: Remueve de los elementos de `x` todas las coincidencias de `pattern`.
+--
+
+- `str_replace(x, pattern, replacement)`: Reemplaza de los elementos de `x` la primera coincidencia de `pattern` 
+con `replacement`.
+--
+
+- `str_replace_all(x, pattern, replacement)`: Reemplaza de los elementos de `x` todas las coincidencias de `pattern`.
+--
+
+- `str_detect(x, pattern)`: Para cada elemento de `x` retorna `TRUE`/`FALSE` si se encuentra `pattern`. **Importante**: Retorna un valor `lgl`.
+--
+
+- `str_subset(x, pattern)`: Retorna todo los elementos de `x` que hagan _match_ con `pattern`. **Importante**: no devuelve necesariamente un vector de igual largo que `x`.
+--
+
+---
+
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;  (ver. 2)
+.panel1-stringr3-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-stringr3-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;  (ver. 2)
+.panel1-stringr3-auto[
+
+```r
+library(tidyverse)
+
+*x &lt;- c("eSta", "  es    uña",
+*      "cadena  de carácteres   ",
+*      "7", NA)
+```
+]
+ 
+.panel2-stringr3-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;  (ver. 2)
+.panel1-stringr3-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+*tibble(v = x)
+```
+]
+ 
+.panel2-stringr3-auto[
+
+```
+## # A tibble: 5 × 1
+##   v                         
+##   &lt;chr&gt;                     
+## 1 "eSta"                    
+## 2 "  es    uña"             
+## 3 "cadena  de carácteres   "
+## 4 "7"                       
+## 5  &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;  (ver. 2)
+.panel1-stringr3-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+* mutate(v2 = str_remove(v, "a"))
+```
+]
+ 
+.panel2-stringr3-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2                       
+##   &lt;chr&gt;                      &lt;chr&gt;                    
+## 1 "eSta"                     "eSt"                    
+## 2 "  es    uña"              "  es    uñ"             
+## 3 "cadena  de carácteres   " "cdena  de carácteres   "
+## 4 "7"                        "7"                      
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;  (ver. 2)
+.panel1-stringr3-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_remove(v, "a")) |&gt;
+* mutate(v2 = str_remove_all(v, "a"))
+```
+]
+ 
+.panel2-stringr3-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2                     
+##   &lt;chr&gt;                      &lt;chr&gt;                  
+## 1 "eSta"                     "eSt"                  
+## 2 "  es    uña"              "  es    uñ"           
+## 3 "cadena  de carácteres   " "cden  de crácteres   "
+## 4 "7"                        "7"                    
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;  (ver. 2)
+.panel1-stringr3-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_remove(v, "a")) |&gt;
+  mutate(v2 = str_remove_all(v, "a")) |&gt;
+* mutate(v2 = str_replace(v, "a", "e"))
+```
+]
+ 
+.panel2-stringr3-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2                        
+##   &lt;chr&gt;                      &lt;chr&gt;                     
+## 1 "eSta"                     "eSte"                    
+## 2 "  es    uña"              "  es    uñe"             
+## 3 "cadena  de carácteres   " "cedena  de carácteres   "
+## 4 "7"                        "7"                       
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;  (ver. 2)
+.panel1-stringr3-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_remove(v, "a")) |&gt;
+  mutate(v2 = str_remove_all(v, "a")) |&gt;
+  mutate(v2 = str_replace(v, "a", "e")) |&gt;
+* mutate(v2 = str_replace_all(v, "a", "e"))
+```
+]
+ 
+.panel2-stringr3-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2                        
+##   &lt;chr&gt;                      &lt;chr&gt;                     
+## 1 "eSta"                     "eSte"                    
+## 2 "  es    uña"              "  es    uñe"             
+## 3 "cadena  de carácteres   " "cedene  de cerácteres   "
+## 4 "7"                        "7"                       
+## 5  &lt;NA&gt;                       &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;  (ver. 2)
+.panel1-stringr3-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_remove(v, "a")) |&gt;
+  mutate(v2 = str_remove_all(v, "a")) |&gt;
+  mutate(v2 = str_replace(v, "a", "e")) |&gt;
+  mutate(v2 = str_replace_all(v, "a", "e")) |&gt;
+* mutate(v2 = str_detect(v, "s"))
+```
+]
+ 
+.panel2-stringr3-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2   
+##   &lt;chr&gt;                      &lt;lgl&gt;
+## 1 "eSta"                     FALSE
+## 2 "  es    uña"              TRUE 
+## 3 "cadena  de carácteres   " TRUE 
+## 4 "7"                        FALSE
+## 5  &lt;NA&gt;                      NA
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Funciones útiles del paquete &lt;code&gt;stringr&lt;/code&gt;  (ver. 2)
+.panel1-stringr3-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es    uña",
+       "cadena  de carácteres   ",
+       "7", NA)
+
+tibble(v = x) |&gt;
+  mutate(v2 = str_remove(v, "a")) |&gt;
+  mutate(v2 = str_remove_all(v, "a")) |&gt;
+  mutate(v2 = str_replace(v, "a", "e")) |&gt;
+  mutate(v2 = str_replace_all(v, "a", "e")) |&gt;
+  mutate(v2 = str_detect(v, "s"))
+
+*str_subset(x, "s")
+```
+]
+ 
+.panel2-stringr3-auto[
+
+```
+## # A tibble: 5 × 2
+##   v                          v2   
+##   &lt;chr&gt;                      &lt;lgl&gt;
+## 1 "eSta"                     FALSE
+## 2 "  es    uña"              TRUE 
+## 3 "cadena  de carácteres   " TRUE 
+## 4 "7"                        FALSE
+## 5  &lt;NA&gt;                      NA
+```
+
+```
+## [1] "  es    uña"              "cadena  de carácteres   "
+```
+]
+
+&lt;style&gt;
+.panel1-stringr3-auto {
+  color: black;
+  width: 44.5454545454545%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-stringr3-auto {
+  color: black;
+  width: 53.4545454545455%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-stringr3-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Que pasa si el patrón es un poco más complejo?
+
+Hasta ahora utilizamos el argumento `pattern` de forma sencilla. _Matchear_ una 
+letra pero que pasa si el patrón a reemplazar/eliminar es algo como:
+--
+
+- La última letra es es `a`.
+--
+
+- Los primeros 3 caracteres.
+--
+
+- Todas las palabras de largo 4.
+--
+
+- Todos los digitos en cualquier posición.
+--
+
+- Todo lo que aparezca antes del primer espacio
+--
+
+- Tiene forma de email.
+--
+
+- Etc, etc, etc.
+
+---
+
+## Expresiones Regulares
+
+Las expresiones regulares son un lenguaje conciso que te permite describir patrones en cadenas de caracteres.
+Si bien mostraremos algunos elementos principales. Esto es solo el comienzo...
+--
+
+- `^` Denota el principio de la cadena.
+--
+
+- `$` Representa el final de la cadena.
+--
+
+- `.` Coincide con cualquier carácter único.
+--
+
+- `|` Sirve para como "o" lógico.
+--
+
+&lt;br&gt;
+Revisemos https://support.google.com/a/answer/1371415, https://apuntes.de/golang/expresiones-regulares-sintaxis/, y luego el script `R/07-regex.R`.
+
+
+---
+
+count: false
+ 
+## Ejemplo direcciones
+.panel1-stringr4-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-stringr4-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo direcciones
+.panel1-stringr4-auto[
+
+```r
+library(tidyverse)
+
+*tibble(
+* direccion = c(
+*   "Bdo OHiggins #4506, Santiago",
+*   "Avenida Providencia #123, Providencia",
+*   "Av. Siempre Viva #744",
+*   "Riverside número 228",
+*   "Riverside número 432, EstatieneComuna",
+*   "Calle Elm n° 1344"
+*   )
+* )
+```
+]
+ 
+.panel2-stringr4-auto[
+
+```
+## # A tibble: 6 × 1
+##   direccion                            
+##   &lt;chr&gt;                                
+## 1 Bdo OHiggins #4506, Santiago         
+## 2 Avenida Providencia #123, Providencia
+## 3 Av. Siempre Viva #744                
+## 4 Riverside número 228                 
+## 5 Riverside número 432, EstatieneComuna
+## 6 Calle Elm n° 1344
+```
+]
+
+---
+count: false
+ 
+## Ejemplo direcciones
+.panel1-stringr4-auto[
+
+```r
+library(tidyverse)
+
+tibble(
+  direccion = c(
+    "Bdo OHiggins #4506, Santiago",
+    "Avenida Providencia #123, Providencia",
+    "Av. Siempre Viva #744",
+    "Riverside número 228",
+    "Riverside número 432, EstatieneComuna",
+    "Calle Elm n° 1344"
+    )
+  )  |&gt;
+* separate(direccion, c("direccion", "comuna"), sep = ",")
+```
+]
+ 
+.panel2-stringr4-auto[
+
+```
+## # A tibble: 6 × 2
+##   direccion                comuna            
+##   &lt;chr&gt;                    &lt;chr&gt;             
+## 1 Bdo OHiggins #4506       " Santiago"       
+## 2 Avenida Providencia #123 " Providencia"    
+## 3 Av. Siempre Viva #744     &lt;NA&gt;             
+## 4 Riverside número 228      &lt;NA&gt;             
+## 5 Riverside número 432     " EstatieneComuna"
+## 6 Calle Elm n° 1344         &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplo direcciones
+.panel1-stringr4-auto[
+
+```r
+library(tidyverse)
+
+tibble(
+  direccion = c(
+    "Bdo OHiggins #4506, Santiago",
+    "Avenida Providencia #123, Providencia",
+    "Av. Siempre Viva #744",
+    "Riverside número 228",
+    "Riverside número 432, EstatieneComuna",
+    "Calle Elm n° 1344"
+    )
+  )  |&gt;
+  separate(direccion, c("direccion", "comuna"), sep = ",") |&gt;
+* separate(direccion, c("calle", "numero"), sep = "#|número|numero|n°")
+```
+]
+ 
+.panel2-stringr4-auto[
+
+```
+## # A tibble: 6 × 3
+##   calle                  numero  comuna            
+##   &lt;chr&gt;                  &lt;chr&gt;   &lt;chr&gt;             
+## 1 "Bdo OHiggins "        "4506"  " Santiago"       
+## 2 "Avenida Providencia " "123"   " Providencia"    
+## 3 "Av. Siempre Viva "    "744"    &lt;NA&gt;             
+## 4 "Riverside "           " 228"   &lt;NA&gt;             
+## 5 "Riverside "           " 432"  " EstatieneComuna"
+## 6 "Calle Elm "           " 1344"  &lt;NA&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplo direcciones
+.panel1-stringr4-auto[
+
+```r
+library(tidyverse)
+
+tibble(
+  direccion = c(
+    "Bdo OHiggins #4506, Santiago",
+    "Avenida Providencia #123, Providencia",
+    "Av. Siempre Viva #744",
+    "Riverside número 228",
+    "Riverside número 432, EstatieneComuna",
+    "Calle Elm n° 1344"
+    )
+  )  |&gt;
+  separate(direccion, c("direccion", "comuna"), sep = ",") |&gt;
+  separate(direccion, c("calle", "numero"), sep = "#|número|numero|n°") |&gt;
+* mutate(
+*   comuna = str_trim(comuna),
+*   numero = as.numeric(str_trim(numero)),
+*   calle  = str_trim(calle),
+*   tipo = str_extract(calle, "Avenida|avenida|Av.|Calle|Psje")
+* )
+```
+]
+ 
+.panel2-stringr4-auto[
+
+```
+## # A tibble: 6 × 4
+##   calle               numero comuna          tipo   
+##   &lt;chr&gt;                &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;  
+## 1 Bdo OHiggins          4506 Santiago        &lt;NA&gt;   
+## 2 Avenida Providencia    123 Providencia     Avenida
+## 3 Av. Siempre Viva       744 &lt;NA&gt;            Av.    
+## 4 Riverside              228 &lt;NA&gt;            &lt;NA&gt;   
+## 5 Riverside              432 EstatieneComuna &lt;NA&gt;   
+## 6 Calle Elm             1344 &lt;NA&gt;            Calle
+```
+]
+
+&lt;style&gt;
+.panel1-stringr4-auto {
+  color: black;
+  width: 44.5454545454545%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-stringr4-auto {
+  color: black;
+  width: 53.4545454545455%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-stringr4-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+class: inverse center middle
+
+# Fecha y hora
+
+---
+
+class: inverse center middle
+
+# Factores
+
+---
+
+class: inverse center middle
+
+# Coherción
+
+---
+
+## Ejercicios
+
+1. Lea el archivo `data\conociendonos.csv` desde la url obtenida en el repositorio.
+1. _Formatee_ a número la pregunta: "Hace cuanto (en años) fue su última evaluación/prueba/test?"
+1. Realice un gráfico que muestre como fue aumentando el número de respuesta desde que se publicó 
+("21/3/2023 0:00:00") en donde el eje x denote tiempo transcurrido desde la publicación.
+1. Realice un gráfico para mostrar conteos de "De acuerdo a su experiencia previa. ¿Con que área te sientes identificada/o?" pero mostrando los conteos de mayor a menor.
+
+---
+
+## Más información sobre transformación de datos
+
+- Paquete [stringr](https://stringr.tidyverse.org).
+- Paquete [lubridate](https://lubridate.tidyverse.org).
+- Paquete [forcats](https://forcats.tidyverse.org).
+- En R4DS: [Strings](https://es.r4ds.hadley.nz/cadenas-de-caracteres.html), [Fechas y horas](https://es.r4ds.hadley.nz/fechas-y-horas.html), [Factores](https://es.r4ds.hadley.nz/factores.html).
+- Expresiones regulares:
+  - https://support.google.com/a/answer/1371415
+  - https://apuntes.de/golang/expresiones-regulares-sintaxis/
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
