@@ -1,0 +1,342 @@
+---
+title: "Computación Estadística EPG3308"
+pagetitle: "07-Tipos-de-datos"
+subtitle: "07 Tipos de datos <code><small>stringr forcats lubridate</small></code>"
+author: "<br>Joshua Kunst<br>@jbkunst"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    self_contained: no
+    css: ["css/xaringan-themer.css", "css/styles.css"]
+    lib_dir: libs    
+    nature:
+      titleSlideClass: ["left", "middle"]
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+source(here::here("slides/xaringan-knitr-setup.R"))
+```
+
+## Tipos (clase/class) de datos
+
+Gran parte de nuestro análisis procesamos datos numéricos o carácteres, pero
+existen otros tipos de datos, que si bien pueden se casos particuales de los
+anteriores, son todo un universo en si mismos:
+--
+
+- Numéricos, enteros, flotantes: `dbl`, `int`, `int64`.
+--
+
+- Cadena de carácteres o strings: `chr`.
+--
+
+- Fechas, horas: `date`, `dttm`, `time`, `Period`.
+--
+
+- Factores: `fct`, `ord`.
+--
+
+- Booleanos: `lgl`.
+--
+
+- Algo más?
+  
+---
+  
+## Tipo de dato vs paquete
+
+De forma general se muestra el paquete destinado a manipular, procesar cada
+tipo de dato.
+
+Tipo de dato           | Paquete
+-----------------------|---------
+`chr`                  | stringr, stringi
+`dttm`, `date`, `time` | lubridate, hms
+`fct`                  | forcats
+
+
+
+---
+
+class: inverse center middle
+
+# Cadena de carácteres (Strings) / Expresiones Regulares
+
+---
+
+`r flipbookr::chunk_reveal("example", title = "## Para simplificar trabajaremos fuera de un data frame", widths = c(1, 1), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r example, include=FALSE}
+library(dplyr)
+library(stringr)
+
+x <- c("eSta", "  es    uña",
+       "cadena  de carácteres   ", 
+       "7", NA)
+x
+
+class(x)
+
+str_to_upper(x)
+
+tibble(v = x) |> 
+  mutate(v2 = str_to_upper(v))
+```
+
+---
+
+## Funciones útiles del paquete `stringr`
+
+Dentro de las funciones más útiles de para procesar (limpiar!) las siguientes:
+--
+
+- `str_length`: Cuenta la cantidad de carácteres de cada elemento.
+--
+
+- `str_trim`: Remueve espacios en blanco de la izquierda y derecha.
+--
+
+- `str_squish`: Lo mismo que `str_trim` pero adicionalmente remueve reemplaza multiples 
+espacio con un solo espacio.
+--
+
+- `str_to_lower`/`str_to_upper`/`str_to_title`: Transforma todo a minusculas/mayúsculas/títulos.
+--
+
+- `str_sub(x, start, end)`: Extrae los elementos de `x` desde la posición `start` hasta `end`.
+--
+
+- `stringi::stri_trans_general(x, id = "Latin-ASCII")`: Remueve tildes ([Link](https://stackoverflow.com/a/56595128/829971)
+para los favoritos).
+
+
+---
+
+`r flipbookr::chunk_reveal("stringr", title = "## Ejemplos Funciones útiles del paquete <code>stringr</code>", widths = c(2, 3), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r stringr, include=FALSE}
+library(tidyverse)
+
+x <- c("eSta", "  es    uña",
+       "cadena  de carácteres   ", 
+       "7", NA)
+
+tibble(v = x) |> 
+  mutate(v2 = str_length(v)) |> 
+  mutate(v2 = str_trim(v)) |> 
+  mutate(v2 = str_squish(v)) |> 
+  mutate(v2 = str_to_title(v)) |> 
+  mutate(v2 = str_sub(v, 1, 3)) |>
+  mutate(
+    v2 = stringi::stri_trans_general(
+      v, id = "Latin-ASCII"
+      )
+    )
+```
+
+---
+
+## Carácteres Especiales
+
+En algunos casos, cuando el dato proviene de un texto se encuentra con *tabulaciones* `\t` y 
+*saltos de líneas* `\n`.
+
+---
+
+`r flipbookr::chunk_reveal("stringr2", title = "## Ejemplos Carácteres Especiales", widths = c(2, 3), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r stringr2, include=FALSE}
+library(tidyverse)
+
+x <- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ", 
+       "7", NA)
+
+cat(x)
+
+tibble(v = x) |> 
+  mutate(v2 = str_length(v)) |> 
+  mutate(v2 = str_trim(v)) |> 
+  mutate(v2 = str_squish(v)) |> 
+  mutate(v2 = str_to_title(v)) |> 
+  mutate(v2 = str_sub(v, 1, 3)) |>
+  mutate(v2 = str_sub(v, -3, -2)) |>
+  mutate(
+    v2 = stringi::stri_trans_general(
+      v, id = "Latin-ASCII"
+      )
+    )
+```
+
+---
+
+## Funciones útiles del paquete `stringr` (ver. 2)
+
+- `str_remove(x, pattern)`: Remueve de los elementos de `x` la primera coincidencia con `pattern`.
+--
+
+- `str_remove_all(x, pattern)`: Remueve de los elementos de `x` todas las coincidencias de `pattern`.
+--
+
+- `str_replace(x, pattern, replacement)`: Reemplaza de los elementos de `x` la primera coincidencia de `pattern` 
+con `replacement`.
+--
+
+- `str_replace_all(x, pattern, replacement)`: Reemplaza de los elementos de `x` todas las coincidencias de `pattern`.
+--
+
+- `str_detect(x, pattern)`: Para cada elemento de `x` retorna `TRUE`/`FALSE` si se encuentra `pattern`. **Importante**: Retorna un valor `lgl`.
+--
+
+- `str_subset(x, pattern)`: Retorna todo los elementos de `x` que hagan _match_ con `pattern`. **Importante**: no devuelve necesariamente un vector de igual largo que `x`.
+--
+
+---
+
+`r flipbookr::chunk_reveal("stringr3", title = "## Ejemplos Funciones útiles del paquete <code>stringr</code>  (ver. 2)", widths = c(5, 6), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r stringr3, include=FALSE}
+library(tidyverse)
+
+x <- c("eSta", "  es    uña",
+       "cadena  de carácteres   ", 
+       "7", NA)
+
+tibble(v = x) |> 
+  mutate(v2 = str_remove(v, "a")) |> 
+  mutate(v2 = str_remove_all(v, "a")) |> 
+  mutate(v2 = str_replace(v, "a", "e")) |> 
+  mutate(v2 = str_replace_all(v, "a", "e")) |>
+  mutate(v2 = str_detect(v, "s"))
+
+str_subset(x, "s")
+```
+
+---
+
+## Que pasa si el patrón es un poco más complejo?
+
+Hasta ahora utilizamos el argumento `pattern` de forma sencilla. _Matchear_ una 
+letra pero que pasa si el patrón a reemplazar/eliminar es algo como:
+--
+
+- La última letra es es `a`.
+--
+
+- Los primeros 3 caracteres.
+--
+
+- Todas las palabras de largo 4.
+--
+
+- Todos los digitos en cualquier posición.
+--
+
+- Todo lo que aparezca antes del primer espacio
+--
+
+- Tiene forma de email.
+--
+
+- Etc, etc, etc.
+
+---
+
+## Expresiones Regulares
+
+Las expresiones regulares son un lenguaje conciso que te permite describir patrones en cadenas de caracteres.
+Si bien mostraremos algunos elementos principales. Esto es solo el comienzo...
+--
+
+- `^` Denota el principio de la cadena.
+--
+
+- `$` Representa el final de la cadena.
+--
+
+- `.` Coincide con cualquier carácter único.
+--
+
+- `|` Sirve para como "o" lógico.
+--
+
+<br>
+Revisemos https://support.google.com/a/answer/1371415, https://apuntes.de/golang/expresiones-regulares-sintaxis/, y luego el script `R/07-regex.R`.
+
+
+---
+
+`r flipbookr::chunk_reveal("stringr4", title = "## Ejemplo direcciones", widths = c(5, 6), chunk_options = "fig.height = 2.7, fig.width = 3")`
+
+```{r stringr4, include=FALSE}
+library(tidyverse)
+
+tibble(
+  direccion = c(
+    "Bdo OHiggins #4506, Santiago",
+    "Avenida Providencia #123, Providencia",
+    "Av. Siempre Viva #744",
+    "Riverside número 228",
+    "Riverside número 432, EstatieneComuna",
+    "Calle Elm n° 1344"
+    )
+  )  |> 
+  separate(direccion, c("direccion", "comuna"), sep = ",") |> 
+  separate(direccion, c("calle", "numero"), sep = "#|número|numero|n°") |> 
+  mutate(
+    comuna = str_trim(comuna),
+    numero = as.numeric(str_trim(numero)),
+    calle  = str_trim(calle),
+    tipo = str_extract(calle, "Avenida|avenida|Av.|Calle|Psje")
+  )
+```
+
+
+---
+
+class: inverse center middle
+
+# Fecha y hora
+
+---
+
+class: inverse center middle
+
+# Factores
+
+---
+
+class: inverse center middle
+
+# Coherción
+
+---
+
+## Ejercicios
+
+1. Lea el archivo `data\conociendonos.csv` desde la url obtenida en el repositorio.
+1. _Formatee_ a número la pregunta: "Hace cuanto (en años) fue su última evaluación/prueba/test?"
+1. Realice un gráfico que muestre como fue aumentando el número de respuesta desde que se publicó 
+("21/3/2023 0:00:00") en donde el eje x denote tiempo transcurrido desde la publicación.
+1. Realice un gráfico para mostrar conteos de "De acuerdo a su experiencia previa. ¿Con que área te sientes identificada/o?" pero mostrando los conteos de mayor a menor.
+
+---
+
+## Más información sobre transformación de datos
+
+- Paquete [stringr](https://stringr.tidyverse.org).
+- Paquete [lubridate](https://lubridate.tidyverse.org).
+- Paquete [forcats](https://forcats.tidyverse.org).
+- En R4DS: [Strings](https://es.r4ds.hadley.nz/cadenas-de-caracteres.html), [Fechas y horas](https://es.r4ds.hadley.nz/fechas-y-horas.html), [Factores](https://es.r4ds.hadley.nz/factores.html).
+- Expresiones regulares:
+  - https://support.google.com/a/answer/1371415
+  - https://apuntes.de/golang/expresiones-regulares-sintaxis/
+
