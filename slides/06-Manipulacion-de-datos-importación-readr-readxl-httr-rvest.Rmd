@@ -27,7 +27,7 @@ source(here::here("slides/xaringan-knitr-setup.R"))
 
 ## Orígenes de información
 
-Los datos puden venir de muchas fuentes distintas:
+Los datos pueden venir de muchas fuentes distintas:
 --
 
 
@@ -49,6 +49,9 @@ Los datos puden venir de muchas fuentes distintas:
 - Una API: https://climatologia.meteochile.gob.cl/application/productos/datosRecientesEma/330020/2022/05
 --
 
+- PDF? Documento?
+--
+
 - Algo más?
   
 ---
@@ -60,17 +63,13 @@ Origen            | `paquete::funcion`
 `xlsx`            |  `readxl::read_excel`
 `txt`             |  `readr::read_delim` / `data.table::fread`
 `csv`             |  `readr::read_csv` / `data.table::fread`
-Bases de datos    |  Paquete `dbplyr`
+Bases de datos    |  Paquete [`dbplyr`](https://dbplyr.tidyverse.org/articles/dbplyr.html) `tbl(...)`
 API               |  `httr::GET`
 Página web        |  `rvest::read_html`
 Archivo SPSS`sav` |  `haven::read_sav` / `haven::read_spss`
 Archivo SAS       |  `haven::read_sas`
 Archivo STATA     |  `haven::read_stata`
-
-<small>
-En general Bases de datos es más general dado que existen distintos motores de bases
-de datos. Más info en [dbplyr](https://dbplyr.tidyverse.org/articles/dbplyr.html).
-</small>
+Archivo `pdf`     |  `pdftools::pdf_text` / `tabulizer::extract_tables`
 
 ---
 

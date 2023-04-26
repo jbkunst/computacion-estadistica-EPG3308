@@ -4,7 +4,7 @@
     <title>06-Importación-de-datos-readr-readxl-httr-rvest-dbplyr</title>
     <meta charset="utf-8" />
     <meta name="author" content=" Joshua Kunst @jbkunst" />
-    <meta name="date" content="2023-04-20" />
+    <meta name="date" content="2023-04-24" />
     <script src="libs/header-attrs-2.20/header-attrs.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" />
@@ -23,7 +23,7 @@ class: left, middle, title-slide
 ### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
 ]
 .date[
-### 2023-04-20
+### 2023-04-24
 ]
 
 ---
@@ -34,7 +34,7 @@ class: left, middle, title-slide
 
 ## Orígenes de información
 
-Los datos puden venir de muchas fuentes distintas:
+Los datos pueden venir de muchas fuentes distintas:
 --
 
 
@@ -56,6 +56,9 @@ Los datos puden venir de muchas fuentes distintas:
 - Una API: https://climatologia.meteochile.gob.cl/application/productos/datosRecientesEma/330020/2022/05
 --
 
+- PDF? Documento?
+--
+
 - Algo más?
   
 ---
@@ -67,17 +70,13 @@ Origen            | `paquete::funcion`
 `xlsx`            |  `readxl::read_excel`
 `txt`             |  `readr::read_delim` / `data.table::fread`
 `csv`             |  `readr::read_csv` / `data.table::fread`
-Bases de datos    |  Paquete `dbplyr`
+Bases de datos    |  Paquete [`dbplyr`](https://dbplyr.tidyverse.org/articles/dbplyr.html) `tbl(...)`
 API               |  `httr::GET`
 Página web        |  `rvest::read_html`
 Archivo SPSS`sav` |  `haven::read_sav` / `haven::read_spss`
 Archivo SAS       |  `haven::read_sas`
 Archivo STATA     |  `haven::read_stata`
-
-&lt;small&gt;
-En general Bases de datos es más general dado que existen distintos motores de bases
-de datos. Más info en [dbplyr](https://dbplyr.tidyverse.org/articles/dbplyr.html).
-&lt;/small&gt;
+Archivo `pdf`     |  `pdftools::pdf_text` / `tabulizer::extract_tables`
 
 ---
 
@@ -1775,16 +1774,16 @@ read_html(url) |&gt;
 ## # A tibble: 26 × 3
 ##    Fecha    `Empresa y razón de reclamo`                                      ``
 ##    &lt;chr&gt;    &lt;chr&gt;                                                          &lt;int&gt;
-##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        108
-##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     165
+##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        109
+##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     168
 ##  3 06-01-21 Universidad Católica de Chile - No me llegó libro                303
 ##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            682
-##  5 07-06-19 salud                                                            409
-##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilidad…   779
+##  5 07-06-19 salud                                                            410
+##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilidad…   781
 ##  7 08-02-18 No Resuelto Salud - No pagó de licencia                          575
 ##  8 06-01-18 puc - deuda                                                      780
 ##  9 30-03-17 No Resuelto Pontificia Universidad Católica de Chile - Falta …  1361
-## 10 29-12-16 No Resuelto Pontificia Universidad Católica - Crédito UC Desp…  1021
+## 10 29-12-16 No Resuelto Pontificia Universidad Católica - Crédito UC Desp…  1022
 ## # … with 16 more rows
 ```
 ]
@@ -1813,16 +1812,16 @@ read_html(url) |&gt;
 ## # A tibble: 26 × 3
 ##    Fecha    `Empresa y razón de reclamo`                                      ``
 ##    &lt;chr&gt;    &lt;chr&gt;                                                          &lt;int&gt;
-##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        108
-##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     165
+##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        109
+##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     168
 ##  3 06-01-21 Universidad Católica de Chile - No me llegó libro                303
 ##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            682
-##  5 07-06-19 salud                                                            409
-##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilidad…   779
+##  5 07-06-19 salud                                                            410
+##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilidad…   781
 ##  7 08-02-18 No Resuelto Salud - No pagó de licencia                          575
 ##  8 06-01-18 puc - deuda                                                      780
 ##  9 30-03-17 No Resuelto Pontificia Universidad Católica de Chile - Falta …  1361
-## 10 29-12-16 No Resuelto Pontificia Universidad Católica - Crédito UC Desp…  1021
+## 10 29-12-16 No Resuelto Pontificia Universidad Católica - Crédito UC Desp…  1022
 ## # … with 16 more rows
 ```
 ]
@@ -1852,16 +1851,16 @@ read_html(url) |&gt;
 ## # A tibble: 26 × 3
 ##    fecha    reclamo                                                      canti…¹
 ##    &lt;chr&gt;    &lt;chr&gt;                                                          &lt;int&gt;
-##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        108
-##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     165
+##  1 28-11-22 Pontificia Universidad Católica - Cuenta correo Exalumnos        109
+##  2 13-10-22 No Resuelto Pontificia Universidad Católica - Discriminación     168
 ##  3 06-01-21 Universidad Católica de Chile - No me llegó libro                303
 ##  4 15-08-19 No Resuelto universidad católica - falta de seguridad            682
-##  5 07-06-19 salud                                                            409
-##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilid…     779
+##  5 07-06-19 salud                                                            410
+##  6 06-06-19 No Resuelto Universidad católica de Chile - Irresponsabilid…     781
 ##  7 08-02-18 No Resuelto Salud - No pagó de licencia                          575
 ##  8 06-01-18 puc - deuda                                                      780
 ##  9 30-03-17 No Resuelto Pontificia Universidad Católica de Chile - Falt…    1361
-## 10 29-12-16 No Resuelto Pontificia Universidad Católica - Crédito UC De…    1021
+## 10 29-12-16 No Resuelto Pontificia Universidad Católica - Crédito UC De…    1022
 ## # … with 16 more rows, and abbreviated variable name ¹​cantidad
 ```
 ]
@@ -1892,16 +1891,16 @@ read_html(url) |&gt;
 ## # A tibble: 26 × 3
 ##    fecha      reclamo                                                    canti…¹
 ##    &lt;date&gt;     &lt;chr&gt;                                                        &lt;int&gt;
-##  1 2022-11-28 Pontificia Universidad Católica - Cuenta correo Exalumnos      108
-##  2 2022-10-13 No Resuelto Pontificia Universidad Católica - Discriminac…     165
+##  1 2022-11-28 Pontificia Universidad Católica - Cuenta correo Exalumnos      109
+##  2 2022-10-13 No Resuelto Pontificia Universidad Católica - Discriminac…     168
 ##  3 2021-01-06 Universidad Católica de Chile - No me llegó libro              303
 ##  4 2019-08-15 No Resuelto universidad católica - falta de seguridad          682
-##  5 2019-06-07 salud                                                          409
-##  6 2019-06-06 No Resuelto Universidad católica de Chile - Irresponsabil…     779
+##  5 2019-06-07 salud                                                          410
+##  6 2019-06-06 No Resuelto Universidad católica de Chile - Irresponsabil…     781
 ##  7 2018-02-08 No Resuelto Salud - No pagó de licencia                        575
 ##  8 2018-01-06 puc - deuda                                                    780
 ##  9 2017-03-30 No Resuelto Pontificia Universidad Católica de Chile - Fa…    1361
-## 10 2016-12-29 No Resuelto Pontificia Universidad Católica - Crédito UC …    1021
+## 10 2016-12-29 No Resuelto Pontificia Universidad Católica - Crédito UC …    1022
 ## # … with 16 more rows, and abbreviated variable name ¹​cantidad
 ```
 ]
@@ -1942,7 +1941,7 @@ read_html(url) |&gt;
 ##  7 2014-08-10 Pontificia Universidad Católica - Pérdida IRRESPONSABLE d…    1404
 ##  8 2014-09-16 Pontificia Universidad Católica de Chile - Falta de plata…    1302
 ##  9 2015-02-18 salud - mala atención                                         1623
-## 10 2015-05-12 No Resuelto Pontificia Universidad Católica - Falta de pr…    2737
+## 10 2015-05-12 No Resuelto Pontificia Universidad Católica - Falta de pr…    2739
 ## # … with 16 more rows, and abbreviated variable name ¹​cantidad
 ```
 ]
