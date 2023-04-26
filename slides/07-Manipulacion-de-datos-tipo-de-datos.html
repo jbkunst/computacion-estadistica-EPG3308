@@ -66,8 +66,9 @@ tipo de dato.
 Tipo de dato           | Paquete
 -----------------------|---------
 `chr`                  | stringr, stringi
-`dttm`, `date`, `time` | lubridate, hms
 `fct`                  | forcats
+`dttm`, `date`, `time` | lubridate, hms
+
 
 
 
@@ -755,11 +756,45 @@ x &lt;- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ",
        "7", NA)
 
+*x 
+```
+]
+ 
+.panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
+]
+
+---
+count: false
+ 
+## Ejemplos Carácteres Especiales
+.panel1-stringr2-auto[
+
+```r
+library(tidyverse)
+
+x &lt;- c("eSta", "  es\tuña",
+       "cadena  de\ncarácteres   ",
+       "7", NA)
+
+x
+
 *cat(x)
 ```
 ]
  
 .panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
 
 ```
 ## eSta   es	uña cadena  de
@@ -780,6 +815,8 @@ x &lt;- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ",
        "7", NA)
 
+x
+
 cat(x)
 
 *tibble(v = x)
@@ -787,6 +824,12 @@ cat(x)
 ]
  
 .panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
 
 ```
 ## eSta   es	uña cadena  de
@@ -818,6 +861,8 @@ x &lt;- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ",
        "7", NA)
 
+x
+
 cat(x)
 
 tibble(v = x) |&gt;
@@ -826,6 +871,12 @@ tibble(v = x) |&gt;
 ]
  
 .panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
 
 ```
 ## eSta   es	uña cadena  de
@@ -857,6 +908,8 @@ x &lt;- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ",
        "7", NA)
 
+x
+
 cat(x)
 
 tibble(v = x) |&gt;
@@ -866,6 +919,12 @@ tibble(v = x) |&gt;
 ]
  
 .panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
 
 ```
 ## eSta   es	uña cadena  de
@@ -897,6 +956,8 @@ x &lt;- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ",
        "7", NA)
 
+x
+
 cat(x)
 
 tibble(v = x) |&gt;
@@ -907,6 +968,12 @@ tibble(v = x) |&gt;
 ]
  
 .panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
 
 ```
 ## eSta   es	uña cadena  de
@@ -938,6 +1005,8 @@ x &lt;- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ",
        "7", NA)
 
+x
+
 cat(x)
 
 tibble(v = x) |&gt;
@@ -949,6 +1018,12 @@ tibble(v = x) |&gt;
 ]
  
 .panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
 
 ```
 ## eSta   es	uña cadena  de
@@ -980,6 +1055,8 @@ x &lt;- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ",
        "7", NA)
 
+x
+
 cat(x)
 
 tibble(v = x) |&gt;
@@ -992,6 +1069,12 @@ tibble(v = x) |&gt;
 ]
  
 .panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
 
 ```
 ## eSta   es	uña cadena  de
@@ -1023,6 +1106,8 @@ x &lt;- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ",
        "7", NA)
 
+x
+
 cat(x)
 
 tibble(v = x) |&gt;
@@ -1036,6 +1121,12 @@ tibble(v = x) |&gt;
 ]
  
 .panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
 
 ```
 ## eSta   es	uña cadena  de
@@ -1067,6 +1158,8 @@ x &lt;- c("eSta", "  es\tuña",
        "cadena  de\ncarácteres   ",
        "7", NA)
 
+x
+
 cat(x)
 
 tibble(v = x) |&gt;
@@ -1085,6 +1178,12 @@ tibble(v = x) |&gt;
 ]
  
 .panel2-stringr2-auto[
+
+```
+## [1] "eSta"                      "  es\tuña"                
+## [3] "cadena  de\ncarácteres   " "7"                        
+## [5] NA
+```
 
 ```
 ## eSta   es	uña cadena  de
@@ -1515,6 +1614,8 @@ Si bien mostraremos algunos elementos principales. Esto es solo el comienzo...
 --
 
 &lt;br&gt;
+&lt;br&gt;
+
 Revisemos https://support.google.com/a/answer/1371415, https://apuntes.de/golang/expresiones-regulares-sintaxis/, y luego el script `R/07-regex.R`.
 
 
@@ -1724,18 +1825,537 @@ tibble(
 
 
 
+---
+
+class: inverse center middle
+
+# Factores
+
+---
+
+## Factores (`forcats`)
+
+los **factores** (`fct`) son  variables que tienen un conjunto fijo y conocido de valores posibles -categorías-. 
+--
+
+* Reordenar categorías de acuerdo a otra variable `fct_reorder(f, x)`.
+--
+
+* Reordenar de acuerdo al orden de aparición `fct_in_order(x)`.
+--
+
+* Agrupar categorías menos frecuentes a una categoría del tipo `"otro"`. `fct_lump_min` Por mínima cantidad `min` de veces que aparecen. `fct_lump_prop` Por proporción `prop`. `fct_lump_n` Retener (quedarse) con las `n` más frecuentes. `fct_lump_lowfreq` Agrupar mientras la categoría `"otro"` siga siendo la menos frecuente.
+--
+
+* Explicitar categoría cuando el valor es `NA`: `fct_na_value_to_level(f, na_level = "Otros tipos")` .
+--
+
+* Transformarla a caracter `as.character(f)`.
+
+---
+
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+*x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+```
+]
+ 
+.panel2-forcats-auto[
+
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+*x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+```
+]
+ 
+.panel2-forcats-auto[
+
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+*x1
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+x1
+*sort(x1)
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+
+```
+## [1] "Abr" "Dic" "Ene" "Mar"
+```
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+x1
+sort(x1)
+
+*niveles_meses &lt;- c(
+* "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+* "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+*) 
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+
+```
+## [1] "Abr" "Dic" "Ene" "Mar"
+```
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+x1
+sort(x1)
+
+niveles_meses &lt;- c(
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+)
+
+
+*y1 &lt;- factor(x1, levels = niveles_meses)
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+
+```
+## [1] "Abr" "Dic" "Ene" "Mar"
+```
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+x1
+sort(x1)
+
+niveles_meses &lt;- c(
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+)
+
+
+y1 &lt;- factor(x1, levels = niveles_meses)
+*y1
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+
+```
+## [1] "Abr" "Dic" "Ene" "Mar"
+```
+
+```
+## [1] Dic Abr Ene Mar
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+x1
+sort(x1)
+
+niveles_meses &lt;- c(
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+)
+
+
+y1 &lt;- factor(x1, levels = niveles_meses)
+y1
+*sort(y1)
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+
+```
+## [1] "Abr" "Dic" "Ene" "Mar"
+```
+
+```
+## [1] Dic Abr Ene Mar
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Ene Mar Abr Dic
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+x1
+sort(x1)
+
+niveles_meses &lt;- c(
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+)
+
+
+y1 &lt;- factor(x1, levels = niveles_meses)
+y1
+sort(y1)
+
+*y2 &lt;- factor(x2, levels = niveles_meses)
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+
+```
+## [1] "Abr" "Dic" "Ene" "Mar"
+```
+
+```
+## [1] Dic Abr Ene Mar
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Ene Mar Abr Dic
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+x1
+sort(x1)
+
+niveles_meses &lt;- c(
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+)
+
+
+y1 &lt;- factor(x1, levels = niveles_meses)
+y1
+sort(y1)
+
+y2 &lt;- factor(x2, levels = niveles_meses)
+*y2
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+
+```
+## [1] "Abr" "Dic" "Ene" "Mar"
+```
+
+```
+## [1] Dic Abr Ene Mar
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Ene Mar Abr Dic
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Dic  Abr  &lt;NA&gt; Mar 
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+x1
+sort(x1)
+
+niveles_meses &lt;- c(
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+)
+
+
+y1 &lt;- factor(x1, levels = niveles_meses)
+y1
+sort(y1)
+
+y2 &lt;- factor(x2, levels = niveles_meses)
+y2
+
+*factor(x1)
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+
+```
+## [1] "Abr" "Dic" "Ene" "Mar"
+```
+
+```
+## [1] Dic Abr Ene Mar
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Ene Mar Abr Dic
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Dic  Abr  &lt;NA&gt; Mar 
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Dic Abr Ene Mar
+## Levels: Abr Dic Ene Mar
+```
+]
+
+---
+count: false
+ 
+## Motivación Factores
+.panel1-forcats-auto[
+
+```r
+x1 &lt;- c("Dic", "Abr", "Ene", "Mar")
+x2 &lt;- c("Dic", "Abr", "Eme", "Mar")
+x1
+sort(x1)
+
+niveles_meses &lt;- c(
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+)
+
+
+y1 &lt;- factor(x1, levels = niveles_meses)
+y1
+sort(y1)
+
+y2 &lt;- factor(x2, levels = niveles_meses)
+y2
+
+factor(x1)
+
+*levels(y1)
+```
+]
+ 
+.panel2-forcats-auto[
+
+```
+## [1] "Dic" "Abr" "Ene" "Mar"
+```
+
+```
+## [1] "Abr" "Dic" "Ene" "Mar"
+```
+
+```
+## [1] Dic Abr Ene Mar
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Ene Mar Abr Dic
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Dic  Abr  &lt;NA&gt; Mar 
+## Levels: Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic
+```
+
+```
+## [1] Dic Abr Ene Mar
+## Levels: Abr Dic Ene Mar
+```
+
+```
+##  [1] "Ene" "Feb" "Mar" "Abr" "May" "Jun" "Jul" "Ago" "Sep" "Oct" "Nov" "Dic"
+```
+]
+
+&lt;style&gt;
+.panel1-forcats-auto {
+  color: black;
+  width: 44.5454545454545%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-forcats-auto {
+  color: black;
+  width: 53.4545454545455%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-forcats-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Ejercicios Factores
+
+&lt;small&gt;
+
+Ejercicio de [R4DS](https://es.r4ds.hadley.nz/factores.html). Utilizaremos `datos::encuesta`. Muestra de variables categóricas de una encuesta social.
+
+1. Explore la columna `raza`, realice un gráfico con el conteo. ¿Qué sucede?
+1. Explora la distribución de ingreso. ¿Qué hace que el gráfico de barras por defecto sea tan difícil de comprender? ¿Cómo podrías mejorarlo?
+1. ¿Cuál es la religion más común en esta encuesta? ¿Cuál es el partido más común?
+1. ¿A qué religion se aplica cada denominacion? ¿Cómo puedes descubrirlo con una tabla? ¿Cómo lo puedes descubrir con una visualización?
+1. Calcule un reumen de la encuesta, por `religion` con el promedio de `edad` y`horas_tv`. Grafique
+un scatterplot entre `religion` y `horas_tv`. ¿Es fácil de interpretar? ¿Cómo puede mejorar? Agrupe religiones poco comunes y repita.
+1. Repita lo anterior pero agrupando y graficando por `ingreso` y `edad`. ¿Es buena idea reordenar por el valor de edad?
+
+&lt;/small&gt;
 
 ---
 
 class: inverse center middle
 
 # Fecha y hora
-
----
-
-class: inverse center middle
-
-# Factores
 
 ---
 
