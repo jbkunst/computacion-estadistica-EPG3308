@@ -5,7 +5,7 @@ str_view <- purrr::partial(stringr::str_view, html = TRUE, match = NA)
 x <- c("eSta", 
        "  es    uña",
        "cadena  de carácteres   ", 
-       "esto también",
+       "esto\ttambién",
        "1 o 2 palabras. seradas",
        "separado se escribe todo junto",
        "todo junto se escribe separado",
@@ -43,6 +43,7 @@ str_view(x, "e(s|S)t")
 # ej: queremos matchear el primer/ultimo caracter.
 
 str_view(x, ".")
+str_view(x, "\\.")
 str_view(x, "^.")
 str_view(x, ".$")
 
@@ -54,7 +55,7 @@ str_view(x, ".{3}")
 str_view(x, "^.{3}")
 str_view(x, " {2}")
 str_view(x, " {3}")
-str_view(x, " {2,3}")
+str_view(x, ".{2,3}")
 
 
 # \d ----------------------------------------------------------------------
@@ -113,6 +114,7 @@ data <- tibble(
     "Calle Elm n° 1344"
   )
 )
+
 data
 
 data <- data |> 
@@ -123,11 +125,15 @@ data <- data |>
   ) 
 data
 
+data |> 
+  mutate(numero = str_extract(direccion, " "))
+
 data <- data |> 
   separate(
     direccion,
     c("calle", "numero"),
     sep = "#|número|numero|n°"
+    # sep = "[^ ]*$"
   )
 data
 
