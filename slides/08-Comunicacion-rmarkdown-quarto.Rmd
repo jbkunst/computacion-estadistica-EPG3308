@@ -56,31 +56,82 @@ Revisar https://garrettgman.github.io/rmarkdown/index.html
 
 - Soportan varios formatos de salida tales como PDFs, archivos de Word, presentaciones y más.
 
+---
+
+## Estructura de un .Rmd (<small>rmarkdown/primer-markdown.Rmd</small>)
+
+<small>
+```{r echo = FALSE, comment = ""}
+cat(htmltools::includeText(here::here("rmarkdown/primer-markdown.Rmd")))
+```
+</small>
 
 ---
 
-## Ejemplo .Rmd (<small>rmarkdown/diamond-sizes.Rmd</small>)
+## Estructura de un .Rmd (cont.)
+
+Contiene tres tipos importantes de contenido:
+
+1. Un encabezado YAML (opcional). Parámetros generales: tipo de 
+documento, autor, fecha, parámetros adicionales.
+
+1. Los __chunk__s (bloques) de código de R. Estos son 
+pueden tener opciones/argumentos especificos para evaluar o mostrar o no el código, tamaño
+de la salida/output.
+
+1. Texto markdown mezclado con formateos de texto simple. [Resumen](https://www.markdownguide.org/cheat-sheet/) 
+de markdown y [app](https://stackedit.io/app#) online.
+
+---
+
+## Algunos opciones para los __chunk__s
+
+La siguiente tabla resume que tipo de output remueve cada opción:
+
+| Opción           | Run code | Show code | Output | Plots | Messages | Warnings |
+|------------------|:--------:|:---------:|:------:|:-----:|:--------:|:--------:|
+| `eval: false`    |    X     |           |   X    |   X   |    X     |    X     |
+| `include: false` |          |     X     |   X    |   X   |    X     |    X     |
+| `echo: false`    |          |     X     |        |       |          |          |
+| `results: hide`  |          |           |   X    |       |          |          |
+| `fig-show: hide` |          |           |        |   X   |          |          |
+| `message: false` |          |           |        |       |    X     |          |
+| `warning: false` |          |           |        |       |          |    X     |
+
+De forma general la opción más relevante a modificar será `echo`. 
+Más opciones en https://yihui.org/knitr/options/ .
+
+
+---
+
+## Maneras de definir parámetros en un chunk
+
+Si bien en rmardown se suele _enseñar_ la de la izquierda, la seguda opción
+se utiliza en __quarto__.
 
 .pull-left[
-<small>
-```{r echo = FALSE, comment = ""}
-# cat(htmltools::includeText(here::here("rmarkdown/diamond-sizes.Rmd")))
+```{r, comment=NA, echo=FALSE}
+cat('```{r my-chunk, echo = FALSE, fig.width = 10}
+plot(cars)
+```')
 ```
-</small>
+
 ]
 
 .pull-right[
-Contiene tres tipos importantes de contenido:
-
- 1. Un encabezado YAML (opcional) rodeado de `---`, Parámetros generales.
- 1. __Bloques__ de código de R rodeados de ```` ``` ````.
- 1. Texto mezclado con formateos de texto simple como `# Encabezado`, `_itálicas_`,
- `**negrita**`, etc..
+```{r, comment=NA, echo=FALSE}
+cat('```{r}
+#| my-chunk
+#| echo = FALSE
+#| fig.width = 10
+plot(cars)
+```')
+```
 ]
 
 ---
 
-# Formatos
+## Formatos
 
 https://garrettgman.github.io/rmarkdown/formats.html
 
@@ -96,11 +147,14 @@ knitr::include_graphics("images/RMarkdownFlow.png")
 1. Dashboard con [flexdashboard](https://pkgs.rstudio.com/flexdashboard/index.html).
 1. Libros, páginas web, blogs, etc, etc.
 
+---
+
+## Y {quarto}?
+
 
 ---
 
-# Ejercicio 3
-
+## Ejercicio 1
  
 1. Crea un nuevo notebook usando File > New File > R Notebook. Lee las instrucciones. Practica ejecutando los bloques. Verifica que puedes modificar el código, re-ejecútalo, y observa la salida modificada.
 
@@ -131,7 +185,7 @@ para complementar nuestra aplicación.
 - https://rstudio.github.io/leaflet/
 - https://rstudio.github.io/DT/
 
-Ejemplo de uso de script `03-clase-script-htmlwidgets.R`.
+Revisar script `R/08-ejemplos-htmlwidgets.R`.
 
 ---
 
@@ -253,5 +307,6 @@ leaflet(datos) |>
 
 La integración es inmediata **siempre y cuando** el output sea html o 
 dashboard (que es también html) y slides (que no sea pdf/ppt).
+
 
 
