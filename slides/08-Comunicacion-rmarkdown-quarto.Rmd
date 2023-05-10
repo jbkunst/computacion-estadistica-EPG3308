@@ -26,7 +26,7 @@ source(here::here("slides/xaringan-knitr-setup.R"))
 
 class: center, inverse, middle
 
-# rmarkdown
+# rmarkdown y quarto
 
 ---
 
@@ -151,20 +151,26 @@ knitr::include_graphics("images/RMarkdownFlow.png")
 
 ## Y {quarto}?
 
+Si bien en `{rmarkdown}` está orientado a R, con el paquete `reticulate`podemos ejecutar
+código python https://rstudio.github.io/reticulate/articles/r_markdown.html. 
+
+`{quarto}` viene con la misión de ser un ambiente integrado para la publicación de documentos
+con la posibilidad de ejecutar tanto el motor knitr (R) o Jupyter (python), es más simple.
+
+Los dos estás siendo _mantenidos_ y en continuo desarrollo. 
 
 ---
 
-## Ejercicio 1
+## Ejercicio 1 Rmarkdown vs Rnotebook
  
-1. Crea un nuevo notebook usando File > New File > R Notebook. Lee las instrucciones. Practica ejecutando los bloques. Verifica que puedes modificar el código, re-ejecútalo, y observa la salida modificada.
+1. Crea un nuevo documento R Markdown con File > New File > R Markdown… Haz clic en el icono apropiado de Knit. Haz Knit usando el atajo de teclado apropiado. Verifica que puedes modificar el input y la actualización del output.
 
-2. Crea un nuevo documento R Markdown con File > New File > R Markdown… Haz clic en el icono apropiado de Knit. Haz Knit usando el atajo de teclado apropiado. Verifica que puedes modificar el input y la actualización del output.
+2. Crea un nuevo notebook usando File > New File > R Notebook. Lee las instrucciones. Practica ejecutando los bloques. Verifica que puedes modificar el código, re-ejecútalo, y observa la salida modificada.
 
 3. Compara y contrasta el notebook de R con los archivos de R markdown que has creado antes. ¿Cómo son similares los outputs? ¿Cómo son diferentes? ¿Cómo son similares los inputs? ¿En qué se diferencian? ¿Qué ocurre si copias el encabezado YAML de uno al otro?
 
 
 ---
-
 class: center, inverse, middle
 
 # HTMLWidgets
@@ -175,7 +181,6 @@ class: center, inverse, middle
 
 HTMLWidgets son un tipo de paquetes que nos permiten realizar visualizaciones en HTML
 las cuales se pueden usar en (1) consola, (2) integrar con rmarkdown y también (3) shiny.
-
 Existen una gran cantida de paquetes https://gallery.htmlwidgets.org/, y nos sirven 
 para complementar nuestra aplicación. 
 
@@ -193,9 +198,7 @@ Revisar script `R/08-ejemplos-htmlwidgets.R`.
 
 ```{r ggplot2, include = FALSE}
 library(ggplot2)
-
 data(iris)
-
 ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
   geom_point(aes(color = Species), size = 2.5) +
   scale_color_viridis_d(end = .9) +
@@ -211,17 +214,14 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
 ```{r plotly, include = FALSE}
 library(ggplot2)
 library(plotly)
-
 p <- ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
   geom_point(aes(color = Species), size = 2.5) +
   scale_color_viridis_d(end = .9) +
   geom_smooth(method = "lm") +
   facet_wrap(vars(Species)) +
   theme_minimal()
-
 ggplotly(p)
 ```
-
 
 ---
 
@@ -230,11 +230,8 @@ ggplotly(p)
 ```{r highcharter, include = FALSE}
 library(highcharter)
 library(forecast)
-
 data("AirPassengers")
-
 modelo <- forecast(auto.arima(AirPassengers))
-
 hchart(modelo) |>
   hc_navigator(enabled = TRUE) |>
   hc_rangeSelector(enabled = TRUE) |>
@@ -247,9 +244,7 @@ hchart(modelo) |>
 
 ```{r sismos, include = FALSE}
 library(rvest)   # descargar datos de paginas web
-
 url <- "https://www.sismologia.cl/sismicidad/catalogo/2023/05/20230503.html"
-
 read_html(url) |>
   html_table() |>
   dplyr::nth(2) |>
@@ -259,7 +254,6 @@ read_html(url) |>
     into = c("latitud", "longitud"),
     sep = " ", convert = TRUE
   )
-
 datos <- read_html(url) |>
   html_table() |>
   dplyr::nth(2) |>
@@ -277,7 +271,6 @@ datos <- read_html(url) |>
 
 ```{r dt, include = FALSE}
 library(DT)
-
 datatable(datos)
 ```
 
@@ -287,7 +280,6 @@ datatable(datos)
 
 ```{r leaflet, include = FALSE}
 library(leaflet)
-
 leaflet(datos) |>
   addTiles() |>
   addMarkers(
@@ -301,7 +293,7 @@ leaflet(datos) |>
 
 ---
 
-## HTMLWidgets en reporte/dashboard
+## HTMLWidgets en rmarkdown/dashboards
 
 <br>
 
@@ -309,4 +301,12 @@ La integración es inmediata **siempre y cuando** el output sea html o
 dashboard (que es también html) y slides (que no sea pdf/ppt).
 
 
+---
 
+## Ejercicio 2 flexdashboard
+
+1. Lee y formatea los datos `data/conociendonos.csv` y realice la limpieza de 
+la información.
+
+2. Con `{flexdashboard}` genere un dashboard incluyendo elementos `valueBox`es,
+gráficos interáctivos, tablas con `{DT}`
