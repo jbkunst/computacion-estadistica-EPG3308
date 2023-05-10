@@ -64,6 +64,8 @@ En particular, las clases están planificadas de la siguiente manera:
     dbplyr</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/06-Manipulacion-de-datos-importación-readr-readxl-httr-rvest.html)
 7.  [Tipos de datos <code><small>stringr forcats
     lubridate</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/07-Manipulacion-de-datos-tipo-de-datos.html)
+8.  [Comunicación <code><small>rmarkdown quarto
+    htmlwidgets</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/08-Comunicacion-rmarkdown-quarto.html)
 
 ### Repositorio
 
