@@ -2249,10 +2249,9 @@ map(modelos, function(formula){
 
 - `walk()`: Se utiliza cuando se desea aplicar una función a una estructura de datos sin necesidad de retornar un resultado. De la misma forma sus variantes `walk2` y `pwalk`.
 
-
 ---
 
-## Procesamiento en paralelo
+## Procesamiento en paralelo, paquete `furrr`
 
 Las funciones `map` iteran de uno en uno utilizando un solo núcleo del procesador. Por lo que 
 no utilizan toda el poder de cómputo del computador.
@@ -2265,8 +2264,10 @@ El resultado son reemplazos prácticamente idénticos de las funciones de purrr,
 que pueden ser sustituidas por sus equivalentes en `furrr`, `future_map()` y `future_map2_dbl()`, 
 para realizar mapeos en paralelo.
 
+--
 
-
+La documentación de `furrr` está en https://furrr.futureverse.org/. Se pueden colocar barras 
+de progreso para estimar tiempos, realizar procesamiento en paralelo en AWS (https://furrr.futureverse.org/articles/remote-connections.html). 
 
 ---
 
@@ -2352,7 +2353,7 @@ x &lt;- 1:10
 
 ```
 ##    user  system elapsed 
-##    0.00    0.00   10.22
+##    0.00    0.00   10.25
 ```
 ]
 
@@ -2384,7 +2385,7 @@ system.time({
 
 ```
 ##    user  system elapsed 
-##    0.00    0.00   10.24
+##    0.00    0.00   10.26
 ```
 ]
 
@@ -2418,7 +2419,7 @@ library(furrr)
 
 ```
 ##    user  system elapsed 
-##    0.02    0.00   10.21
+##     0.0     0.0    10.2
 ```
 ]
 
@@ -2456,12 +2457,12 @@ plan(multisession, workers = 5)
 
 ```
 ##    user  system elapsed 
-##    0.00    0.00   10.24
+##    0.00    0.00   10.23
 ```
 
 ```
 ##    user  system elapsed 
-##    0.01    0.00    4.43
+##    0.01    0.02    4.44
 ```
 ]
 
@@ -2496,6 +2497,21 @@ plan(multisession, workers = 5)
 
 
 
+---
+
+## Ejercicios: `map` &amp; `reduce`
+
+- Con los `datos_credito` crear un ejemplo para realizar la lectura multiple de archivos `csv`.
+
+- Dividir los datos de dos formas: por filas y columnas y realizar el reduce adecuado 
+para volver a la integridad del archivo inicial.
+
+---
+
+## Más información
+
+- Paquete `purrr` https://purrr.tidyverse.org/articles/base.html
+- Paquete `furrr` https://furrr.futureverse.org/
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
