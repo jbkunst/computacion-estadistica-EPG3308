@@ -1,0 +1,25 @@
+---
+title: "Tamaño de los diamantes"
+date: "2016-08-25"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+diamantes2 <- filter(diamonds, carat <= 2.5)
+```
+
+Existen `r nrow(diamantes2)` diamantes.  La **suma** de quitales es:
+
+$$\sum quilate_i  = `r scales::comma(sum(diamantes2$carat))`$$
+
+Gráficamente:
+
+```{r, echo = TRUE, message=FALSE}
+ggplot(diamantes2, aes(carat)) + geom_histogram()
+```
+
+Acá algunos diamantes:
+```{r, echo=TRUE}
+knitr::kable(head(diamantes2, 5))
+```

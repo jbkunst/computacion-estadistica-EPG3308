@@ -1,0 +1,84 @@
+---
+title: "Themed dashboard"
+output: 
+  flexdashboard::flex_dashboard
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(readr)
+library(DT)
+library(plotly)
+library(highcharter)
+
+d <- read_csv("data/conociendonos.csv")
+
+nm <- c("tiempo", "edad", "area", "interes", "online", "ultima_evaluacion")
+
+d <- set_names(d, nm)
+
+glimpse(d)
+
+d <- d |> 
+  mutate(
+    ultima_evaluacion = str_extract(ultima_evaluacion, "[0-9]+"),
+    ultima_evaluacion = as.numeric(ultima_evaluacion),
+    ultima_evaluacion = if_else(ultima_evaluacion > 1900, 2023 - ultima_evaluacion, ultima_evaluacion)
+  )
+
+d <- d |> 
+  mutate(
+    tiempof  = dmy_hms(tiempo),
+    tiempo2 =  tiempof - ymd_hms("2023/03/20 23:59:59")
+    ) |> 
+  arrange(tiempof) |> 
+  mutate(
+    respuestas = 1,
+    respuestas =  cumsum(respuestas)/n()
+  )
+
+glimpse(d)
+```
+
+Column {data-width=650 .tabset}
+-----------------------------------------------------------------------
+
+### Chart X
+
+```{r}
+# hchart(d, "line", hcaes(tiempof, respuestas), name = "Respuestas") |> hc_tooltip(valueDecimals = 2)
+
+p <- ggplot(d) +
+  geom_line(aes(tiempof, respuestas)) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal()
+ggplotly(p)
+```
+
+### Chart B
+
+```{r}
+DT::datatable(d)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart C
+
+```{r}
+p <- ggplot(d) +
+  geom_histogram(aes(ultima_evaluacion)) +
+  theme_minimal()
+ggplotly(p)
+```
+
+### Chart D
+
+```{r}
+
+```
+
