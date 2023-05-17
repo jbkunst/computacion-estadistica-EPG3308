@@ -48,11 +48,427 @@ de procesamiento. Por tanto será necesario a veces crear nuestras propias funci
 
 --
 
-¿Cuando crear una función?
+¿Cuando crear una función? 
 
-&lt;!-- # ```{r out.width="70%", fig.align='center', echo=FALSE} --&gt;
-&lt;!-- # knitr::include_graphics("images/data-science.svg") --&gt;
-&lt;!-- # ``` --&gt;
+--
+
+1. Repito más de una vez un procedimiento (varias instrucciones). En esta situación sería útil
+encapsular dicho procedimiento en una función. La ventaja
+
+1. Trabajo en un equipo, integrantes utilizan a menudo ciertos tipos de datos 
+y requieren ciertos análsis adhoc (paquetes).
+
+
+---
+
+## Estructra de una función
+
+```r
+nombre_de_la_funcion &lt;- function(argumentos) {
+  # Cuerpo de la función: código que se 
+  # ejecutará cuando se llame a la función.
+  # Puedes incluir: 
+  # - declaraciones de nuevas variables, 
+  # - operaciones
+  # - condicionales, bucles, etc.
+  # - comentarios!
+  
+  # Puedes definir variables locales dentro de la función
+  variable_local &lt;- otra_funcion(argumentos)
+  
+  # Puedes realizar cálculos o realizar operaciones con los argumentos de la función
+  resultado &lt;- argumentos + variable_local
+  
+  # Puedes usar la función "return" 
+  # para devolver un resultado al final de la función
+  # Pero usualmente se usa `resultado`
+
+  return(resultado)
+}
+```
+
+---
+
+## Estructura de una función (cont.)
+
+- `nombre_de_la_funcion`: Debes elegir un nombre descriptivo que indique la tarea que realiza la función.
+
+- `argumentos`: Son los valores de entrada que puedes pasar a la función. Puedes tener cero o más argumentos separados por comas. Dentro del cuerpo de la función, puedes utilizar estos argumentos como variables para realizar operaciones.
+
+- `cuerpo de la función`: Es el bloque de código que define las operaciones y acciones que se llevarán a cabo cuando la función sea llamada. Es código R que se ejecuta línea a línea.
+
+- `return(resultado)`: La función `return` se utiliza para devolver **un** resultado específico cuando la función es llamada. Puedes devolver cualquier tipo de objeto en R (números, vectores, matrices, listas, etc.).
+
+
+---
+
+count: false
+ 
+## Ejemplo de funciones
+.panel1-funciones-auto[
+
+```r
+*saludo &lt;- function(){
+* return("Hola")
+*} 
+```
+]
+ 
+.panel2-funciones-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo de funciones
+.panel1-funciones-auto[
+
+```r
+saludo &lt;- function(){
+  return("Hola")
+}
+
+*saludo()
+```
+]
+ 
+.panel2-funciones-auto[
+
+```
+## [1] "Hola"
+```
+]
+
+---
+count: false
+ 
+## Ejemplo de funciones
+.panel1-funciones-auto[
+
+```r
+saludo &lt;- function(){
+  return("Hola")
+}
+
+saludo()
+*try(saludo("Tulio"))
+```
+]
+ 
+.panel2-funciones-auto[
+
+```
+## [1] "Hola"
+```
+
+```
+## Error in saludo("Tulio") : unused argument ("Tulio")
+```
+]
+
+---
+count: false
+ 
+## Ejemplo de funciones
+.panel1-funciones-auto[
+
+```r
+saludo &lt;- function(){
+  return("Hola")
+}
+
+saludo()
+try(saludo("Tulio"))
+
+*saludo_custom &lt;- function(nombre){
+* paste("Hola", nombre)
+*} 
+```
+]
+ 
+.panel2-funciones-auto[
+
+```
+## [1] "Hola"
+```
+
+```
+## Error in saludo("Tulio") : unused argument ("Tulio")
+```
+]
+
+---
+count: false
+ 
+## Ejemplo de funciones
+.panel1-funciones-auto[
+
+```r
+saludo &lt;- function(){
+  return("Hola")
+}
+
+saludo()
+try(saludo("Tulio"))
+
+saludo_custom &lt;- function(nombre){
+  paste("Hola", nombre)
+}
+
+*saludo_custom("Juanin")
+```
+]
+ 
+.panel2-funciones-auto[
+
+```
+## [1] "Hola"
+```
+
+```
+## Error in saludo("Tulio") : unused argument ("Tulio")
+```
+
+```
+## [1] "Hola Juanin"
+```
+]
+
+---
+count: false
+ 
+## Ejemplo de funciones
+.panel1-funciones-auto[
+
+```r
+saludo &lt;- function(){
+  return("Hola")
+}
+
+saludo()
+try(saludo("Tulio"))
+
+saludo_custom &lt;- function(nombre){
+  paste("Hola", nombre)
+}
+
+saludo_custom("Juanin")
+*try(saludo_custom())
+```
+]
+ 
+.panel2-funciones-auto[
+
+```
+## [1] "Hola"
+```
+
+```
+## Error in saludo("Tulio") : unused argument ("Tulio")
+```
+
+```
+## [1] "Hola Juanin"
+```
+
+```
+## Error in paste("Hola", nombre) : 
+##   el argumento "nombre" está ausente, sin valor por omisión
+```
+]
+
+---
+count: false
+ 
+## Ejemplo de funciones
+.panel1-funciones-auto[
+
+```r
+saludo &lt;- function(){
+  return("Hola")
+}
+
+saludo()
+try(saludo("Tulio"))
+
+saludo_custom &lt;- function(nombre){
+  paste("Hola", nombre)
+}
+
+saludo_custom("Juanin")
+try(saludo_custom())
+
+*saludo_custom_default &lt;- function(nombre = "Desconocid(a|o|e)"){
+* paste("Hola", nombre)
+*} 
+```
+]
+ 
+.panel2-funciones-auto[
+
+```
+## [1] "Hola"
+```
+
+```
+## Error in saludo("Tulio") : unused argument ("Tulio")
+```
+
+```
+## [1] "Hola Juanin"
+```
+
+```
+## Error in paste("Hola", nombre) : 
+##   el argumento "nombre" está ausente, sin valor por omisión
+```
+]
+
+---
+count: false
+ 
+## Ejemplo de funciones
+.panel1-funciones-auto[
+
+```r
+saludo &lt;- function(){
+  return("Hola")
+}
+
+saludo()
+try(saludo("Tulio"))
+
+saludo_custom &lt;- function(nombre){
+  paste("Hola", nombre)
+}
+
+saludo_custom("Juanin")
+try(saludo_custom())
+
+saludo_custom_default &lt;- function(nombre = "Desconocid(a|o|e)"){
+  paste("Hola", nombre)
+}
+
+*saludo_custom_default("Bodoque")
+```
+]
+ 
+.panel2-funciones-auto[
+
+```
+## [1] "Hola"
+```
+
+```
+## Error in saludo("Tulio") : unused argument ("Tulio")
+```
+
+```
+## [1] "Hola Juanin"
+```
+
+```
+## Error in paste("Hola", nombre) : 
+##   el argumento "nombre" está ausente, sin valor por omisión
+```
+
+```
+## [1] "Hola Bodoque"
+```
+]
+
+---
+count: false
+ 
+## Ejemplo de funciones
+.panel1-funciones-auto[
+
+```r
+saludo &lt;- function(){
+  return("Hola")
+}
+
+saludo()
+try(saludo("Tulio"))
+
+saludo_custom &lt;- function(nombre){
+  paste("Hola", nombre)
+}
+
+saludo_custom("Juanin")
+try(saludo_custom())
+
+saludo_custom_default &lt;- function(nombre = "Desconocid(a|o|e)"){
+  paste("Hola", nombre)
+}
+
+saludo_custom_default("Bodoque")
+*saludo_custom_default()
+```
+]
+ 
+.panel2-funciones-auto[
+
+```
+## [1] "Hola"
+```
+
+```
+## Error in saludo("Tulio") : unused argument ("Tulio")
+```
+
+```
+## [1] "Hola Juanin"
+```
+
+```
+## Error in paste("Hola", nombre) : 
+##   el argumento "nombre" está ausente, sin valor por omisión
+```
+
+```
+## [1] "Hola Bodoque"
+```
+
+```
+## [1] "Hola Desconocid(a|o|e)"
+```
+]
+
+&lt;style&gt;
+.panel1-funciones-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-funciones-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-funciones-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
