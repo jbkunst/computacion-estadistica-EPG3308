@@ -54,29 +54,57 @@ y requieren ciertos análsis adhoc (paquetes).
 
 ---
 
+`r flipbookr::chunk_reveal("motivacion", title = "## Motivación", widths = c(1, 1))`
+
+```{r motivacion, include = FALSE}
+library(dplyr)
+set.seed(123)
+
+df <- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+df |> 
+  mutate(
+    nor = (nor - min(nor))/
+      (max(nor) - min(nor))
+  ) |> 
+  mutate(
+    exp = (exp - min(exp))/
+      (max(exp) - min(exp))
+  ) |> 
+  mutate(
+    uni = (uni - min(uni))/
+      (max(uni) - min(uni))
+  )
+```
+
+---
+
 ## Estructra de una función
 
 ```r
 nombre_de_la_funcion <- function(argumentos) {
-  # Cuerpo de la función: código que se 
+  # Cuerpo de la función: código "R" que se 
   # ejecutará cuando se llame a la función.
-  # Puedes incluir: 
-  # - declaraciones de nuevas variables, 
-  # - operaciones
-  # - condicionales, bucles, etc.
-  # - comentarios!
+  # Puedes incluir: nuevas variables, operaciones, comentarios
   
   # Puedes definir variables locales dentro de la función
   variable_local <- otra_funcion(argumentos)
   
-  # Puedes realizar cálculos o realizar operaciones con los argumentos de la función
+  # Puedes realizar cálculos con los argumentos de la función
   resultado <- argumentos + variable_local
   
-  # Puedes usar la función "return" 
-  # para devolver un resultado al final de la función
-  # Pero usualmente se usa `resultado`
+  # Puedes usar la función "return para devolver un resultado. Usualmente se usa `resultado`
 
   return(resultado)
+}
+
+valor_futuro <- function(captial, interes_anual, meses){
+  interes_mensual <- interes_anual/12
+   captial * (1 + interes_mensual * meses)
 }
 ```
 
@@ -103,23 +131,422 @@ saludo <- function(){
 }
 
 saludo() 
-try(saludo("Tulio"))
 
 saludo_custom <- function(nombre){
   paste("Hola", nombre)
 }
 
 saludo_custom("Juanin") 
-try(saludo_custom())
 
-saludo_custom_default <- function(nombre = "Desconocid(a|o|e)"){
+
+saludo_custom2 <- function(nombre = "Desconocid(a|o|e)"){
   paste("Hola", nombre)
 }
 
-saludo_custom_default("Bodoque")
-saludo_custom_default()
+saludo_custom2("Bodoque")
+saludo_custom2()
+```
+
+---
+
+`r flipbookr::chunk_reveal("motivacion2", title = "## Motivación (cont.)", widths = c(1, 1))`
+
+```{r motivacion2, include = FALSE}
+library(dplyr)
+set.seed(123)
+
+df <- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+rescale01 <- function(x){
+  (x - min(x))/(max(x) - min(x))
+}
+
+df |> 
+  mutate(
+    nor = rescale01(nor),
+    exp = rescale01(exp),
+    uni = rescale01(uni),
+  )
+
+df |> 
+  mutate(across(is.numeric, rescale01))
 ```
 
 
+---
 
+## Ejercicios
+
+1. Sobre la función `valor_futuro`:
+
+  - Modificar para que reciba como argumento interés mensual.
+  - ¿Que mejoras se les puede realizar a esta función?
+
+
+2. Testea y explorar que ocurre con:
+
+```
+saludo("Tulio"))
+
+saludo_custom()
+```
+
+---
+
+## Buenas prácticas
+
+> Las funciones son para los seres humanos y para las computadoras. 
+>
+>  *HW R4DS*
+
+```{r, eval=FALSE}
+# Muy corto
+f()
+
+# No es un verbo y es poco descriptivo
+mi_funcion_bakan()
+
+# Largos, pero descriptivos
+imputar_faltantes()
+colapsar_anios()
+```
+
+---
+
+## Buenas prácticas (cont.)
+
+Usualmente para los nombres de parámetros:
+
+- `df`: un data frame.
+- `x`, `y`, `z`: vectores. `w`: un vector de pesos.
+- `i`, `j`: índices numéricos (usualmente filas y columnas).
+- `n`: longitud, o número de filas. `p`: número de columnas.
+
+```{r, eval=FALSE}
+imputar_faltantes <- function(df){
+  ... 
+}
+
+producto_vectores <- function(x, y){
+  ...
+}
+```
+
+---
+
+class: center, inverse, middle
+
+# Listas
+
+---
+
+## Listas
+
+En **R**, una lista es una estructura de datos que permite almacenar diferentes tipos de objetos: vectores, matrices, data frames, funciones u otras listas. 
+Puedes pensar en una lista como un contenedor que puede contener múltiples elementos de diferentes tipos.
+
+--
+
+Para crear una lista, puedes utilizar la función `list()`:
+
+```r
+mi_lista <- list(elemento1, elemento2, elemento3)
+```
+
+Aquí, `elemento1`, `elemento2` y `elemento3` pueden ser cualquier objeto.
+
+--
+
+También puedes asignar nombres a los elementos de una lista:
+
+```r
+mi_lista <- list(nombre1 = elemento1, nombre2 = elemento2, nombre3 = elemento3)
+```
+
+---
+
+`r flipbookr::chunk_reveal("listas", title = "## Ejemplo uso listas", widths = c(1, 1))`
+
+```{r listas, include = FALSE}
+set.seed(123)
+
+df <- tibble(
+  x = 1:10, 
+  y = x + rnorm(10)
+  )
+
+modlm <- lm(y ~ x, data = df)
+
+pars  <- broom::tidy(modlm)
+
+milista <- list(
+  dim(df),
+  modelo  = modlm,
+  coefs   = pars
+)
+
+milista
+
+length(milista)
+```
+
+---
+
+`r flipbookr::chunk_reveal("listas2", title = "## Ejemplo uso listas (cont.)", widths = c(1, 2))`
+
+```{r listas2, include = FALSE}
+milista[3]
+
+milista[[3]]
+
+milista[["coefs"]]
+```
+
+---
+
+## Listas (cont.)
+
+- Una lista puede contener elementos de diferentes longitudes. Por ejemplo, puedes tener una lista con un vector de longitud 5 y una matriz de dimensiones $3 \times 3$ como elementos. También puedes anidar listas dentro de listas para crear estructuras de datos más complejas.
+
+--
+
+- Las listas son estructuras de datos muy flexibles y se utilizan comúnmente para almacenar resultados de análisis de datos, modelos estadísticos o cualquier otro tipo de objeto que necesite agrupar y organizar múltiples elementos de manera coherente.
+
+---
+
+## Operaciones a listas
+
+<small>
+
+- Acceder a elementos: Puedes acceder a elementos específicos de una lista utilizando la notación de corchetes `[ ] `y el número de índice correspondiente al elemento que deseas acceder. Por ejemplo, `mi_lista[[1]]` accede al primer elemento de la lista.
+
+- Asignar valores a elementos: Puedes asignar nuevos valores a elementos específicos de una lista utilizando la notación de corchetes `[ ]` y el número de índice correspondiente al elemento que deseas modificar. Por ejemplo, `mi_lista[[1]] <- nuevo_valor` asigna un nuevo valor al primer elemento de la lista.
+
+- Añadir elementos: Puedes añadir nuevos elementos a una lista utilizando la función `append()`. Por ejemplo, `mi_lista <- append(mi_lista, nuevo_elemento)` añade un nuevo elemento al final de la lista.
+
+- Obtener la longitud de una lista: Puedes obtener la longitud de una lista utilizando la función `length()`. Por ejemplo, `longitud <- length(mi_lista)` devuelve la longitud de la lista.
+
+- Combinar listas: Puedes combinar varias listas en una sola utilizando la función `c()`. Por ejemplo, `nueva_lista <- c(lista1, lista2)` combina las listas `lista1` y `lista2` en una nueva lista.
+
+- Iterar sobre elementos de una lista: Puedes utilizar bucles como `for` o funciones como `lapply()` o `map()`.
+</small>
+
+---
+
+class: center, inverse, middle
+
+# Programación Funcional
+
+---
+
+## Programación Funcional
+
+La programación funcional es un paradigma de programación que se basa en el uso de funciones como elementos de primera clase y en la aplicación de funciones para transformar y manipular datos. 
+
+--
+
+Es decir utilizaremos una `funcion` como argumento.
+
+--
+
+La principal función que utilizaremos es `map` del paquete `purrr`. 
+
+Si bien existe `lapply` en `base` utilizaremos `map` tiene ciertas ventajas en sintaxis, y mejores especificación de errores. Por ejemplo si existe un error se mencionará que índice tuvo el problema.
+
+---
+
+## La función `map`
+
+La función `map` se utiliza para aplicar una función a cada elemento de una estructura de datos, como una lista, un vector o un data frame, y devuelve una nueva estructura de datos con los resultados de aplicar esa función a cada elemento.
+
+
+```{r out.width='30%', fig.align='center', echo=FALSE}
+knitr::include_graphics("images/purrr/map.png")
+```
+
+--
+
+Como mencionamos, utilzaremos funciones como argumentos. La sintaxis en será algo del estilo:
+
+```r
+map(lista, mi_funcion)
+```
+
+
+---
+
+## La función `map` (cont.)
+
+
+Internamente es _similar_ a:
+
+```r
+salida <- vector("list", length(x))
+
+for (i in 1:lenth(lista)) {
+  salida[[i]] <- mi_funcion(lista[[i]])
+}
+
+salida
+```
+
+--
+
+Se dice que *el `map` escribe el `for` por ti*.
+
+La ganancia de utilizar `map` y la familia de funciones de `purrr` es la 
+consistencia en la sintaxis, expresividad, manejo de errores, implementación de proceso en paralelo.
+
+
+---
+
+`r flipbookr::chunk_reveal("mapex", title = "## Ejemplo <code>map</code>", widths = c(2, 2))`
+
+```{r mapex, include = FALSE}
+library(purrr)
+set.seed(123)
+
+x <- round(c(1: 3) + runif(3), 2)
+x
+
+map(x, log)
+
+log(x)
+
+log(x, base = 10)
+
+map(x, log, base = 10)
+```
+
+
+---
+
+`r flipbookr::chunk_reveal("mapex2", title = "## Ejemplo <code>map</code> (cont.)", widths = c(2, 2))`
+
+```{r mapex2, include = FALSE}
+library(datos)
+
+modelos <- list(
+  simple = millas ~ cilindrada,
+  challenger = millas ~ cilindrada + peso,
+  champion = millas ~ cilindrada + cilindrada +
+    eje + forma
+)
+
+map(modelos, lm, data = mtautos) |> 
+  map(broom::glance) |> 
+  list_rbind(names_to = "modelo")
+```
+
+
+---
+
+## Funciones anónimas 
+
+Funciones anónimas o funciones lambda sonciones que se definen sin asignarles un nombre explícito.
+
+--
+
+En lugar de utilizar la forma tradicional de definir una función con el nombre y la palabra clave `function`, las funciones anónimas se definen directamente en el contexto en el que se utilizan.
+
+
+```{r}
+(function(x){ x + 5})(1:3)
+
+map_dbl(1:3, function(x){ x + 5})
+```
+
+
+---
+
+`r flipbookr::chunk_reveal("mapex3", title = "## Ejemplo <code>map</code> y funciones lamda (cont.)", widths = c(2, 2))`
+
+```{r mapex3, include = FALSE}
+library(datos)
+
+modelos <- list(
+  simple = millas ~ cilindrada,
+  challenger = millas ~ cilindrada + peso,
+  champion = millas ~ cilindrada + cilindrada +
+    eje + forma
+)
+
+map(modelos, function(formula){
+  
+  mod  <- lm(formula, data = mtautos)
+  coef <- broom::tidy(mod)
+  coef
+  
+  }) |> 
+  list_rbind(names_to = "modelo")
+```
+
+---
+
+## Variantes del `map`
+
+
+- `map_dbl()`, `map_lgl()` y `map_chr()` son variantes de la función `map()` que están diseñadas para aplicar una función a una estructura de datos y obtener un resultado específico.
+
+--
+
+- `map2()`: Se utiliza cuando se desea aplicar una función a dos vectores o listas simultáneamente, tomando elementos correspondientes de cada uno de ellos. Toma como argumentos los dos vectores o listas.
+
+--
+
+- `pmap()`: Generalización del `map` y `map2`. Se utiliza cuando se desea aplicar una función a múltiples argumentos provenientes de vectores o listas.
+
+--
+
+- `walk()`: Se utiliza cuando se desea aplicar una función a una estructura de datos sin necesidad de retornar un resultado. De la misma forma sus variantes `walk2` y `pwalk`.
+
+
+---
+
+## Procesamiento en paralelo, paquete `furrr`
+
+Las funciones `map` iteran de uno en uno utilizando un solo núcleo del procesador. Por lo que 
+no utilizan toda el poder de cómputo del computador.
+
+--
+
+El objetivo de `furrr` es combinar la familia de funciones de mapeo de `purrr` con las capacidades de procesamiento paralelo del paquete `future`. 
+
+El resultado son reemplazos prácticamente idénticos de las funciones de purrr, como `map()` y `map2_dbl()`,
+que pueden ser sustituidas por sus equivalentes en `furrr`, `future_map()` y `future_map2_dbl()`, 
+para realizar mapeos en paralelo.
+
+
+
+
+---
+
+`r flipbookr::chunk_reveal("furrrex", title = "## Ejemplo <code>furrr</code>", widths = c(2, 2))`
+
+```{r furrrex, include = FALSE}
+library(furrr)
+
+funcion_suma_lenta <- function(x){
+  Sys.sleep(1)
+  x + 5
+}
+
+x <- 1:10
+
+system.time({
+  map(x, funcion_suma_lenta)
+})
+
+library(furrr)
+
+plan(multisession, workers = 5)
+
+system.time({
+  future_map(x, funcion_suma_lenta)
+})
+```
 
