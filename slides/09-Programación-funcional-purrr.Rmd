@@ -504,7 +504,6 @@ map(modelos, function(formula){
 
 - `walk()`: Se utiliza cuando se desea aplicar una función a una estructura de datos sin necesidad de retornar un resultado. De la misma forma sus variantes `walk2` y `pwalk`.
 
-
 ---
 
 ## Procesamiento en paralelo, paquete `furrr`
@@ -520,8 +519,10 @@ El resultado son reemplazos prácticamente idénticos de las funciones de purrr,
 que pueden ser sustituidas por sus equivalentes en `furrr`, `future_map()` y `future_map2_dbl()`, 
 para realizar mapeos en paralelo.
 
+--
 
-
+La documentación de `furrr` está en https://furrr.futureverse.org/. Se pueden colocar barras 
+de progreso para estimar tiempos, realizar procesamiento en paralelo en AWS (https://furrr.futureverse.org/articles/remote-connections.html). 
 
 ---
 
@@ -550,3 +551,18 @@ system.time({
 })
 ```
 
+---
+
+## Ejercicios: `map` & `reduce`
+
+- Con los `datos_credito` crear un ejemplo para realizar la lectura multiple de archivos `csv`.
+
+- Dividir los datos de dos formas: por filas y columnas y realizar el reduce adecuado 
+para volver a la integridad del archivo inicial.
+
+---
+
+## Más información
+
+- Paquete `purrr` https://purrr.tidyverse.org/articles/base.html
+- Paquete `furrr` https://furrr.futureverse.org/
