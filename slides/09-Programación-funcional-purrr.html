@@ -4,7 +4,7 @@
     <title>09-Programación-Funcional</title>
     <meta charset="utf-8" />
     <meta name="author" content=" Joshua Kunst @jbkunst" />
-    <meta name="date" content="2023-05-16" />
+    <meta name="date" content="2023-05-17" />
     <script src="libs/header-attrs-2.21/header-attrs.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" />
@@ -23,7 +23,7 @@ class: left, middle, title-slide
 ### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
 ]
 .date[
-### 2023-05-16
+### 2023-05-17
 ]
 
 ---
@@ -61,29 +61,297 @@ y requieren ciertos análsis adhoc (paquetes).
 
 ---
 
+count: false
+ 
+## Motivación
+.panel1-motivacion-auto[
+
+```r
+*library(dplyr)
+```
+]
+ 
+.panel2-motivacion-auto[
+
+]
+
+---
+count: false
+ 
+## Motivación
+.panel1-motivacion-auto[
+
+```r
+library(dplyr)
+*set.seed(123)
+```
+]
+ 
+.panel2-motivacion-auto[
+
+]
+
+---
+count: false
+ 
+## Motivación
+.panel1-motivacion-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+*df &lt;- tibble(
+* nor = rnorm(100),
+* exp = rexp(100),
+* uni = runif(100)
+*) 
+```
+]
+ 
+.panel2-motivacion-auto[
+
+]
+
+---
+count: false
+ 
+## Motivación
+.panel1-motivacion-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+df &lt;- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+*df
+```
+]
+ 
+.panel2-motivacion-auto[
+
+```
+## # A tibble: 100 × 3
+##        nor    exp   uni
+##      &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1 -0.560  1.80   0.964
+##  2 -0.230  0.0301 0.775
+##  3  1.56   1.30   0.209
+##  4  0.0705 0.200  0.309
+##  5  0.129  1.75   0.971
+##  6  1.72   1.76   0.585
+##  7  0.461  0.843  0.761
+##  8 -1.27   0.349  0.373
+##  9 -0.687  3.30   0.769
+## 10 -0.446  0.402  0.538
+## # ℹ 90 more rows
+```
+]
+
+---
+count: false
+ 
+## Motivación
+.panel1-motivacion-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+df &lt;- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+df |&gt;
+* mutate(
+*   nor = (nor - min(nor))/
+*     (max(nor) - min(nor))
+* )
+```
+]
+ 
+.panel2-motivacion-auto[
+
+```
+## # A tibble: 100 × 3
+##      nor    exp   uni
+##    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.389 1.80   0.964
+##  2 0.462 0.0301 0.775
+##  3 0.860 1.30   0.209
+##  4 0.529 0.200  0.309
+##  5 0.542 1.75   0.971
+##  6 0.895 1.76   0.585
+##  7 0.616 0.843  0.761
+##  8 0.232 0.349  0.373
+##  9 0.361 3.30   0.769
+## 10 0.414 0.402  0.538
+## # ℹ 90 more rows
+```
+]
+
+---
+count: false
+ 
+## Motivación
+.panel1-motivacion-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+df &lt;- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+df |&gt;
+  mutate(
+    nor = (nor - min(nor))/
+      (max(nor) - min(nor))
+  ) |&gt;
+* mutate(
+*   exp = (exp - min(exp))/
+*     (max(exp) - min(exp))
+* )
+```
+]
+ 
+.panel2-motivacion-auto[
+
+```
+## # A tibble: 100 × 3
+##      nor     exp   uni
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.389 0.412   0.964
+##  2 0.462 0.00589 0.775
+##  3 0.860 0.298   0.209
+##  4 0.529 0.0448  0.309
+##  5 0.542 0.401   0.971
+##  6 0.895 0.403   0.585
+##  7 0.616 0.192   0.761
+##  8 0.232 0.0790  0.373
+##  9 0.361 0.755   0.769
+## 10 0.414 0.0911  0.538
+## # ℹ 90 more rows
+```
+]
+
+---
+count: false
+ 
+## Motivación
+.panel1-motivacion-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+df &lt;- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+df |&gt;
+  mutate(
+    nor = (nor - min(nor))/
+      (max(nor) - min(nor))
+  ) |&gt;
+  mutate(
+    exp = (exp - min(exp))/
+      (max(exp) - min(exp))
+  ) |&gt;
+* mutate(
+*   uni = (uni - min(uni))/
+*     (max(uni) - min(uni))
+* )
+```
+]
+ 
+.panel2-motivacion-auto[
+
+```
+## # A tibble: 100 × 3
+##      nor     exp   uni
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.389 0.412   0.966
+##  2 0.462 0.00589 0.771
+##  3 0.860 0.298   0.187
+##  4 0.529 0.0448  0.290
+##  5 0.542 0.401   0.974
+##  6 0.895 0.403   0.575
+##  7 0.616 0.192   0.757
+##  8 0.232 0.0790  0.356
+##  9 0.361 0.755   0.765
+## 10 0.414 0.0911  0.526
+## # ℹ 90 more rows
+```
+]
+
+&lt;style&gt;
+.panel1-motivacion-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-motivacion-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-motivacion-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
 ## Estructra de una función
 
 ```r
 nombre_de_la_funcion &lt;- function(argumentos) {
-  # Cuerpo de la función: código que se 
+  # Cuerpo de la función: código "R" que se 
   # ejecutará cuando se llame a la función.
-  # Puedes incluir: 
-  # - declaraciones de nuevas variables, 
-  # - operaciones
-  # - condicionales, bucles, etc.
-  # - comentarios!
+  # Puedes incluir: nuevas variables, operaciones, comentarios
   
   # Puedes definir variables locales dentro de la función
   variable_local &lt;- otra_funcion(argumentos)
   
-  # Puedes realizar cálculos o realizar operaciones con los argumentos de la función
+  # Puedes realizar cálculos con los argumentos de la función
   resultado &lt;- argumentos + variable_local
   
-  # Puedes usar la función "return" 
-  # para devolver un resultado al final de la función
-  # Pero usualmente se usa `resultado`
+  # Puedes usar la función "return para devolver un resultado. Usualmente se usa `resultado`
 
   return(resultado)
+}
+
+valor_futuro &lt;- function(captial, interes_anual, meses){
+  interes_mensual &lt;- interes_anual/12
+   captial * (1 + interes_mensual * meses)
 }
 ```
 
@@ -152,34 +420,6 @@ saludo &lt;- function(){
 }
 
 saludo()
-*try(saludo("Tulio"))
-```
-]
- 
-.panel2-funciones-auto[
-
-```
-## [1] "Hola"
-```
-
-```
-## Error in saludo("Tulio") : unused argument ("Tulio")
-```
-]
-
----
-count: false
- 
-## Ejemplo de funciones
-.panel1-funciones-auto[
-
-```r
-saludo &lt;- function(){
-  return("Hola")
-}
-
-saludo()
-try(saludo("Tulio"))
 
 *saludo_custom &lt;- function(nombre){
 * paste("Hola", nombre)
@@ -192,10 +432,6 @@ try(saludo("Tulio"))
 ```
 ## [1] "Hola"
 ```
-
-```
-## Error in saludo("Tulio") : unused argument ("Tulio")
-```
 ]
 
 ---
@@ -210,7 +446,6 @@ saludo &lt;- function(){
 }
 
 saludo()
-try(saludo("Tulio"))
 
 saludo_custom &lt;- function(nombre){
   paste("Hola", nombre)
@@ -227,10 +462,6 @@ saludo_custom &lt;- function(nombre){
 ```
 
 ```
-## Error in saludo("Tulio") : unused argument ("Tulio")
-```
-
-```
 ## [1] "Hola Juanin"
 ```
 ]
@@ -247,59 +478,15 @@ saludo &lt;- function(){
 }
 
 saludo()
-try(saludo("Tulio"))
 
 saludo_custom &lt;- function(nombre){
   paste("Hola", nombre)
 }
 
 saludo_custom("Juanin")
-*try(saludo_custom())
-```
-]
- 
-.panel2-funciones-auto[
 
-```
-## [1] "Hola"
-```
 
-```
-## Error in saludo("Tulio") : unused argument ("Tulio")
-```
-
-```
-## [1] "Hola Juanin"
-```
-
-```
-## Error in paste("Hola", nombre) : 
-##   el argumento "nombre" está ausente, sin valor por omisión
-```
-]
-
----
-count: false
- 
-## Ejemplo de funciones
-.panel1-funciones-auto[
-
-```r
-saludo &lt;- function(){
-  return("Hola")
-}
-
-saludo()
-try(saludo("Tulio"))
-
-saludo_custom &lt;- function(nombre){
-  paste("Hola", nombre)
-}
-
-saludo_custom("Juanin")
-try(saludo_custom())
-
-*saludo_custom_default &lt;- function(nombre = "Desconocid(a|o|e)"){
+*saludo_custom2 &lt;- function(nombre = "Desconocid(a|o|e)"){
 * paste("Hola", nombre)
 *} 
 ```
@@ -312,16 +499,7 @@ try(saludo_custom())
 ```
 
 ```
-## Error in saludo("Tulio") : unused argument ("Tulio")
-```
-
-```
 ## [1] "Hola Juanin"
-```
-
-```
-## Error in paste("Hola", nombre) : 
-##   el argumento "nombre" está ausente, sin valor por omisión
 ```
 ]
 
@@ -337,20 +515,19 @@ saludo &lt;- function(){
 }
 
 saludo()
-try(saludo("Tulio"))
 
 saludo_custom &lt;- function(nombre){
   paste("Hola", nombre)
 }
 
 saludo_custom("Juanin")
-try(saludo_custom())
 
-saludo_custom_default &lt;- function(nombre = "Desconocid(a|o|e)"){
+
+saludo_custom2 &lt;- function(nombre = "Desconocid(a|o|e)"){
   paste("Hola", nombre)
 }
 
-*saludo_custom_default("Bodoque")
+*saludo_custom2("Bodoque")
 ```
 ]
  
@@ -361,16 +538,7 @@ saludo_custom_default &lt;- function(nombre = "Desconocid(a|o|e)"){
 ```
 
 ```
-## Error in saludo("Tulio") : unused argument ("Tulio")
-```
-
-```
 ## [1] "Hola Juanin"
-```
-
-```
-## Error in paste("Hola", nombre) : 
-##   el argumento "nombre" está ausente, sin valor por omisión
 ```
 
 ```
@@ -390,21 +558,20 @@ saludo &lt;- function(){
 }
 
 saludo()
-try(saludo("Tulio"))
 
 saludo_custom &lt;- function(nombre){
   paste("Hola", nombre)
 }
 
 saludo_custom("Juanin")
-try(saludo_custom())
 
-saludo_custom_default &lt;- function(nombre = "Desconocid(a|o|e)"){
+
+saludo_custom2 &lt;- function(nombre = "Desconocid(a|o|e)"){
   paste("Hola", nombre)
 }
 
-saludo_custom_default("Bodoque")
-*saludo_custom_default()
+saludo_custom2("Bodoque")
+*saludo_custom2()
 ```
 ]
  
@@ -415,16 +582,7 @@ saludo_custom_default("Bodoque")
 ```
 
 ```
-## Error in saludo("Tulio") : unused argument ("Tulio")
-```
-
-```
 ## [1] "Hola Juanin"
-```
-
-```
-## Error in paste("Hola", nombre) : 
-##   el argumento "nombre" está ausente, sin valor por omisión
 ```
 
 ```
@@ -465,6 +623,1874 @@ saludo_custom_default("Bodoque")
 
 
 
+
+
+---
+
+count: false
+ 
+## Motivación (cont.)
+.panel1-motivacion2-auto[
+
+```r
+*library(dplyr)
+```
+]
+ 
+.panel2-motivacion2-auto[
+
+]
+
+---
+count: false
+ 
+## Motivación (cont.)
+.panel1-motivacion2-auto[
+
+```r
+library(dplyr)
+*set.seed(123)
+```
+]
+ 
+.panel2-motivacion2-auto[
+
+]
+
+---
+count: false
+ 
+## Motivación (cont.)
+.panel1-motivacion2-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+*df &lt;- tibble(
+* nor = rnorm(100),
+* exp = rexp(100),
+* uni = runif(100)
+*) 
+```
+]
+ 
+.panel2-motivacion2-auto[
+
+]
+
+---
+count: false
+ 
+## Motivación (cont.)
+.panel1-motivacion2-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+df &lt;- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+*rescale01 &lt;- function(x){
+* (x - min(x))/(max(x) - min(x))
+*} 
+```
+]
+ 
+.panel2-motivacion2-auto[
+
+]
+
+---
+count: false
+ 
+## Motivación (cont.)
+.panel1-motivacion2-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+df &lt;- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+rescale01 &lt;- function(x){
+  (x - min(x))/(max(x) - min(x))
+}
+
+*df
+```
+]
+ 
+.panel2-motivacion2-auto[
+
+```
+## # A tibble: 100 × 3
+##        nor    exp   uni
+##      &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1 -0.560  1.80   0.964
+##  2 -0.230  0.0301 0.775
+##  3  1.56   1.30   0.209
+##  4  0.0705 0.200  0.309
+##  5  0.129  1.75   0.971
+##  6  1.72   1.76   0.585
+##  7  0.461  0.843  0.761
+##  8 -1.27   0.349  0.373
+##  9 -0.687  3.30   0.769
+## 10 -0.446  0.402  0.538
+## # ℹ 90 more rows
+```
+]
+
+---
+count: false
+ 
+## Motivación (cont.)
+.panel1-motivacion2-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+df &lt;- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+rescale01 &lt;- function(x){
+  (x - min(x))/(max(x) - min(x))
+}
+
+df |&gt;
+* mutate(
+*   nor = rescale01(nor),
+*   exp = rescale01(exp),
+*   uni = rescale01(uni),
+* )
+```
+]
+ 
+.panel2-motivacion2-auto[
+
+```
+## # A tibble: 100 × 3
+##      nor     exp   uni
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.389 0.412   0.966
+##  2 0.462 0.00589 0.771
+##  3 0.860 0.298   0.187
+##  4 0.529 0.0448  0.290
+##  5 0.542 0.401   0.974
+##  6 0.895 0.403   0.575
+##  7 0.616 0.192   0.757
+##  8 0.232 0.0790  0.356
+##  9 0.361 0.755   0.765
+## 10 0.414 0.0911  0.526
+## # ℹ 90 more rows
+```
+]
+
+---
+count: false
+ 
+## Motivación (cont.)
+.panel1-motivacion2-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+df &lt;- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+rescale01 &lt;- function(x){
+  (x - min(x))/(max(x) - min(x))
+}
+
+df |&gt;
+  mutate(
+    nor = rescale01(nor),
+    exp = rescale01(exp),
+    uni = rescale01(uni),
+  )
+
+*df
+```
+]
+ 
+.panel2-motivacion2-auto[
+
+```
+## # A tibble: 100 × 3
+##      nor     exp   uni
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.389 0.412   0.966
+##  2 0.462 0.00589 0.771
+##  3 0.860 0.298   0.187
+##  4 0.529 0.0448  0.290
+##  5 0.542 0.401   0.974
+##  6 0.895 0.403   0.575
+##  7 0.616 0.192   0.757
+##  8 0.232 0.0790  0.356
+##  9 0.361 0.755   0.765
+## 10 0.414 0.0911  0.526
+## # ℹ 90 more rows
+```
+
+```
+## # A tibble: 100 × 3
+##        nor    exp   uni
+##      &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1 -0.560  1.80   0.964
+##  2 -0.230  0.0301 0.775
+##  3  1.56   1.30   0.209
+##  4  0.0705 0.200  0.309
+##  5  0.129  1.75   0.971
+##  6  1.72   1.76   0.585
+##  7  0.461  0.843  0.761
+##  8 -1.27   0.349  0.373
+##  9 -0.687  3.30   0.769
+## 10 -0.446  0.402  0.538
+## # ℹ 90 more rows
+```
+]
+
+---
+count: false
+ 
+## Motivación (cont.)
+.panel1-motivacion2-auto[
+
+```r
+library(dplyr)
+set.seed(123)
+
+df &lt;- tibble(
+  nor = rnorm(100),
+  exp = rexp(100),
+  uni = runif(100)
+)
+
+rescale01 &lt;- function(x){
+  (x - min(x))/(max(x) - min(x))
+}
+
+df |&gt;
+  mutate(
+    nor = rescale01(nor),
+    exp = rescale01(exp),
+    uni = rescale01(uni),
+  )
+
+df |&gt;
+* mutate(across(is.numeric, rescale01))
+```
+]
+ 
+.panel2-motivacion2-auto[
+
+```
+## # A tibble: 100 × 3
+##      nor     exp   uni
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.389 0.412   0.966
+##  2 0.462 0.00589 0.771
+##  3 0.860 0.298   0.187
+##  4 0.529 0.0448  0.290
+##  5 0.542 0.401   0.974
+##  6 0.895 0.403   0.575
+##  7 0.616 0.192   0.757
+##  8 0.232 0.0790  0.356
+##  9 0.361 0.755   0.765
+## 10 0.414 0.0911  0.526
+## # ℹ 90 more rows
+```
+
+```
+## # A tibble: 100 × 3
+##      nor     exp   uni
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.389 0.412   0.966
+##  2 0.462 0.00589 0.771
+##  3 0.860 0.298   0.187
+##  4 0.529 0.0448  0.290
+##  5 0.542 0.401   0.974
+##  6 0.895 0.403   0.575
+##  7 0.616 0.192   0.757
+##  8 0.232 0.0790  0.356
+##  9 0.361 0.755   0.765
+## 10 0.414 0.0911  0.526
+## # ℹ 90 more rows
+```
+]
+
+&lt;style&gt;
+.panel1-motivacion2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-motivacion2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-motivacion2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+## Ejercicios
+
+1. Sobre la función `valor_futuro`:
+
+  - Modificar para que reciba como argumento interés mensual.
+  - ¿Que mejoras se les puede realizar a esta función?
+
+
+2. Testea y explorar que ocurre con:
+
+```
+saludo("Tulio"))
+
+saludo_custom()
+```
+
+---
+
+## Buenas prácticas
+
+&gt; Las funciones son para los seres humanos y para las computadoras. 
+&gt;
+&gt;  *HW R4DS*
+
+
+```r
+# Muy corto
+f()
+
+# No es un verbo y es poco descriptivo
+mi_funcion_bakan()
+
+# Largos, pero descriptivos
+imputar_faltantes()
+colapsar_anios()
+```
+
+---
+
+## Buenas prácticas (cont.)
+
+Usualmente para los nombres de parámetros:
+
+- `df`: un data frame.
+- `x`, `y`, `z`: vectores. `w`: un vector de pesos.
+- `i`, `j`: índices numéricos (usualmente filas y columnas).
+- `n`: longitud, o número de filas. `p`: número de columnas.
+
+
+```r
+imputar_faltantes &lt;- function(df){
+  ... 
+}
+
+producto_vectores &lt;- function(x, y){
+  ...
+}
+```
+
+---
+
+class: center, inverse, middle
+
+# Listas
+
+---
+
+## Listas
+
+En **R**, una lista es una estructura de datos que permite almacenar diferentes tipos de objetos: vectores, matrices, data frames, funciones u otras listas. 
+Puedes pensar en una lista como un contenedor que puede contener múltiples elementos de diferentes tipos.
+
+--
+
+Para crear una lista, puedes utilizar la función `list()`:
+
+```r
+mi_lista &lt;- list(elemento1, elemento2, elemento3)
+```
+
+Aquí, `elemento1`, `elemento2` y `elemento3` pueden ser cualquier objeto.
+
+--
+
+También puedes asignar nombres a los elementos de una lista:
+
+```r
+mi_lista &lt;- list(nombre1 = elemento1, nombre2 = elemento2, nombre3 = elemento3)
+```
+
+---
+
+count: false
+ 
+## Ejemplo uso listas
+.panel1-listas-auto[
+
+```r
+*set.seed(123)
+```
+]
+ 
+.panel2-listas-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo uso listas
+.panel1-listas-auto[
+
+```r
+set.seed(123)
+
+*df &lt;- tibble(
+* x = 1:10,
+* y = x + rnorm(10)
+* )
+```
+]
+ 
+.panel2-listas-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo uso listas
+.panel1-listas-auto[
+
+```r
+set.seed(123)
+
+df &lt;- tibble(
+  x = 1:10,
+  y = x + rnorm(10)
+  )
+
+*modlm &lt;- lm(y ~ x, data = df)
+```
+]
+ 
+.panel2-listas-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo uso listas
+.panel1-listas-auto[
+
+```r
+set.seed(123)
+
+df &lt;- tibble(
+  x = 1:10,
+  y = x + rnorm(10)
+  )
+
+modlm &lt;- lm(y ~ x, data = df)
+
+*pars  &lt;- broom::tidy(modlm)
+```
+]
+ 
+.panel2-listas-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo uso listas
+.panel1-listas-auto[
+
+```r
+set.seed(123)
+
+df &lt;- tibble(
+  x = 1:10,
+  y = x + rnorm(10)
+  )
+
+modlm &lt;- lm(y ~ x, data = df)
+
+pars  &lt;- broom::tidy(modlm)
+
+*milista &lt;- list(
+* dim(df),
+* modelo  = modlm,
+* coefs   = pars
+*) 
+```
+]
+ 
+.panel2-listas-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo uso listas
+.panel1-listas-auto[
+
+```r
+set.seed(123)
+
+df &lt;- tibble(
+  x = 1:10,
+  y = x + rnorm(10)
+  )
+
+modlm &lt;- lm(y ~ x, data = df)
+
+pars  &lt;- broom::tidy(modlm)
+
+milista &lt;- list(
+  dim(df),
+  modelo  = modlm,
+  coefs   = pars
+)
+
+*milista
+```
+]
+ 
+.panel2-listas-auto[
+
+```
+## [[1]]
+## [1] 10  2
+## 
+## $modelo
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Coefficients:
+## (Intercept)            x  
+##      0.5255       0.9180  
+## 
+## 
+## $coefs
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    0.525     0.667     0.787 0.454    
+## 2 x              0.918     0.108     8.54  0.0000273
+```
+]
+
+---
+count: false
+ 
+## Ejemplo uso listas
+.panel1-listas-auto[
+
+```r
+set.seed(123)
+
+df &lt;- tibble(
+  x = 1:10,
+  y = x + rnorm(10)
+  )
+
+modlm &lt;- lm(y ~ x, data = df)
+
+pars  &lt;- broom::tidy(modlm)
+
+milista &lt;- list(
+  dim(df),
+  modelo  = modlm,
+  coefs   = pars
+)
+
+milista
+
+*length(milista)
+```
+]
+ 
+.panel2-listas-auto[
+
+```
+## [[1]]
+## [1] 10  2
+## 
+## $modelo
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Coefficients:
+## (Intercept)            x  
+##      0.5255       0.9180  
+## 
+## 
+## $coefs
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    0.525     0.667     0.787 0.454    
+## 2 x              0.918     0.108     8.54  0.0000273
+```
+
+```
+## [1] 3
+```
+]
+
+&lt;style&gt;
+.panel1-listas-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-listas-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-listas-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## Ejemplo uso listas (cont.)
+.panel1-listas2-auto[
+
+```r
+*milista[3]
+```
+]
+ 
+.panel2-listas2-auto[
+
+```
+## $coefs
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    0.525     0.667     0.787 0.454    
+## 2 x              0.918     0.108     8.54  0.0000273
+```
+]
+
+---
+count: false
+ 
+## Ejemplo uso listas (cont.)
+.panel1-listas2-auto[
+
+```r
+milista[3]
+
+*milista[[3]]
+```
+]
+ 
+.panel2-listas2-auto[
+
+```
+## $coefs
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    0.525     0.667     0.787 0.454    
+## 2 x              0.918     0.108     8.54  0.0000273
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    0.525     0.667     0.787 0.454    
+## 2 x              0.918     0.108     8.54  0.0000273
+```
+]
+
+---
+count: false
+ 
+## Ejemplo uso listas (cont.)
+.panel1-listas2-auto[
+
+```r
+milista[3]
+
+milista[[3]]
+
+*milista[["coefs"]]
+```
+]
+ 
+.panel2-listas2-auto[
+
+```
+## $coefs
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    0.525     0.667     0.787 0.454    
+## 2 x              0.918     0.108     8.54  0.0000273
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    0.525     0.667     0.787 0.454    
+## 2 x              0.918     0.108     8.54  0.0000273
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    0.525     0.667     0.787 0.454    
+## 2 x              0.918     0.108     8.54  0.0000273
+```
+]
+
+&lt;style&gt;
+.panel1-listas2-auto {
+  color: black;
+  width: 32.6666666666667%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-listas2-auto {
+  color: black;
+  width: 65.3333333333333%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-listas2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Listas (cont.)
+
+- Una lista puede contener elementos de diferentes longitudes. Por ejemplo, puedes tener una lista con un vector de longitud 5 y una matriz de dimensiones `\(3 \times 3\)` como elementos. También puedes anidar listas dentro de listas para crear estructuras de datos más complejas.
+
+--
+
+- Las listas son estructuras de datos muy flexibles y se utilizan comúnmente para almacenar resultados de análisis de datos, modelos estadísticos o cualquier otro tipo de objeto que necesite agrupar y organizar múltiples elementos de manera coherente.
+
+---
+
+## Operaciones a listas
+
+&lt;small&gt;
+
+- Acceder a elementos: Puedes acceder a elementos específicos de una lista utilizando la notación de corchetes `[ ] `y el número de índice correspondiente al elemento que deseas acceder. Por ejemplo, `mi_lista[[1]]` accede al primer elemento de la lista.
+
+- Asignar valores a elementos: Puedes asignar nuevos valores a elementos específicos de una lista utilizando la notación de corchetes `[ ]` y el número de índice correspondiente al elemento que deseas modificar. Por ejemplo, `mi_lista[[1]] &lt;- nuevo_valor` asigna un nuevo valor al primer elemento de la lista.
+
+- Añadir elementos: Puedes añadir nuevos elementos a una lista utilizando la función `append()`. Por ejemplo, `mi_lista &lt;- append(mi_lista, nuevo_elemento)` añade un nuevo elemento al final de la lista.
+
+- Obtener la longitud de una lista: Puedes obtener la longitud de una lista utilizando la función `length()`. Por ejemplo, `longitud &lt;- length(mi_lista)` devuelve la longitud de la lista.
+
+- Combinar listas: Puedes combinar varias listas en una sola utilizando la función `c()`. Por ejemplo, `nueva_lista &lt;- c(lista1, lista2)` combina las listas `lista1` y `lista2` en una nueva lista.
+
+- Iterar sobre elementos de una lista: Puedes utilizar bucles como `for` o funciones como `lapply()` o `map()`.
+&lt;/small&gt;
+
+---
+
+class: center, inverse, middle
+
+# Programación Funcional
+
+---
+
+## Programación Funcional
+
+La programación funcional es un paradigma de programación que se basa en el uso de funciones como elementos de primera clase y en la aplicación de funciones para transformar y manipular datos. 
+
+--
+
+Es decir utilizaremos una `funcion` como argumento.
+
+--
+
+La principal función que utilizaremos es `map` del paquete `purrr`. 
+
+Si bien existe `lapply` en `base` utilizaremos `map` tiene ciertas ventajas en sintaxis, y mejores especificación de errores. Por ejemplo si existe un error se mencionará que índice tuvo el problema.
+
+---
+
+## La función `map`
+
+La función `map` se utiliza para aplicar una función a cada elemento de una estructura de datos, como una lista, un vector o un data frame, y devuelve una nueva estructura de datos con los resultados de aplicar esa función a cada elemento.
+
+
+&lt;img src="images/purrr/map.png" width="30%" style="display: block; margin: auto;" /&gt;
+
+--
+
+Como mencionamos, utilzaremos funciones como argumentos. La sintaxis en será algo del estilo:
+
+```r
+map(lista, mi_funcion)
+```
+
+
+---
+
+## La función `map` (cont.)
+
+
+Internamente es _similar_ a:
+
+```r
+salida &lt;- vector("list", length(x))
+
+for (i in 1:lenth(lista)) {
+  salida[[i]] &lt;- mi_funcion(lista[[i]])
+}
+
+salida
+```
+
+--
+
+Se dice que *el `map` escribe el `for` por ti*.
+
+La ganancia de utilizar `map` y la familia de funciones de `purrr` es la 
+consistencia en la sintaxis, expresividad, manejo de errores, implementación de proceso en paralelo.
+
+
+---
+
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt;
+.panel1-mapex-auto[
+
+```r
+*library(purrr)
+```
+]
+ 
+.panel2-mapex-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt;
+.panel1-mapex-auto[
+
+```r
+library(purrr)
+*set.seed(123)
+```
+]
+ 
+.panel2-mapex-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt;
+.panel1-mapex-auto[
+
+```r
+library(purrr)
+set.seed(123)
+
+*x &lt;- round(c(1: 3) + runif(3), 2)
+```
+]
+ 
+.panel2-mapex-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt;
+.panel1-mapex-auto[
+
+```r
+library(purrr)
+set.seed(123)
+
+x &lt;- round(c(1: 3) + runif(3), 2)
+*x 
+```
+]
+ 
+.panel2-mapex-auto[
+
+```
+## [1] 1.29 2.79 3.41
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt;
+.panel1-mapex-auto[
+
+```r
+library(purrr)
+set.seed(123)
+
+x &lt;- round(c(1: 3) + runif(3), 2)
+x
+
+*map(x, log)
+```
+]
+ 
+.panel2-mapex-auto[
+
+```
+## [1] 1.29 2.79 3.41
+```
+
+```
+## [[1]]
+## [1] 0.2546422
+## 
+## [[2]]
+## [1] 1.026042
+## 
+## [[3]]
+## [1] 1.226712
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt;
+.panel1-mapex-auto[
+
+```r
+library(purrr)
+set.seed(123)
+
+x &lt;- round(c(1: 3) + runif(3), 2)
+x
+
+map(x, log)
+
+*log(x)
+```
+]
+ 
+.panel2-mapex-auto[
+
+```
+## [1] 1.29 2.79 3.41
+```
+
+```
+## [[1]]
+## [1] 0.2546422
+## 
+## [[2]]
+## [1] 1.026042
+## 
+## [[3]]
+## [1] 1.226712
+```
+
+```
+## [1] 0.2546422 1.0260416 1.2267123
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt;
+.panel1-mapex-auto[
+
+```r
+library(purrr)
+set.seed(123)
+
+x &lt;- round(c(1: 3) + runif(3), 2)
+x
+
+map(x, log)
+
+log(x)
+
+*log(x, base = 10)
+```
+]
+ 
+.panel2-mapex-auto[
+
+```
+## [1] 1.29 2.79 3.41
+```
+
+```
+## [[1]]
+## [1] 0.2546422
+## 
+## [[2]]
+## [1] 1.026042
+## 
+## [[3]]
+## [1] 1.226712
+```
+
+```
+## [1] 0.2546422 1.0260416 1.2267123
+```
+
+```
+## [1] 0.1105897 0.4456042 0.5327544
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt;
+.panel1-mapex-auto[
+
+```r
+library(purrr)
+set.seed(123)
+
+x &lt;- round(c(1: 3) + runif(3), 2)
+x
+
+map(x, log)
+
+log(x)
+
+log(x, base = 10)
+
+*map(x, log, base = 10)
+```
+]
+ 
+.panel2-mapex-auto[
+
+```
+## [1] 1.29 2.79 3.41
+```
+
+```
+## [[1]]
+## [1] 0.2546422
+## 
+## [[2]]
+## [1] 1.026042
+## 
+## [[3]]
+## [1] 1.226712
+```
+
+```
+## [1] 0.2546422 1.0260416 1.2267123
+```
+
+```
+## [1] 0.1105897 0.4456042 0.5327544
+```
+
+```
+## [[1]]
+## [1] 0.1105897
+## 
+## [[2]]
+## [1] 0.4456042
+## 
+## [[3]]
+## [1] 0.5327544
+```
+]
+
+&lt;style&gt;
+.panel1-mapex-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-mapex-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-mapex-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt; (cont.)
+.panel1-mapex2-auto[
+
+```r
+*library(datos)
+```
+]
+ 
+.panel2-mapex2-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt; (cont.)
+.panel1-mapex2-auto[
+
+```r
+library(datos)
+
+*modelos &lt;- list(
+* simple = millas ~ cilindrada,
+* challenger = millas ~ cilindrada + peso,
+* champion = millas ~ cilindrada + cilindrada +
+*   eje + forma
+*) 
+```
+]
+ 
+.panel2-mapex2-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt; (cont.)
+.panel1-mapex2-auto[
+
+```r
+library(datos)
+
+modelos &lt;- list(
+  simple = millas ~ cilindrada,
+  challenger = millas ~ cilindrada + peso,
+  champion = millas ~ cilindrada + cilindrada +
+    eje + forma
+)
+
+*map(modelos, lm, data = mtautos)
+```
+]
+ 
+.panel2-mapex2-auto[
+
+```
+## $simple
+## 
+## Call:
+## .f(formula = .x[[i]], data = ..1)
+## 
+## Coefficients:
+## (Intercept)   cilindrada  
+##    29.59985     -0.04122  
+## 
+## 
+## $challenger
+## 
+## Call:
+## .f(formula = .x[[i]], data = ..1)
+## 
+## Coefficients:
+## (Intercept)   cilindrada         peso  
+##    34.96055     -0.01772     -3.35083  
+## 
+## 
+## $champion
+## 
+## Call:
+## .f(formula = .x[[i]], data = ..1)
+## 
+## Coefficients:
+## (Intercept)   cilindrada          eje        forma  
+##    18.95485     -0.02991      2.01875      1.77288
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt; (cont.)
+.panel1-mapex2-auto[
+
+```r
+library(datos)
+
+modelos &lt;- list(
+  simple = millas ~ cilindrada,
+  challenger = millas ~ cilindrada + peso,
+  champion = millas ~ cilindrada + cilindrada +
+    eje + forma
+)
+
+map(modelos, lm, data = mtautos) |&gt;
+* map(broom::glance)
+```
+]
+ 
+.panel2-mapex2-auto[
+
+```
+## $simple
+## # A tibble: 1 × 12
+##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.718         0.709  3.25      76.5 9.38e-10     1  -82.1  170.  175.
+## # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+## 
+## $challenger
+## # A tibble: 1 × 12
+##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.781         0.766  2.92      51.7 2.74e-10     2  -78.1  164.  170.
+## # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+## 
+## $champion
+## # A tibble: 1 × 12
+##   r.squared adj.r.squared sigma statistic      p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.742         0.714  3.22      26.8 0.0000000222     3  -80.7  171.  179.
+## # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt; (cont.)
+.panel1-mapex2-auto[
+
+```r
+library(datos)
+
+modelos &lt;- list(
+  simple = millas ~ cilindrada,
+  challenger = millas ~ cilindrada + peso,
+  champion = millas ~ cilindrada + cilindrada +
+    eje + forma
+)
+
+map(modelos, lm, data = mtautos) |&gt;
+  map(broom::glance) |&gt;
+* list_rbind(names_to = "modelo")
+```
+]
+ 
+.panel2-mapex2-auto[
+
+```
+## # A tibble: 3 × 13
+##   modelo     r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC
+##   &lt;chr&gt;          &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1 simple         0.718         0.709  3.25      76.5 9.38e-10     1  -82.1  170.
+## 2 challenger     0.781         0.766  2.92      51.7 2.74e-10     2  -78.1  164.
+## 3 champion       0.742         0.714  3.22      26.8 2.22e- 8     3  -80.7  171.
+## # ℹ 4 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+]
+
+&lt;style&gt;
+.panel1-mapex2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-mapex2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-mapex2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+## Funciones anónimas 
+
+Funciones anónimas o funciones lambda sonciones que se definen sin asignarles un nombre explícito.
+
+--
+
+En lugar de utilizar la forma tradicional de definir una función con el nombre y la palabra clave `function`, las funciones anónimas se definen directamente en el contexto en el que se utilizan.
+
+
+
+```r
+(function(x){ x + 5})(1:3)
+```
+
+```
+## [1] 6 7 8
+```
+
+```r
+map_dbl(1:3, function(x){ x + 5})
+```
+
+```
+## [1] 6 7 8
+```
+
+
+---
+
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt; y funciones lamda (cont.)
+.panel1-mapex3-auto[
+
+```r
+*library(datos)
+```
+]
+ 
+.panel2-mapex3-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt; y funciones lamda (cont.)
+.panel1-mapex3-auto[
+
+```r
+library(datos)
+
+*modelos &lt;- list(
+* simple = millas ~ cilindrada,
+* challenger = millas ~ cilindrada + peso,
+* champion = millas ~ cilindrada + cilindrada +
+*   eje + forma
+*) 
+```
+]
+ 
+.panel2-mapex3-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt; y funciones lamda (cont.)
+.panel1-mapex3-auto[
+
+```r
+library(datos)
+
+modelos &lt;- list(
+  simple = millas ~ cilindrada,
+  challenger = millas ~ cilindrada + peso,
+  champion = millas ~ cilindrada + cilindrada +
+    eje + forma
+)
+
+*map(modelos, function(formula){
+
+* mod  &lt;- lm(formula, data = mtautos)
+* coef &lt;- broom::tidy(mod)
+* coef
+
+* })
+```
+]
+ 
+.panel2-mapex3-auto[
+
+```
+## $simple
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)  29.6      1.23        24.1  3.58e-21
+## 2 cilindrada   -0.0412   0.00471     -8.75 9.38e-10
+## 
+## $challenger
+## # A tibble: 3 × 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)  35.0      2.16        16.2  4.91e-16
+## 2 cilindrada   -0.0177   0.00919     -1.93 6.36e- 2
+## 3 peso         -3.35     1.16        -2.88 7.43e- 3
+## 
+## $champion
+## # A tibble: 4 × 5
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)  19.0      7.24         2.62 0.0142 
+## 2 cilindrada   -0.0299   0.00854     -3.50 0.00156
+## 3 eje           2.02     1.55         1.30 0.204  
+## 4 forma         1.77     1.65         1.08 0.291
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;map&lt;/code&gt; y funciones lamda (cont.)
+.panel1-mapex3-auto[
+
+```r
+library(datos)
+
+modelos &lt;- list(
+  simple = millas ~ cilindrada,
+  challenger = millas ~ cilindrada + peso,
+  champion = millas ~ cilindrada + cilindrada +
+    eje + forma
+)
+
+map(modelos, function(formula){
+
+  mod  &lt;- lm(formula, data = mtautos)
+  coef &lt;- broom::tidy(mod)
+  coef
+
+  }) |&gt;
+* list_rbind(names_to = "modelo")
+```
+]
+ 
+.panel2-mapex3-auto[
+
+```
+## # A tibble: 9 × 6
+##   modelo     term        estimate std.error statistic  p.value
+##   &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 simple     (Intercept)  29.6      1.23        24.1  3.58e-21
+## 2 simple     cilindrada   -0.0412   0.00471     -8.75 9.38e-10
+## 3 challenger (Intercept)  35.0      2.16        16.2  4.91e-16
+## 4 challenger cilindrada   -0.0177   0.00919     -1.93 6.36e- 2
+## 5 challenger peso         -3.35     1.16        -2.88 7.43e- 3
+## 6 champion   (Intercept)  19.0      7.24         2.62 1.42e- 2
+## 7 champion   cilindrada   -0.0299   0.00854     -3.50 1.56e- 3
+## 8 champion   eje           2.02     1.55         1.30 2.04e- 1
+## 9 champion   forma         1.77     1.65         1.08 2.91e- 1
+```
+]
+
+&lt;style&gt;
+.panel1-mapex3-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-mapex3-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-mapex3-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Variantes del `map`
+
+
+- `map_dbl()`, `map_lgl()` y `map_chr()` son variantes de la función `map()` que están diseñadas para aplicar una función a una estructura de datos y obtener un resultado específico.
+
+--
+
+- `map2()`: Se utiliza cuando se desea aplicar una función a dos vectores o listas simultáneamente, tomando elementos correspondientes de cada uno de ellos. Toma como argumentos los dos vectores o listas.
+
+--
+
+- `pmap()`: Generalización del `map` y `map2`. Se utiliza cuando se desea aplicar una función a múltiples argumentos provenientes de vectores o listas.
+
+--
+
+- `walk()`: Se utiliza cuando se desea aplicar una función a una estructura de datos sin necesidad de retornar un resultado. De la misma forma sus variantes `walk2` y `pwalk`.
+
+
+---
+
+## Procesamiento en paralelo
+
+Las funciones `map` iteran de uno en uno utilizando un solo núcleo del procesador. Por lo que 
+no utilizan toda el poder de cómputo del computador.
+
+--
+
+El objetivo de `furrr` es combinar la familia de funciones de mapeo de `purrr` con las capacidades de procesamiento paralelo del paquete `future`. 
+
+El resultado son reemplazos prácticamente idénticos de las funciones de purrr, como `map()` y `map2_dbl()`,
+que pueden ser sustituidas por sus equivalentes en `furrr`, `future_map()` y `future_map2_dbl()`, 
+para realizar mapeos en paralelo.
+
+
+
+
+---
+
+count: false
+ 
+## Ejemplo &lt;code&gt;furrr&lt;/code&gt;
+.panel1-furrrex-auto[
+
+```r
+*library(furrr)
+```
+]
+ 
+.panel2-furrrex-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;furrr&lt;/code&gt;
+.panel1-furrrex-auto[
+
+```r
+library(furrr)
+
+*funcion_suma_lenta &lt;- function(x){
+* Sys.sleep(1)
+* x + 5
+*} 
+```
+]
+ 
+.panel2-furrrex-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;furrr&lt;/code&gt;
+.panel1-furrrex-auto[
+
+```r
+library(furrr)
+
+funcion_suma_lenta &lt;- function(x){
+  Sys.sleep(1)
+  x + 5
+}
+
+*x &lt;- 1:10
+```
+]
+ 
+.panel2-furrrex-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;furrr&lt;/code&gt;
+.panel1-furrrex-auto[
+
+```r
+library(furrr)
+
+funcion_suma_lenta &lt;- function(x){
+  Sys.sleep(1)
+  x + 5
+}
+
+x &lt;- 1:10
+
+*system.time({
+* map(x, funcion_suma_lenta)
+*})
+```
+]
+ 
+.panel2-furrrex-auto[
+
+```
+##    user  system elapsed 
+##    0.00    0.00   10.22
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;furrr&lt;/code&gt;
+.panel1-furrrex-auto[
+
+```r
+library(furrr)
+
+funcion_suma_lenta &lt;- function(x){
+  Sys.sleep(1)
+  x + 5
+}
+
+x &lt;- 1:10
+
+system.time({
+  map(x, funcion_suma_lenta)
+})
+
+*library(furrr)
+```
+]
+ 
+.panel2-furrrex-auto[
+
+```
+##    user  system elapsed 
+##    0.00    0.00   10.24
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;furrr&lt;/code&gt;
+.panel1-furrrex-auto[
+
+```r
+library(furrr)
+
+funcion_suma_lenta &lt;- function(x){
+  Sys.sleep(1)
+  x + 5
+}
+
+x &lt;- 1:10
+
+system.time({
+  map(x, funcion_suma_lenta)
+})
+
+library(furrr)
+
+*plan(multisession, workers = 5)
+```
+]
+ 
+.panel2-furrrex-auto[
+
+```
+##    user  system elapsed 
+##    0.02    0.00   10.21
+```
+]
+
+---
+count: false
+ 
+## Ejemplo &lt;code&gt;furrr&lt;/code&gt;
+.panel1-furrrex-auto[
+
+```r
+library(furrr)
+
+funcion_suma_lenta &lt;- function(x){
+  Sys.sleep(1)
+  x + 5
+}
+
+x &lt;- 1:10
+
+system.time({
+  map(x, funcion_suma_lenta)
+})
+
+library(furrr)
+
+plan(multisession, workers = 5)
+
+*system.time({
+* future_map(x, funcion_suma_lenta)
+*})
+```
+]
+ 
+.panel2-furrrex-auto[
+
+```
+##    user  system elapsed 
+##    0.00    0.00   10.24
+```
+
+```
+##    user  system elapsed 
+##    0.01    0.00    4.43
+```
+]
+
+&lt;style&gt;
+.panel1-furrrex-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-furrrex-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-furrrex-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
 
 
 
