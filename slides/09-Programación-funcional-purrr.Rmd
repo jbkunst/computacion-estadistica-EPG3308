@@ -48,9 +48,78 @@ de procesamiento. Por tanto será necesario a veces crear nuestras propias funci
 1. Repito más de una vez un procedimiento (varias instrucciones). En esta situación sería útil
 encapsular dicho procedimiento en una función. La ventaja
 
-1. Trabajo en un equipo
+1. Trabajo en un equipo, integrantes utilizan a menudo ciertos tipos de datos 
+y requieren ciertos análsis adhoc (paquetes).
 
-<!-- # ```{r out.width="70%", fig.align='center', echo=FALSE} -->
-<!-- # knitr::include_graphics("images/data-science.svg") -->
-<!-- # ``` -->
+
+---
+
+## Estructra de una función
+
+```r
+nombre_de_la_funcion <- function(argumentos) {
+  # Cuerpo de la función: código que se 
+  # ejecutará cuando se llame a la función.
+  # Puedes incluir: 
+  # - declaraciones de nuevas variables, 
+  # - operaciones
+  # - condicionales, bucles, etc.
+  # - comentarios!
+  
+  # Puedes definir variables locales dentro de la función
+  variable_local <- otra_funcion(argumentos)
+  
+  # Puedes realizar cálculos o realizar operaciones con los argumentos de la función
+  resultado <- argumentos + variable_local
+  
+  # Puedes usar la función "return" 
+  # para devolver un resultado al final de la función
+  # Pero usualmente se usa `resultado`
+
+  return(resultado)
+}
+```
+
+---
+
+## Estructura de una función (cont.)
+
+- `nombre_de_la_funcion`: Debes elegir un nombre descriptivo que indique la tarea que realiza la función.
+
+- `argumentos`: Son los valores de entrada que puedes pasar a la función. Puedes tener cero o más argumentos separados por comas. Dentro del cuerpo de la función, puedes utilizar estos argumentos como variables para realizar operaciones.
+
+- `cuerpo de la función`: Es el bloque de código que define las operaciones y acciones que se llevarán a cabo cuando la función sea llamada. Es código R que se ejecuta línea a línea.
+
+- `return(resultado)`: La función `return` se utiliza para devolver **un** resultado específico cuando la función es llamada. Puedes devolver cualquier tipo de objeto en R (números, vectores, matrices, listas, etc.).
+
+
+---
+
+`r flipbookr::chunk_reveal("funciones", title = "## Ejemplo de funciones", widths = c(1, 1))`
+
+```{r funciones, include = FALSE}
+saludo <- function(){
+  return("Hola")
+}
+
+saludo() 
+try(saludo("Tulio"))
+
+saludo_custom <- function(nombre){
+  paste("Hola", nombre)
+}
+
+saludo_custom("Juanin") 
+try(saludo_custom())
+
+saludo_custom_default <- function(nombre = "Desconocid(a|o|e)"){
+  paste("Hola", nombre)
+}
+
+saludo_custom_default("Bodoque")
+saludo_custom_default()
+```
+
+
+
 
