@@ -737,6 +737,18 @@ ggplot(dfm, aes(error)) +
 
 ---
 
+## Ejercicio 2
+
+Considere los datos `idyob10k` del paquete `klassets` que contiene
+información del año de nacimiento (aproximado, con ruido) y id (aproximado, con ruido).
+
+
+1. Explore los datos. Mencione si existen comportamientos particulares en la muestra
+1. Ajuste 3 modelos (sin muestra de validación) y evalue el RMSE.
+1. Realice algunas predicciones.
+
+---
+
 ## Ejercicio 3
 
 Considere los datos `data_xy_fit_pred.csv` en la carpeta `data/` del repositorio
