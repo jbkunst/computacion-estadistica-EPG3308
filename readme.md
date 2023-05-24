@@ -68,6 +68,8 @@ En particular, las clases están planificadas de la siguiente manera:
     htmlwidgets</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/08-Comunicacion-rmarkdown-quarto.html)
 9.  [Programación Funcional <code><small>purrr
     furrr</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/09-Programación-funcional-purrr.html)
+10. [Introducción al
+    modelamiento](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/10-Introducción-al-modelamiento.html)
 
 ### Repositorio
 

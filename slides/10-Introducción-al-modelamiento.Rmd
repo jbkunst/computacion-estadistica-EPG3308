@@ -1,7 +1,7 @@
 ---
 title: "Computación Estadística EPG3308"
 pagetitle: "10-Introducción-al-modelamiento"
-subtitle: "10 Introducción al modelamiento <code><small></small></code>"
+subtitle: "10 Introducción al modelamiento"
 author: "<br>Joshua Kunst<br>@jbkunst"
 date: '`r Sys.Date()`'
 output:
