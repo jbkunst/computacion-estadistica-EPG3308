@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>10-Introducción-al-modelamiento</title>
+    <meta charset="utf-8" />
+    <meta name="author" content=" Joshua Kunst @jbkunst" />
+    <meta name="date" content="2023-05-24" />
+    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+.title[
+# Computación Estadística EPG3308
+]
+.subtitle[
+## 10 Introducción al modelamiento <code><small></small></code>
+]
+.author[
+### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
+]
+.date[
+### 2023-05-24
+]
+
+---
+
+
+
+
+
+class: center, inverse, middle
+
+# Introducción al modelamiento
+
+---
+
+## Modelamiento
+
+En un principio pensaremos como el modelamiento a la _simplificación_ de un fenómeno.
+
+Supongamos un fenómeno/evento observable y registramos dos medidas `\((x, y)\)`, y supongamos además
+que observamos esto `\(n\)` veces teniendo dicha cantidad de pares `\((x_i, y_i)\)`.
+
+La idea es representar dicho fenómeno, o relación entre las variables `\(x\)` e `\(y\)` a través de
+una función o regla más sencilla.
+
+Esta representación no servirá para:
+
+- **Entender** como se relacionan estas variables, es decir, como varia una variable
+a medida que la otra cambia.
+
+- Realizar **predicciones** en caso que el costo de observar un `\(y_j\)` dado un `\(x_j\)` sea alto,
+o demore cierto tiempo en observar. Ejemplo seria que             
+
+---
+
+## Fenómeno
+
+
+
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-2-1.svg" width="100%" /&gt;
+
+Supongamos este fenómeno, en donde `\(x\)` puede ser _cantidad de cafeína ingerida_ e `\(y\)`
+_tiempo en horas de aceleramiento cardiaco_ en ciertos pacientes/ratones.
+
+---
+
+## Primer modelo
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-3-1.svg" width="100%" /&gt;
+
+En este caso particular, una idea primera interpretación sería postular que `\(\operatorname{y} = \alpha + \beta_{1}\operatorname{x} + \epsilon\)`.
+
+
+---
+
+## Primer modelo: Entendimiento
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-4-1.svg" width="100%" /&gt;
+
+Una posible _modelo_ es `\(\operatorname{\widehat{y}} = 2.22 + 0.02\operatorname{x}\)`. De esta forma, a través de _esta_ representacón podemos mencionar que por cada `\(1\)` unidad de `\(x\)`, la de `\(y\)` aumenta en `\(0.02\)`. 
+
+---
+
+## Primer modelo: Generar predicciones
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-5-1.svg" width="100%" /&gt;
+
+De la misma forma podemos predecir que un paciente al cual se le da `\(75\)` unidades, sufrirá
+`\(3.49\)` horas de _aceleramiento cardiaco_.
+
+
+---
+
+## ¿Cuál/Qué es el mejor modelo?
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-6-1.svg" width="100%" /&gt;
+
+Hay 20 modelos en el gráfico (algunos malos!!). Necesitamos encontrar el mejor modelo especificando nuestra intuición que un buen modelo está _cerca de los datos_. Necesitamos una manera de **cuantificar** la distancia entre los datos y un modelo.
+
+---
+
+## Medir el error de un modelo
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-7-1.svg" width="100%" /&gt;
+
+Podemos definir un buen modelo cuando las distancias `\(\hat{e}_i\)` (lineas azules) en promedio son
+pequeñas. El modelo mostrado es el "mejor" modelo en términos de minimizar `\(\sum \hat{e}^2_i/n\)` y dentro 
+de la _familia de modelos_ `\(\operatorname{y} = \alpha + \beta_{1}\operatorname{x} + \epsilon\)`.
+
+
+---
+
+## Falencias de un _modelo_
+
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-8-1.svg" width="100%" /&gt;
+
+Si bien el modelo presentado simple, fácil de explicar y entender, esta _familia de modelos_ 
+no es suficientemente flexible para _pasar cerca_ de todos los puntos.
+
+---
+
+## Modelo con mayor &lt;small&gt;&lt;small&gt;sobre&lt;/small&gt;&lt;/small&gt;ajuste
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-9-1.svg" width="100%" /&gt;
+
+Eventualmente se puede tener un modelo que pase por todos los puntos, sin embargo
+estos modelos _sobre ajustan_, en lugar de aprender las tendencias implicitas, memorizan
+el ruido y no pueden generalizar datos más allá de los de entrenamiento.
+
+---
+
+class: center, inverse, middle
+
+# Sesgo y Varianza (Bias &amp; Variance)
+
+---
+
+## Sesgo y Varianza (Bias &amp; Variance)
+
+El sesgo y la varianza son dos fuentes importantes de error en las predicciones de un modelo y juegan un papel fundamental en el análisis del rendimiento y la generalización de los modelos predictivos.
+
+El objetivo deseado al entrenar un modelo es encontrar un equilibrio adecuado entre el sesgo y la varianza. Un modelo con un alto sesgo y baja varianza puede no capturar las relaciones complejas en los datos, mientras que un modelo con baja varianza y alto sesgo puede sobreajustar los datos de entrenamiento y no generalizar bien.
+
+---
+
+## Sesgo
+
+El sesgo se refiere a la tendencia sistemática de un modelo a cometer errores consistentes y sistemáticos en sus predicciones.
+
+--
+
+Un modelo con alto sesgo tiende a simplificar en exceso las relaciones subyacentes en los datos, lo que puede llevar a una falta de ajuste o subajuste (underfitting).
+
+--
+
+Por lo tanto, el sesgo se asocia con una capacidad limitada del modelo para capturar la complejidad del problema o los patrones importantes en los datos.
+
+---
+
+## Varianza
+
+La varianza se refiere a la sensibilidad del modelo a las fluctuaciones o el ruido en los datos de entrenamiento.
+
+--
+
+Un modelo con alta varianza es muy sensible a las pequeñas variaciones en los datos de entrenamiento y puede ajustarse demasiado (overfitting) a los datos específicos de entrenamiento. 
+
+--
+
+Como resultado, puede tener dificultades para generalizar correctamente a nuevos datos. Un modelo con alta varianza puede capturar el ruido o las características irrelevantes en los datos de entrenamiento, lo que lleva a un rendimiento deficiente en nuevos datos.
+
+---
+
+## Visualmente
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-10-1.svg" width="100%" /&gt;
+
+---
+
+## Soluciones al sesgo y varianza
+
+Para abordar el sesgo y la varianza, se utilizan técnicas como:
+
+- Selección de características, Regularización.
+- Muestra de validación. Validación cruzada.
+
+Estas técnicas ayudan a encontrar un equilibrio óptimo entre la capacidad del modelo para ajustarse a los datos de entrenamiento y su capacidad para generalizar a nuevos datos.
+
+https://jbkunst.shinyapps.io/bias-variance/
+
+
+---
+
+## Muestra de desarrollo y validación
+
+La muestra de desarrollo (train) y la muestra de validación (test) son dos conjuntos de datos utilizados en el proceso de construcción y evaluación de modelos predictivos.
+
+**Muestra de desarrollo**: Es un subconjunto de los datos disponibles que se utiliza para entrenar y ajustar el modelo y obtener los parámetros asociados.
+
+--
+
+**Muestra de validación**: Es un subconjunto separado de los datos que se utiliza para evaluar el rendimiento y la capacidad de generalización del modelo entrenado. No se utiliza durante el proceso de ajuste del modelo lo que ayuda a:
+
+- Obtener una evaluación _real_ del rendimiento.
+- Selección del mejor modelo.
+- Simular el comportamiento del modelo en escenarios reales.
+
+---
+
+class: center, inverse, middle
+
+# Tipos de Modelos
+
+---
+
+## Tipos de Modelos (versión regresión)
+
+Existen diferentes tipos de modelos predictivos, cada uno con sus propios supuestos y parámetros. Algunos más complejos que otros:
+
+**Regresión lineal**: Este modelo asume una relación lineal entre la variable de respuesta y las variables predictoras. Se supone que los errores de predicción son independientes y siguen una distribución normal. Los parámetros de la regresión lineal son los coeficientes de pendiente y el intercepto. Se puede ajustar a través del método de mínimos cuadrados ordinarios.
+
+--
+
+**Árbol de regresión**: Este modelo utiliza una estructura de árbol para dividir los datos en diferentes regiones. Cada nodo representa una pregunta sobre una variable predictora, y las ramas representan las posibles respuestas. Los árboles de regresión se ajustan dividiendo el conjunto de datos en función de la reducción en la suma de los cuadrados de los errores. Los parámetros incluyen la profundidad máxima del árbol y el criterio de división.
+
+---
+
+## Tipos de Modelos (cont.)
+
+**Suavizamiento Loess**: Es un método no paramétrico utilizado para ajustar curvas suaves a los datos. Se basa en la idea de ajustar un polinomio localmente en función de un vecindario de puntos cercanos. El suavizamiento Loess se basa en la suposición de que los datos tienen una estructura subyacente suave. Los parámetros incluyen la ventana de suavizado y el grado del polinomio.
+
+--
+
+**Random Forest**: Este modelo combina múltiples árboles de decisión mediante la técnica de "bagging" (ensamblado). Cada árbol se entrena en una muestra aleatoria de datos y las predicciones se promedian para obtener una predicción final. Random Forest asume que los árboles son débilmente correlacionados y se beneficia de la diversidad de los árboles. Los parámetros incluyen el número de árboles y la cantidad de variables predictoras consideradas en cada división.
+
+&lt;!-- Cada tipo de modelo tiene sus supuestos y parámetros específicos, y la elección adecuada depende del problema en cuestión, los datos disponibles y las características de interés. Es importante comprender estos aspectos para seleccionar y ajustar el modelo adecuado para obtener resultados precisos y confiables. --&gt;
+
+---
+
+## Familias de modelos
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-11-1.svg" width="100%" /&gt;
+
+---
+
+## Ejercicio 1
+
+Comentemos el siguiente código al ejecutarlo en R.
+
+
+```r
+library(klassets)
+set.seed(123)
+
+df &lt;- sim_xy(n = 1000, x_dist = runif)
+df &lt;- dplyr::mutate(df, y = y + 2*sin(5 * x) + sin(10 * x))
+
+plot(df)
+
+plot(fit_linear_model(df))
+plot(fit_linear_model(df, order = 3))
+
+plot(fit_regression_tree(df))
+plot(fit_regression_tree(df, maxdepth = 2))
+
+plot(fit_loess(df))
+plot(fit_loess(df, span = 0.1))
+
+plot(fit_regression_random_forest(df))
+plot(fit_regression_random_forest(df, ntree = 1))
+```
+
+---
+
+class: center, inverse, middle
+
+# Ajustar modelos y realizar predicciones en R
+
+---
+
+## Ajustar (fit) Modelos
+
+Para ajustar un modelo se debe tener claro:
+
+- La **familia** de modelos a ajustar: Regresion lineal, Random Forest, Arbol de Regresión, etc.
+- La variable **respuesta**, la que se quiere modelar o predecir.
+- Los **datos** a los cuales se le aplica el algoritmo o modelo.
+- Parámetros adicionales del modelo.
+
+--
+
+Veremos algunos ejemplos utilizando los siguientes datos:
+
+
+```
+## Rows: 250
+## Columns: 2
+## $ x &lt;dbl&gt; 0.06247733, 1.04671118, 2.46136845, 4.20595335, 4.55564994, 4.583116…
+## $ y &lt;dbl&gt; 1.000000, 1.904407, 2.013910, 1.740931, 2.165251, 2.609197, 2.352074…
+```
+
+
+---
+
+## Ajustar (fit) Modelos en R (cont.)
+
+
+
+
+De forma general la sintaxis es como sigue:
+
+`funcion_ajuste(formula, datos, parámetros)`
+
+Por ejemplo:
+
+
+```r
+lm(y ~ x, data = datos)
+
+ranger(y ~ ., data = datos, num.trees = 500, max.depth = 10)
+
+ctree(y ~ ., data = datos, control = ctree_control(maxdepth = 3))
+```
+
+De forma general la formula `y ~ .` significa, modelar `\(y\)` en función
+de todas las columnas en `data`.
+
+
+---
+
+count: false
+ 
+## Ajustar Modelo lineal
+.panel1-fit_lm-auto[
+
+```r
+*mod_lm &lt;- lm(y ~ x, data = df)
+```
+]
+ 
+.panel2-fit_lm-auto[
+
+]
+
+---
+count: false
+ 
+## Ajustar Modelo lineal
+.panel1-fit_lm-auto[
+
+```r
+mod_lm &lt;- lm(y ~ x, data = df)
+
+*mod_lm
+```
+]
+ 
+.panel2-fit_lm-auto[
+
+```
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Coefficients:
+## (Intercept)            x  
+##     2.22317      0.01691
+```
+]
+
+---
+count: false
+ 
+## Ajustar Modelo lineal
+.panel1-fit_lm-auto[
+
+```r
+mod_lm &lt;- lm(y ~ x, data = df)
+
+mod_lm
+
+*broom::tidy(mod_lm)
+```
+]
+ 
+.panel2-fit_lm-auto[
+
+```
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Coefficients:
+## (Intercept)            x  
+##     2.22317      0.01691
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)   2.22    0.0327        67.9 3.13e-162
+## 2 x             0.0169  0.000568      29.8 8.04e- 84
+```
+]
+
+---
+count: false
+ 
+## Ajustar Modelo lineal
+.panel1-fit_lm-auto[
+
+```r
+mod_lm &lt;- lm(y ~ x, data = df)
+
+mod_lm
+
+broom::tidy(mod_lm)
+
+*broom::glance(mod_lm)
+```
+]
+ 
+.panel2-fit_lm-auto[
+
+```
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Coefficients:
+## (Intercept)            x  
+##     2.22317      0.01691
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)   2.22    0.0327        67.9 3.13e-162
+## 2 x             0.0169  0.000568      29.8 8.04e- 84
+```
+
+```
+## # A tibble: 1 × 12
+##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.781         0.780 0.245      886. 8.04e-84     1  -2.12  10.2  20.8
+## # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+]
+
+&lt;style&gt;
+.panel1-fit_lm-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-fit_lm-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-fit_lm-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+count: false
+ 
+## Ajustar Random Forest
+.panel1-fit_rf-auto[
+
+```r
+*library(ranger)
+```
+]
+ 
+.panel2-fit_rf-auto[
+
+]
+
+---
+count: false
+ 
+## Ajustar Random Forest
+.panel1-fit_rf-auto[
+
+```r
+library(ranger)
+
+*mod_rf &lt;- ranger(
+* y ~ x,
+* data = df,
+* num.trees = 500,
+* max.depth = 10
+* )
+```
+]
+ 
+.panel2-fit_rf-auto[
+
+]
+
+---
+count: false
+ 
+## Ajustar Random Forest
+.panel1-fit_rf-auto[
+
+```r
+library(ranger)
+
+mod_rf &lt;- ranger(
+  y ~ x,
+  data = df,
+  num.trees = 500,
+  max.depth = 10
+  )
+
+*mod_rf
+```
+]
+ 
+.panel2-fit_rf-auto[
+
+```
+## Ranger result
+## 
+## Call:
+##  ranger(y ~ x, data = df, num.trees = 500, max.depth = 10) 
+## 
+## Type:                             Regression 
+## Number of trees:                  500 
+## Sample size:                      250 
+## Number of independent variables:  1 
+## Mtry:                             1 
+## Target node size:                 5 
+## Variable importance mode:         none 
+## Splitrule:                        variance 
+## OOB prediction error (MSE):       0.06469326 
+## R squared (OOB):                  0.763331
+```
+]
+
+&lt;style&gt;
+.panel1-fit_rf-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-fit_rf-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-fit_rf-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## Ajustar Arbol de Regresión
+.panel1-fit_ar-auto[
+
+```r
+*library(partykit)
+```
+]
+ 
+.panel2-fit_ar-auto[
+
+]
+
+---
+count: false
+ 
+## Ajustar Arbol de Regresión
+.panel1-fit_ar-auto[
+
+```r
+library(partykit)
+
+*mod_ar &lt;- ctree(
+* y ~ x,
+* data = df,
+* control = ctree_control(maxdepth = 3)
+* )
+```
+]
+ 
+.panel2-fit_ar-auto[
+
+]
+
+---
+count: false
+ 
+## Ajustar Arbol de Regresión
+.panel1-fit_ar-auto[
+
+```r
+library(partykit)
+
+mod_ar &lt;- ctree(
+  y ~ x,
+  data = df,
+  control = ctree_control(maxdepth = 3)
+  )
+
+*mod_ar
+```
+]
+ 
+.panel2-fit_ar-auto[
+
+```
+## 
+## Model formula:
+## y ~ x
+## 
+## Fitted party:
+## [1] root
+## |   [2] x &lt;= 31.98206
+## |   |   [3] x &lt;= 13.88061: 2.120 (n = 22, err = 4.3)
+## |   |   [4] x &gt; 13.88061
+## |   |   |   [5] x &lt;= 26.56867: 2.497 (n = 39, err = 2.3)
+## |   |   |   [6] x &gt; 26.56867: 2.755 (n = 14, err = 0.4)
+## |   [7] x &gt; 31.98206
+## |   |   [8] x &lt;= 74.6568
+## |   |   |   [9] x &lt;= 54.68262: 3.123 (n = 63, err = 1.4)
+## |   |   |   [10] x &gt; 54.68262: 3.328 (n = 55, err = 1.4)
+## |   |   [11] x &gt; 74.6568
+## |   |   |   [12] x &lt;= 93.73141: 3.595 (n = 41, err = 0.7)
+## |   |   |   [13] x &gt; 93.73141: 3.787 (n = 16, err = 0.2)
+## 
+## Number of inner nodes:    6
+## Number of terminal nodes: 7
+```
+]
+
+&lt;style&gt;
+.panel1-fit_ar-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-fit_ar-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-fit_ar-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Realizar Predicciones
+
+Para realizar predicciones se debe poseer:
+
+- El modelo ajustado ya con datos.
+- Nuevo datos con las variables utilizadas para su ajuste.
+- Parámetros adicionales del modelo para la predicción
+
+--
+
+A veces se requiere de un parámetro adicional, por ejemplo:
+
+- En el caso de los Random Forest se puede realizar la predicción utilizando solo los primeros `\(n\)` árboles
+- En árboles de clasificación uno puede _predecir_ la clase, o la probabilidad de de la pertenencia a una clase.
+
+---
+
+## Realizar Predicciones en R
+
+De forma general es:
+
+`predict(modelo, nuevosdatos, parámetros_adicionales)`
+
+Por ejemplo:
+
+
+```r
+nuevos_datos &lt;- df[c(1, 20, 30, 50), ]
+
+mod &lt;- lm(y ~ x, data = df)
+
+predict(mod, nuevos_datos)
+```
+
+
+---
+
+count: false
+ 
+## Ejemplo en R
+.panel1-perdict_in_r-auto[
+
+```r
+*set.seed(123)
+```
+]
+ 
+.panel2-perdict_in_r-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo en R
+.panel1-perdict_in_r-auto[
+
+```r
+set.seed(123)
+
+*nuevos_datos &lt;- sample_n(df, 5)
+```
+]
+ 
+.panel2-perdict_in_r-auto[
+
+]
+
+---
+count: false
+ 
+## Ejemplo en R
+.panel1-perdict_in_r-auto[
+
+```r
+set.seed(123)
+
+nuevos_datos &lt;- sample_n(df, 5)
+
+*predict(mod_lm, nuevos_datos)
+```
+]
+ 
+.panel2-perdict_in_r-auto[
+
+```
+##        1        2        3        4        5 
+## 3.287122 3.600648 3.391086 2.383534 3.498915
+```
+]
+
+---
+count: false
+ 
+## Ejemplo en R
+.panel1-perdict_in_r-auto[
+
+```r
+set.seed(123)
+
+nuevos_datos &lt;- sample_n(df, 5)
+
+predict(mod_lm, nuevos_datos)
+
+*predict(mod_ar, nuevos_datos)
+```
+]
+ 
+.panel2-perdict_in_r-auto[
+
+```
+##        1        2        3        4        5 
+## 3.287122 3.600648 3.391086 2.383534 3.498915
+```
+
+```
+##        1        2        3        4        5 
+## 3.327966 3.595138 3.327966 2.120129 3.595138
+```
+]
+
+---
+count: false
+ 
+## Ejemplo en R
+.panel1-perdict_in_r-auto[
+
+```r
+set.seed(123)
+
+nuevos_datos &lt;- sample_n(df, 5)
+
+predict(mod_lm, nuevos_datos)
+
+predict(mod_ar, nuevos_datos)
+
+*predict(mod_rf, nuevos_datos)
+```
+]
+ 
+.panel2-perdict_in_r-auto[
+
+```
+##        1        2        3        4        5 
+## 3.287122 3.600648 3.391086 2.383534 3.498915
+```
+
+```
+##        1        2        3        4        5 
+## 3.327966 3.595138 3.327966 2.120129 3.595138
+```
+
+```
+## Ranger prediction
+## 
+## Type:                             Regression 
+## Sample size:                      5 
+## Number of independent variables:  1
+```
+]
+
+---
+count: false
+ 
+## Ejemplo en R
+.panel1-perdict_in_r-auto[
+
+```r
+set.seed(123)
+
+nuevos_datos &lt;- sample_n(df, 5)
+
+predict(mod_lm, nuevos_datos)
+
+predict(mod_ar, nuevos_datos)
+
+predict(mod_rf, nuevos_datos)
+
+*predict(mod_rf, nuevos_datos)$predictions
+```
+]
+ 
+.panel2-perdict_in_r-auto[
+
+```
+##        1        2        3        4        5 
+## 3.287122 3.600648 3.391086 2.383534 3.498915
+```
+
+```
+##        1        2        3        4        5 
+## 3.327966 3.595138 3.327966 2.120129 3.595138
+```
+
+```
+## Ranger prediction
+## 
+## Type:                             Regression 
+## Sample size:                      5 
+## Number of independent variables:  1
+```
+
+```
+## [1] 3.300002 3.506854 3.223819 2.627391 3.583375
+```
+]
+
+&lt;style&gt;
+.panel1-perdict_in_r-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-perdict_in_r-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-perdict_in_r-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Métricas de Evaluación
+
+Las metricas de evaluación, nos ayudan a resumir que tan bien se ajusta o predice un modelo.
+
+Consideremos los siguientes datos en una tarea de _regresión_, es decir, predecir
+una variable continua `\(y\)`.
+
+
+```
+## # A tibble: 5 × 3
+##       x     y prediction
+##   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+## 1 46.6   3.37       3.01
+## 2 21.7   2.31       2.59
+## 3 91.3   3.69       3.77
+## 4 96.7   3.84       3.86
+## 5  9.48  2.89       2.38
+```
+
+El error de predicción se define como `\(e_i = y_i - prediction_i\)` y existen diferentes
+métricas para este conjunto de valores `\(e_i\)` para resumir que tan grandes son, y poder así
+comparar con otros modelos o en otros datos.
+
+---
+
+## Métricas de Evaluación: Regresión
+
+En el caso de regresión, las metricas se basan en resumir (promedio, mediana, etc)
+los errores de predicción `\(e_i\)`
+
+&lt;br/&gt;
+
+$$\text{Mean squared error: MSE} = {mean(e^2_i)} = {\sum{e^2_i/n}} $$
+
+$$\text{Root mean squared error: RMSE} = \sqrt{mean(e^2_i)} = \sqrt{\sum{e^2_i/n}} $$
+
+`$$\text{Mean absolute percentage error: MAPE} = mean(|p_i|) = \sqrt{\sum{|p_i|/n}} = \sqrt{\sum{|(e_i/y_i)|/n}}$$`
+
+
+---
+
+count: false
+ 
+## Métricas de Evaluación: Regresión (en R)
+.panel1-metrics_regression-auto[
+
+```r
+*df_metrix_example
+```
+]
+ 
+.panel2-metrics_regression-auto[
+
+```
+## # A tibble: 5 × 3
+##       x     y prediction
+##   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+## 1 46.6   3.37       3.01
+## 2 21.7   2.31       2.59
+## 3 91.3   3.69       3.77
+## 4 96.7   3.84       3.86
+## 5  9.48  2.89       2.38
+```
+]
+
+---
+count: false
+ 
+## Métricas de Evaluación: Regresión (en R)
+.panel1-metrics_regression-auto[
+
+```r
+df_metrix_example |&gt;
+* mutate(
+*   error = y - prediction,
+*   percentage_error = error/y
+*   )
+```
+]
+ 
+.panel2-metrics_regression-auto[
+
+```
+## # A tibble: 5 × 5
+##       x     y prediction   error percentage_error
+##   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;            &lt;dbl&gt;
+## 1 46.6   3.37       3.01  0.359           0.106  
+## 2 21.7   2.31       2.59 -0.275          -0.119  
+## 3 91.3   3.69       3.77 -0.0732         -0.0198 
+## 4 96.7   3.84       3.86 -0.0145         -0.00377
+## 5  9.48  2.89       2.38  0.504           0.174
+```
+]
+
+---
+count: false
+ 
+## Métricas de Evaluación: Regresión (en R)
+.panel1-metrics_regression-auto[
+
+```r
+df_metrix_example |&gt;
+  mutate(
+    error = y - prediction,
+    percentage_error = error/y
+    ) |&gt;
+* summarise(
+*   mse = mean(error^2),
+*   rmse = sqrt(mse),
+*   mape = mean(abs(percentage_error))
+* )
+```
+]
+ 
+.panel2-metrics_regression-auto[
+
+```
+## # A tibble: 1 × 3
+##      mse  rmse   mape
+##    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 0.0927 0.305 0.0847
+```
+]
+
+&lt;style&gt;
+.panel1-metrics_regression-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-metrics_regression-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-metrics_regression-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+## Ejemplo RUT vs año de nacimiento
+
+
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-18-1.svg" width="100%" /&gt;
+
+---
+
+## Ejemplo: RUT vs año de nacimiento - Modelos
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/modelos_en_rut_anionac-1.svg" width="100%" /&gt;
+
+---
+
+## Ejemplo: RUT vs año de nacimiento - Métricas
+
+
+```
+## # A tibble: 6 × 3
+##   modelo                                    RMSE    MAPE
+##   &lt;fct&gt;                                    &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Random Forest                             3.65 0.00123
+## 2 Árboles lineales                          3.71 0.00123
+## 3 Árbol de regresión                        3.93 0.00135
+## 4 Multivariate Adaptive Regression Splines  3.99 0.00132
+## 5 Regresion polinomial local                4.16 0.00140
+## 6 Regresion lineal polinomial               4.17 0.00136
+```
+
+---
+
+## Ejemplo: RUT vs año de nacimiento - Residuos
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-20-1.svg" width="100%" /&gt;
+
+---
+
+## Ejemplo: RUT vs año de nacimiento - Residuos (cont.)
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-21-1.svg" width="100%" /&gt;
+
+---
+
+## Ejercicio 3
+
+Considere los datos `data_xy_fit_pred.csv` en la carpeta `data/` del repositorio
+del curso.
+
+1. Conozca los datos. Grafíquelos. 
+1. Separe los datos en 2 `data.frame`s, `dtrain` y `dtest` utilizando la columna
+`muestra` en los datos de su agrado.
+1. Con `dtrain` ajuste al menos 2 modelos.
+1. En `dtrain` agregue las columnas de valores predichos asociadas a cada uno
+de los modelos. Vuelva a graficar incluyendo los resultados de los modelos.
+1. Obtenga el error cuadrático medio de ambos modelos en la muestra de entrenamiento. 
+¿Cuál es mejor?
+1. Repita los dos puntos anteriores con la muestra de desarrollo.
+
+---
+
+## Ejercicio 3 &lt;small&gt;(cont)&lt;/small&gt;
+
+Modifique la columna `muestra` tal que los valores de `x` menores a 750 sean
+de entrenamiento y el resto sean para validación. Repita todo ejercicio anterior 
+con esta nueva marca. No olvide graficar.
+
+&lt;img src="10-Introducción-al-modelamiento_files/figure-html/unnamed-chunk-22-1.svg" width="100%" /&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
