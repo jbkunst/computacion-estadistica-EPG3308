@@ -772,7 +772,7 @@ Modifique la columna `muestra` tal que los valores de `x` menores a 750 sean
 de entrenamiento y el resto sean para validación. Repita todo ejercicio anterior 
 con esta nueva marca. No olvide graficar.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height = 4}
 set.seed(123)
 
 N <- 1000
