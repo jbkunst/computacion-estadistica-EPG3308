@@ -65,7 +65,7 @@ que observamos esto $n$ veces teniendo dicha cantidad de pares $(x_i, y_i)$.
 La idea es representar dicho fenómeno, o relación entre las variables $x$ e $y$ a través de
 una función o regla más sencilla.
 
-Esta representación no servirá para:
+Esta representación nos servirá para:
 
 - **Entender** como se relacionan estas variables, es decir, como varia una variable
 a medida que la otra cambia.
