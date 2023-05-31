@@ -31,12 +31,15 @@ class: left, middle, title-slide
 
 
 
+class: center, inverse, middle
+
+# Árboles de Decisión
+
+---
+
 ## Antes de empezar
 
-- Repositorio del curso https://github.com/jbkunst/intro-machine-learning 
-encontraremos el programa, clases, datos.
-
-- La bibliografía principal será _Tidy modelling with R_ https://www.tmwr.org/, 
+En caso de querer profundizar modelamiento predictivo, un buen material es _Tidy modelling with R_ https://www.tmwr.org/, 
 nos servirá como guía en nuestro programa.
 
 - Como introducción utilizaremos el blogpost [Machine Learning for Everyone](https://vas3k.com/blog/machine_learning/).
@@ -118,9 +121,9 @@ dominio del correo? Ver siguiente [link](https://leasetruk.medium.com/naive-baye
 
 ## Árbol de Decisión (Decision tree)
 
-[Una introducción visual al machine learning](http://www.r2d3.us/visual-intro-to-machine-learning-part-1/).
-
 &lt;img src="images/decision-tree.jpg" width="70%" style="display: block; margin: auto;" /&gt;
+
+Revisar [Una introducción visual al machine learning](http://www.r2d3.us/visual-intro-to-machine-learning-part-1/)!.
 
 
 ---
@@ -131,6 +134,22 @@ count: false
 .panel1-arbol-auto[
 
 ```r
+*set.seed(123)
+```
+]
+ 
+.panel2-arbol-auto[
+
+]
+
+---
+count: false
+ 
+## Árbol de Decisión en R
+.panel1-arbol-auto[
+
+```r
+set.seed(123)
 *library(tidyverse)
 ```
 ]
@@ -146,6 +165,7 @@ count: false
 .panel1-arbol-auto[
 
 ```r
+set.seed(123)
 library(tidyverse)
 *library(partykit)
 ```
@@ -162,6 +182,7 @@ count: false
 .panel1-arbol-auto[
 
 ```r
+set.seed(123)
 library(tidyverse)
 library(partykit)
 
@@ -180,6 +201,7 @@ count: false
 .panel1-arbol-auto[
 
 ```r
+set.seed(123)
 library(tidyverse)
 library(partykit)
 
@@ -200,6 +222,7 @@ count: false
 .panel1-arbol-auto[
 
 ```r
+set.seed(123)
 library(tidyverse)
 library(partykit)
 
@@ -222,6 +245,7 @@ count: false
 .panel1-arbol-auto[
 
 ```r
+set.seed(123)
 library(tidyverse)
 library(partykit)
 
@@ -230,6 +254,31 @@ ruta &lt;- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/pa
 datos &lt;- readr::read_csv(ruta, skip = 2)
 
 datos &lt;- datos |&gt;
+* sample_frac(1)
+```
+]
+ 
+.panel2-arbol-auto[
+
+]
+
+---
+count: false
+ 
+## Árbol de Decisión en R
+.panel1-arbol-auto[
+
+```r
+set.seed(123)
+library(tidyverse)
+library(partykit)
+
+ruta &lt;- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/part_1_data.csv"
+
+datos &lt;- readr::read_csv(ruta, skip = 2)
+
+datos &lt;- datos |&gt;
+  sample_frac(1) |&gt;
 * mutate(in_sf = factor(ifelse(in_sf == 1, "SF", "NY")))
 ```
 ]
@@ -245,6 +294,7 @@ count: false
 .panel1-arbol-auto[
 
 ```r
+set.seed(123)
 library(tidyverse)
 library(partykit)
 
@@ -253,6 +303,7 @@ ruta &lt;- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/pa
 datos &lt;- readr::read_csv(ruta, skip = 2)
 
 datos &lt;- datos |&gt;
+  sample_frac(1) |&gt;
   mutate(in_sf = factor(ifelse(in_sf == 1, "SF", "NY")))
 
 *arbol &lt;- ctree(in_sf ~ ., data = datos)
@@ -270,6 +321,7 @@ count: false
 .panel1-arbol-auto[
 
 ```r
+set.seed(123)
 library(tidyverse)
 library(partykit)
 
@@ -278,69 +330,12 @@ ruta &lt;- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/pa
 datos &lt;- readr::read_csv(ruta, skip = 2)
 
 datos &lt;- datos |&gt;
+  sample_frac(1) |&gt;
   mutate(in_sf = factor(ifelse(in_sf == 1, "SF", "NY")))
 
 arbol &lt;- ctree(in_sf ~ ., data = datos)
 
 *arbol
-```
-]
- 
-.panel2-arbol-auto[
-
-```
-## 
-## Model formula:
-## in_sf ~ beds + bath + price + year_built + sqft + price_per_sqft + 
-##     elevation
-## 
-## Fitted party:
-## [1] root
-## |   [2] elevation &lt;= 30
-## |   |   [3] price_per_sqft &lt;= 1072
-## |   |   |   [4] year_built &lt;= 1970
-## |   |   |   |   [5] beds &lt;= 1
-## |   |   |   |   |   [6] sqft &lt;= 750: NY (n = 27, err = 0.0%)
-## |   |   |   |   |   [7] sqft &gt; 750: NY (n = 11, err = 36.4%)
-## |   |   |   |   [8] beds &gt; 1: NY (n = 33, err = 48.5%)
-## |   |   |   [9] year_built &gt; 1970: SF (n = 46, err = 6.5%)
-## |   |   [10] price_per_sqft &gt; 1072
-## |   |   |   [11] price_per_sqft &lt;= 1465
-## |   |   |   |   [12] year_built &lt;= 1999: NY (n = 49, err = 6.1%)
-## |   |   |   |   [13] year_built &gt; 1999: SF (n = 21, err = 38.1%)
-## |   |   |   [14] price_per_sqft &gt; 1465: NY (n = 113, err = 5.3%)
-## |   [15] elevation &gt; 30
-## |   |   [16] elevation &lt;= 39: SF (n = 22, err = 27.3%)
-## |   |   [17] elevation &gt; 39: SF (n = 170, err = 1.8%)
-## 
-## Number of inner nodes:    8
-## Number of terminal nodes: 9
-```
-]
-
----
-count: false
- 
-## Árbol de Decisión en R
-.panel1-arbol-auto[
-
-```r
-library(tidyverse)
-library(partykit)
-
-ruta &lt;- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/part_1_data.csv"
-
-datos &lt;- readr::read_csv(ruta, skip = 2)
-
-datos &lt;- datos |&gt;
-  mutate(in_sf = factor(ifelse(in_sf == 1, "SF", "NY")))
-
-arbol &lt;- ctree(in_sf ~ ., data = datos)
-
-arbol
-
-# siguiente slide
-*# plot(arbol)  # plot(arbol)
 ```
 ]
  
@@ -409,7 +404,7 @@ arbol
 
 ---
 
-## Árbol de Decisión en R (cont.)
+## Árbol de Decisión en R (cont.) `plot()`
 
 &lt;img src="11-Machine-Learning-Arboles-RF_files/figure-html/unnamed-chunk-5-1.svg" width="100%" /&gt;
 
@@ -440,6 +435,20 @@ Links:
 - https://cran.r-project.org/web/packages/partykit/
 - https://cran.r-project.org/web/packages/ggparty/
 - http://grantmcdermott.com/parttree/index.html
+
+
+---
+
+## Parámetros para generar un Árbol de Decisión
+
+Si bien existen varias formas/métodos/algoritmos de crear árboles (siguiente slides) los
+parámetros usuales son.
+
+1. Profundidad del árbol.
+1. Cantidad (o proporción) mínima de observaciones en nodo terminal.
+1. Tipo de test para seleccionar la variable en un nodo.
+1. Tipo de test para seleccionar el punto para la división del nodo.
+1. _Confianza_ con que se genera un split/nodo.
 
 ---
 
@@ -491,14 +500,362 @@ C5.0, Conditional Inference Trees.
 
 &lt;img src="11-Machine-Learning-Arboles-RF_files/figure-html/unnamed-chunk-13-1.svg" width="100%" /&gt;
 
+---
+
+class: center, inverse, middle
+
+# Métricas de Evaluación 
 
 ---
 
-## Más información sobre Machine Learning
+## Recordar Métricas de Evaluación en caso de Regresión...
+
+En el caso de regresión, las metricas se basan en resumir (promedio, mediana, etc)
+los errores de predicción: `\(e_i = real_i - pred_i\)`.
+
+&lt;br/&gt;
+
+$$\text{Mean squared error: MSE} = {mean(e^2_i)} = {\sum{e^2_i/n}} $$
+
+$$\text{Root mean squared error: RMSE} = \sqrt{mean(e^2_i)} = \sqrt{\sum{e^2_i/n}} $$
+
+`$$\text{Mean absolute percentage error: MAPE} = mean(|p_i|) = \sqrt{\sum{|p_i|/n}} = \sqrt{\sum{|(e_i/y_i)|/n}}$$`
+
+
+---
+
+count: false
+ 
+## Volviendo al caso clasificación
+.panel1-arbol2-auto[
+
+```r
+*datos$in_sf |&gt; head()
+```
+]
+ 
+.panel2-arbol2-auto[
+
+```
+## [1] SF SF NY NY NY SF
+## Levels: NY SF
+```
+]
+
+---
+count: false
+ 
+## Volviendo al caso clasificación
+.panel1-arbol2-auto[
+
+```r
+datos$in_sf |&gt; head()
+
+*predict(arbol) |&gt; head()
+```
+]
+ 
+.panel2-arbol2-auto[
+
+```
+## [1] SF SF NY NY NY SF
+## Levels: NY SF
+```
+
+```
+## 16 17 14 14 14 17 
+## SF SF NY NY NY SF 
+## Levels: NY SF
+```
+]
+
+---
+count: false
+ 
+## Volviendo al caso clasificación
+.panel1-arbol2-auto[
+
+```r
+datos$in_sf |&gt; head()
+
+predict(arbol) |&gt; head()
+
+*predict(arbol, type = "prob") |&gt; head()
+```
+]
+ 
+.panel2-arbol2-auto[
+
+```
+## [1] SF SF NY NY NY SF
+## Levels: NY SF
+```
+
+```
+## 16 17 14 14 14 17 
+## SF SF NY NY NY SF 
+## Levels: NY SF
+```
+
+```
+##            NY         SF
+## 16 0.27272727 0.72727273
+## 17 0.01764706 0.98235294
+## 14 0.94690265 0.05309735
+## 14 0.94690265 0.05309735
+## 14 0.94690265 0.05309735
+## 17 0.01764706 0.98235294
+```
+]
+
+---
+count: false
+ 
+## Volviendo al caso clasificación
+.panel1-arbol2-auto[
+
+```r
+datos$in_sf |&gt; head()
+
+predict(arbol) |&gt; head()
+
+predict(arbol, type = "prob") |&gt; head()
+
+*predict(arbol, type = "prob")[, 1] |&gt; head()
+```
+]
+ 
+.panel2-arbol2-auto[
+
+```
+## [1] SF SF NY NY NY SF
+## Levels: NY SF
+```
+
+```
+## 16 17 14 14 14 17 
+## SF SF NY NY NY SF 
+## Levels: NY SF
+```
+
+```
+##            NY         SF
+## 16 0.27272727 0.72727273
+## 17 0.01764706 0.98235294
+## 14 0.94690265 0.05309735
+## 14 0.94690265 0.05309735
+## 14 0.94690265 0.05309735
+## 17 0.01764706 0.98235294
+```
+
+```
+##         16         17         14         14         14         17 
+## 0.27272727 0.01764706 0.94690265 0.94690265 0.94690265 0.01764706
+```
+]
+
+&lt;style&gt;
+.panel1-arbol2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-arbol2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-arbol2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+##  Métricas de Evaluación caso Clasificación
+
+Existen varias métricas. Podemos agrupar segun si el modelo está predicciendo **categorías** o **probabilidad** de pertenecer a una categoría en particular.
+
+--
+
+En el caso de categorías, con ayuda de la matriz de confusión (siguiente slide) podremos obtener medidas como: Accuracy, Precision, Recall/sensitividad, especificidad.
+
+--
+
+Para un modelo que proporciona probabilidades se utiliza curva ROC, estadístico Kolmogorov-Smirnov, Log-loss.
+
+Dado un punto de corte , límite o _threshold_ podemos categorízar nuestra probabilidad y utilizar las medidas
+para el caso de categorias.
+
+
+---
+
+## Metricas de Evaluación caso Clasificación: categorías
+
+Matriz de confusión:
+
+
+|            |          | **Predicted**|          |
+|:----------:|----------|:------------:|:--------:|
+|            |          |  Positive    | Negative |
+| **Actual** | Positive |     TP       |  FN      |
+|            | Negative |     FP       |  TN      |
+
+
+---
+
+## Metricas de Evaluación caso Clasificación: categorías
+
+Matriz de confusión:
+
+
+|            |          | **Predicted**|          |
+|:----------:|----------|:------------:|:--------:|
+|            |          |  Positive    | Negative |
+| **Actual** | Positive |     TP       |  FN      |
+|            | Negative |     FP       |  TN      |
+
+&lt;br&gt;
+
+`$$Accuracy = \frac{TP + TN}{TP + TN + FP + FN}$$`
+
+--
+
+Es el más simple de entender pero con varias limitantes.
+
+---
+
+## Metricas de Evaluación caso Clasificación: categorías
+
+Matriz de confusión:
+
+
+|            |          | **Predicted**|          |
+|:----------:|----------|:------------:|:--------:|
+|            |          |  Positive    | Negative |
+| **Actual** | Positive |     TP       |  FN      |
+|            | Negative |     FP       |  TN      |
+
+&lt;br&gt;
+
+`$$Precision = \frac{TP}{TP + FP} \hspace{2cm} Recall = \frac{TP}{TP + FN}$$`
+
+--
+
+La `\(Precision\)` nos proporciona información sobre el rendimiento de capturar a los positivos, cuanta seguridad se tiene cuando se predice _positivo_. Mientras que que `\(Recall\)` o `\(sensitivity\)` mide cuanto de los _reales positivos_ son bien predichos por el modelo.
+
+
+---
+
+## Metricas de Evaluación caso Clasificación: categorías
+
+Revisar ejemplo interactivo en https://mlu-explain.github.io/precision-recall/.
+
+Buen resumen tiene wikipedia https://en.wikipedia.org/wiki/Confusion_matrix, https://en.wikipedia.org/wiki/Precision_and_recall
+
+https://www.iartificial.net/precision-recall-f1-accuracy-en-clasificacion/
+
+---
+
+## Metricas de Evaluación caso Clasificación: probabilidad
+
+Bien conocido es el área bajo la curva ROC el cual da una visión global de la relación
+entre recall/senitividad y la especificidad considerando todos los threshold posibles.
+
+Revisar:
+
+- https://mlu-explain.github.io/roc-auc/
+- http://mfviz.com/binary-predictions/
+- http://www.navan.name/roc/
+
+
+--
+
+Estadístico Kolmogorov-Smirnov `\(KS\)` mide la separación de las distribuciones de probabilidad 
+de los positivos y negativos (siguiente slide).
+
+De forma técnica se define como la máxima separación de las distribuciones acumuladas.
+
+---
+
+## Metricas de Evaluación caso Clasificación: probabilidad
+
+&lt;img src="11-Machine-Learning-Arboles-RF_files/figure-html/unnamed-chunk-17-1.svg" width="100%" /&gt;
+
+---
+
+## Ejercicio 1
+
+- Separe los datos `datos_credito` en muestra de desarrollo y validación.
+
+- Realice algunas exploraciones visuales.
+
+- Ajuste un árbol con el paquete `partykit` de profundidad 5 y explore el modelo.
+
+- Calcule las métricas para evaluar el modelo en la muestra de desarrollo y validación.
+
+- Pruebe lo anterior con distintos valores de `maxdepth`.
+
+---
+
+class: center, inverse, middle
+
+# Random Forest
+
+
+---
+
+## Random Forest
+
+
+En Random Forest, se crea un conjunto de árboles de decisión, donde cada árbol se entrena con:
+
+1. Una muestra aleatoria del conjunto de datos de entrenamiento (parámetro `ntree` o similar). 
+2. En cada nodo de división de un árbol, se considera solo un subconjunto aleatorio de características para tomar la decisión (parámetro `mtry`).
+
+--
+
+Cuando se realiza una predicción con Random Forest, cada árbol del conjunto emite una predicción y la clase final se determina por votación o promediando las predicciones.
+
+--
+
+Random Forest tiene varias ventajas: (1) Como su capacidad para manejar conjuntos de datos grandes, (2) lidiar con características faltantes y seleccionar características importantes, (3) es menos propenso al sobreajuste en comparación con un solo árbol de decisión. (n) etc!
+
+https://mlu-explain.github.io/random-forest/
+
+
+---
+
+## Ejercicio 2
+
+- Con los mismos datos del ejericio 1.
+
+- Ajuste un random Forest con el paquete `ranger`.
+
+- Calcule las métricas para evaluar el modelo en la muestra de desarrollo y validación.
+
+---
+
+## Más información
 
 - [Tidy Modeling with R](https://www.tmwr.org/).
-
 - [Machine Learning for Everyone](https://vas3k.com/blog/machine_learning/).
+- [Machine Learning University](https://mlu-explain.github.io/).
 
 
     </textarea>

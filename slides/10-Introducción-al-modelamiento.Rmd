@@ -590,7 +590,7 @@ predict(mod_rf, nuevos_datos)$predictions
 
 ---
 
-## Métricas de Evaluación
+## Métricas de Evaluación (regresión)
 
 Las metricas de evaluación, nos ayudan a resumir que tan bien se ajusta o predice un modelo.
 
