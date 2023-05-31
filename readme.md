@@ -70,6 +70,8 @@ En particular, las clases están planificadas de la siguiente manera:
     furrr</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/09-Programación-funcional-purrr.html)
 10. [Introducción al
     modelamiento](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/10-Introducción-al-modelamiento.html)
+11. [Árboles & Random Forest<code><small> parykit
+    ranger</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/11-Machine-Learning-Arboles-RF.html)
 
 ### Repositorio
 
