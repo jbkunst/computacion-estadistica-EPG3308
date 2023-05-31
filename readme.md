@@ -23,8 +23,6 @@ EPG3308 - Computación Estadística
 
 En particular, las clases están planificadas de la siguiente manera:
 
-<small>
-
 |  Id | Fecha      | Tópico             | Tema                                               | Contenido                                                                                                                                               | Referencias                                                                                                                                      | Info              |
 |----:|:-----------|:-------------------|:---------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------|:------------------|
 |   1 | 2023-03-15 |                    | Bienvenida                                         | Ambiente de trabajo: R, Rstudio, posit.cloud                                                                                                            |                                                                                                                                                  |                   |
@@ -43,8 +41,6 @@ En particular, las clases están planificadas de la siguiente manera:
 |  14 | 2023-06-14 | Aplicaciones       | Por definir/tentativo                              | Modelamiento                                                                                                                                            |                                                                                                                                                  |                   |
 |  15 | 2023-06-21 |                    |                                                    |                                                                                                                                                         |                                                                                                                                                  | pueblos-indigenas |
 |  16 | 2023-06-28 | Aplicaciones       | Por definir/tentativo                              | Shiny                                                                                                                                                   |                                                                                                                                                  | última-clase      |
-
-</small>
 
 ## Material
 
