@@ -148,7 +148,6 @@ ruta <- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/part_
 datos <- readr::read_csv(ruta, skip = 2)
 
 datos <- datos |> 
-  sample_frac(1) |> 
   mutate(in_sf = factor(ifelse(in_sf == 1, "SF", "NY")))
 
 arbol <- ctree(in_sf ~ ., data = datos)
@@ -421,13 +420,21 @@ $$\text{Mean absolute percentage error: MAPE} = mean(|p_i|) = \sqrt{\sum{|p_i|/n
 `r flipbookr::chunk_reveal("arbol2", title = "## Volviendo al caso clasificación", widths = c(1, 1), chunk_options = "fig.height = 2.7, fig.width = 3")`
 
 ```{r arbol2, include = FALSE}
-datos$in_sf |> head()
+set.seed(123)
+datanueva <- sample_n(datos, 5)
 
-predict(arbol) |> head()
+datanueva$in_sf
 
-predict(arbol, type = "prob") |> head()
+predict(arbol, newdata = datanueva)
 
-predict(arbol, type = "prob")[, 1] |> head()
+predict(arbol, newdata = datanueva,
+        type = "prob")
+
+predict(arbol, newdata = datanueva,
+        type = "prob")[, 2]
+
+predict(arbol, newdata = datanueva,
+        type = "node")
 ```
 
 ---

@@ -1,29 +1,35 @@
 library(klassets)
-set.seed(123)
+library(tidyverse)
 
-df <- sim_xy(n = 1000, x_dist = runif)
-df <- dplyr::mutate(df, y = y + 2*sin(5 * x) + sin(10 * x))
+data("idyob10k")
 
-plot(df)
+idyob10k
 
-plot(fit_linear_model(df))
-plot(fit_linear_model(df, order = 3))
+plot(idyob10k)
 
-plot(fit_regression_tree(df))
+idyob10k
 
-plot(fit_regression_tree(df, maxdepth = 0))
-plot(fit_regression_tree(df, maxdepth = 1))
-plot(fit_regression_tree(df, maxdepth = 2))
-plot(fit_regression_tree(df, maxdepth = 3))
+library(ranger)
 
-plot(fit_loess(df))
-plot(fit_loess(df, span = 0.1))
-plot(fit_loess(df, span = 0.01))
-plot(fit_loess(df, span = 5))
+modrf <- ranger(y ~ x, data = idyob10k, num.trees = 1000)
+modrf
 
+dfval <- tibble(
+  x = c(18935022, 28093224, 15180707,  14500000),
+  z = c(1,2,3,4)
+)
 
-plot(fit_regression_random_forest(df))
-plot(fit_regression_random_forest(df, ntree = 1))
+dfval
 
 
-plot(fit_mars(df))
+dfval <- dfval |> 
+  mutate(
+    ypred = predict(modrf, data = dfval)$predictions
+  )
+
+dfval |> 
+  mutate(edad = year(Sys.Date()) - ypred)
+
+
+
+

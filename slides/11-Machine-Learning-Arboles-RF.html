@@ -254,31 +254,6 @@ ruta &lt;- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/pa
 datos &lt;- readr::read_csv(ruta, skip = 2)
 
 datos &lt;- datos |&gt;
-* sample_frac(1)
-```
-]
- 
-.panel2-arbol-auto[
-
-]
-
----
-count: false
- 
-## Árbol de Decisión en R
-.panel1-arbol-auto[
-
-```r
-set.seed(123)
-library(tidyverse)
-library(partykit)
-
-ruta &lt;- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/part_1_data.csv"
-
-datos &lt;- readr::read_csv(ruta, skip = 2)
-
-datos &lt;- datos |&gt;
-  sample_frac(1) |&gt;
 * mutate(in_sf = factor(ifelse(in_sf == 1, "SF", "NY")))
 ```
 ]
@@ -303,7 +278,6 @@ ruta &lt;- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/pa
 datos &lt;- readr::read_csv(ruta, skip = 2)
 
 datos &lt;- datos |&gt;
-  sample_frac(1) |&gt;
   mutate(in_sf = factor(ifelse(in_sf == 1, "SF", "NY")))
 
 *arbol &lt;- ctree(in_sf ~ ., data = datos)
@@ -330,7 +304,6 @@ ruta &lt;- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/pa
 datos &lt;- readr::read_csv(ruta, skip = 2)
 
 datos &lt;- datos |&gt;
-  sample_frac(1) |&gt;
   mutate(in_sf = factor(ifelse(in_sf == 1, "SF", "NY")))
 
 arbol &lt;- ctree(in_sf ~ ., data = datos)
@@ -530,14 +503,48 @@ count: false
 .panel1-arbol2-auto[
 
 ```r
-*datos$in_sf |&gt; head()
+*set.seed(123)
+```
+]
+ 
+.panel2-arbol2-auto[
+
+]
+
+---
+count: false
+ 
+## Volviendo al caso clasificación
+.panel1-arbol2-auto[
+
+```r
+set.seed(123)
+*datanueva &lt;- sample_n(datos, 5)
+```
+]
+ 
+.panel2-arbol2-auto[
+
+]
+
+---
+count: false
+ 
+## Volviendo al caso clasificación
+.panel1-arbol2-auto[
+
+```r
+set.seed(123)
+datanueva &lt;- sample_n(datos, 5)
+
+*datanueva$in_sf
 ```
 ]
  
 .panel2-arbol2-auto[
 
 ```
-## [1] SF SF NY NY NY SF
+## [1] SF SF NY NY NY
 ## Levels: NY SF
 ```
 ]
@@ -549,22 +556,25 @@ count: false
 .panel1-arbol2-auto[
 
 ```r
-datos$in_sf |&gt; head()
+set.seed(123)
+datanueva &lt;- sample_n(datos, 5)
 
-*predict(arbol) |&gt; head()
+datanueva$in_sf
+
+*predict(arbol, newdata = datanueva)
 ```
 ]
  
 .panel2-arbol2-auto[
 
 ```
-## [1] SF SF NY NY NY SF
+## [1] SF SF NY NY NY
 ## Levels: NY SF
 ```
 
 ```
-## 16 17 14 14 14 17 
-## SF SF NY NY NY SF 
+##  1  2  3  4  5 
+## SF SF NY NY NY 
 ## Levels: NY SF
 ```
 ]
@@ -576,35 +586,38 @@ count: false
 .panel1-arbol2-auto[
 
 ```r
-datos$in_sf |&gt; head()
+set.seed(123)
+datanueva &lt;- sample_n(datos, 5)
 
-predict(arbol) |&gt; head()
+datanueva$in_sf
 
-*predict(arbol, type = "prob") |&gt; head()
+predict(arbol, newdata = datanueva)
+
+*predict(arbol, newdata = datanueva,
+*       type = "prob")
 ```
 ]
  
 .panel2-arbol2-auto[
 
 ```
-## [1] SF SF NY NY NY SF
+## [1] SF SF NY NY NY
 ## Levels: NY SF
 ```
 
 ```
-## 16 17 14 14 14 17 
-## SF SF NY NY NY SF 
+##  1  2  3  4  5 
+## SF SF NY NY NY 
 ## Levels: NY SF
 ```
 
 ```
-##            NY         SF
-## 16 0.27272727 0.72727273
-## 17 0.01764706 0.98235294
-## 14 0.94690265 0.05309735
-## 14 0.94690265 0.05309735
-## 14 0.94690265 0.05309735
-## 17 0.01764706 0.98235294
+##           NY         SF
+## 1 0.27272727 0.72727273
+## 2 0.01764706 0.98235294
+## 3 0.94690265 0.05309735
+## 4 0.94690265 0.05309735
+## 5 0.94690265 0.05309735
 ```
 ]
 
@@ -615,42 +628,104 @@ count: false
 .panel1-arbol2-auto[
 
 ```r
-datos$in_sf |&gt; head()
+set.seed(123)
+datanueva &lt;- sample_n(datos, 5)
 
-predict(arbol) |&gt; head()
+datanueva$in_sf
 
-predict(arbol, type = "prob") |&gt; head()
+predict(arbol, newdata = datanueva)
 
-*predict(arbol, type = "prob")[, 1] |&gt; head()
+predict(arbol, newdata = datanueva,
+        type = "prob")
+
+*predict(arbol, newdata = datanueva,
+*       type = "prob")[, 2]
 ```
 ]
  
 .panel2-arbol2-auto[
 
 ```
-## [1] SF SF NY NY NY SF
+## [1] SF SF NY NY NY
 ## Levels: NY SF
 ```
 
 ```
-## 16 17 14 14 14 17 
-## SF SF NY NY NY SF 
+##  1  2  3  4  5 
+## SF SF NY NY NY 
 ## Levels: NY SF
 ```
 
 ```
-##            NY         SF
-## 16 0.27272727 0.72727273
-## 17 0.01764706 0.98235294
-## 14 0.94690265 0.05309735
-## 14 0.94690265 0.05309735
-## 14 0.94690265 0.05309735
-## 17 0.01764706 0.98235294
+##           NY         SF
+## 1 0.27272727 0.72727273
+## 2 0.01764706 0.98235294
+## 3 0.94690265 0.05309735
+## 4 0.94690265 0.05309735
+## 5 0.94690265 0.05309735
 ```
 
 ```
-##         16         17         14         14         14         17 
-## 0.27272727 0.01764706 0.94690265 0.94690265 0.94690265 0.01764706
+##          1          2          3          4          5 
+## 0.72727273 0.98235294 0.05309735 0.05309735 0.05309735
+```
+]
+
+---
+count: false
+ 
+## Volviendo al caso clasificación
+.panel1-arbol2-auto[
+
+```r
+set.seed(123)
+datanueva &lt;- sample_n(datos, 5)
+
+datanueva$in_sf
+
+predict(arbol, newdata = datanueva)
+
+predict(arbol, newdata = datanueva,
+        type = "prob")
+
+predict(arbol, newdata = datanueva,
+        type = "prob")[, 2]
+
+*predict(arbol, newdata = datanueva,
+*       type = "node")
+```
+]
+ 
+.panel2-arbol2-auto[
+
+```
+## [1] SF SF NY NY NY
+## Levels: NY SF
+```
+
+```
+##  1  2  3  4  5 
+## SF SF NY NY NY 
+## Levels: NY SF
+```
+
+```
+##           NY         SF
+## 1 0.27272727 0.72727273
+## 2 0.01764706 0.98235294
+## 3 0.94690265 0.05309735
+## 4 0.94690265 0.05309735
+## 5 0.94690265 0.05309735
+```
+
+```
+##          1          2          3          4          5 
+## 0.72727273 0.98235294 0.05309735 0.05309735 0.05309735
+```
+
+```
+##  1  2  3  4  5 
+## 16 17 14 14 14
 ```
 ]
 
