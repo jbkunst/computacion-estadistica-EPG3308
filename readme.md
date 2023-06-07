@@ -68,8 +68,8 @@ En particular, las clases están planificadas de la siguiente manera:
     modelamiento](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/10-Introducción-al-modelamiento.html)
 11. [Árboles & Random Forest<code><small> parykit
     ranger</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/11-Machine-Learning-Arboles-RF.html)
-12. [Aplicaciones Machine
-    Learning](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/12-Aplicación-Machine-Learning-Arboles-RF.html)
+12. [Aplicación Machine
+    Learning](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/12-Aplicación-Machine-Learning.html)
 
 ### Repositorio
 
