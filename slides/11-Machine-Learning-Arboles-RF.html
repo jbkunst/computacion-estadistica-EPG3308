@@ -4,7 +4,7 @@
     <title>11-Árboles-&amp;-Random-Forest</title>
     <meta charset="utf-8" />
     <meta name="author" content=" Joshua Kunst @jbkunst" />
-    <meta name="date" content="2023-05-31" />
+    <meta name="date" content="2023-06-07" />
     <script src="libs/header-attrs-2.21/header-attrs.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" />
@@ -23,7 +23,7 @@ class: left, middle, title-slide
 ### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
 ]
 .date[
-### 2023-05-31
+### 2023-06-07
 ]
 
 ---
@@ -874,20 +874,6 @@ De forma técnica se define como la máxima separación de las distribuciones ac
 
 ---
 
-## Ejercicio 1
-
-- Separe los datos `datos_credito` en muestra de desarrollo y validación.
-
-- Realice algunas exploraciones visuales.
-
-- Ajuste un árbol con el paquete `partykit` de profundidad 5 y explore el modelo.
-
-- Calcule las métricas para evaluar el modelo en la muestra de desarrollo y validación.
-
-- Pruebe lo anterior con distintos valores de `maxdepth`.
-
----
-
 class: center, inverse, middle
 
 # Random Forest
@@ -912,17 +898,6 @@ Cuando se realiza una predicción con Random Forest, cada árbol del conjunto em
 Random Forest tiene varias ventajas: (1) Como su capacidad para manejar conjuntos de datos grandes, (2) lidiar con características faltantes y seleccionar características importantes, (3) es menos propenso al sobreajuste en comparación con un solo árbol de decisión. (n) etc!
 
 https://mlu-explain.github.io/random-forest/
-
-
----
-
-## Ejercicio 2
-
-- Con los mismos datos del ejericio 1.
-
-- Ajuste un random Forest con el paquete `ranger`.
-
-- Calcule las métricas para evaluar el modelo en la muestra de desarrollo y validación.
 
 ---
 

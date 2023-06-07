@@ -1,0 +1,247 @@
+---
+title: "Aplicación Machine Learning"
+pagetitle: "12-Aplicación-Machine-Learning"
+subtitle: "12 Aplicación Machine Learning"
+author: "<br>Joshua Kunst<br>@jbkunst"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    self_contained: no
+    css: ["css/xaringan-themer.css", "css/styles.css"]
+    lib_dir: libs    
+    nature:
+      titleSlideClass: ["left", "middle"]
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+source(here::here("slides/xaringan-knitr-setup.R"))
+
+library(patchwork)
+# remotes::install_github("grantmcdermott/parttree")
+library(parttree) # geom_parttree
+library(ggparty)
+library(showtext)
+font_add_google("Alegreya Sans SC")
+```
+
+class: center, inverse, middle
+
+# Modelos Clasificación
+
+---
+
+## Datos 
+
+<small>
+$x$: elevación al cuadrado, $y$: precio por pie cuadrado, $reponse$: en SF.
+</small>
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  fig.height = 5.5,
+  # fig.width  = 9,
+  # out.width = "80%",
+  # fig.align = " center",
+  echo = FALSE
+)
+```
+
+```{r, echo=FALSE, fig.height=4.5}
+library(tidyverse)
+library(klassets)
+
+rescale01 <- function(x){
+  (x - min(x))/(max(x) - min(x))
+}
+
+df_default <- sim_response_xy(n = 10)
+# class(df_default)
+
+ruta <- "https://raw.githubusercontent.com/jadeyee/r2d3-part-1-data/master/part_1_data.csv"
+df <- readr::read_csv(ruta, skip = 2)
+df <- df |> 
+  mutate(
+    response = as.factor(in_sf == 1),
+    elevation_sqrt = round(sqrt(elevation), 2)
+    ) |> 
+  select(response, x = elevation_sqrt, y = price_per_sqft) |> 
+  # mutate(x = rescale01(x), y = rescale01(y)) |> 
+  filter(TRUE)
+  
+class(df) <- class(df_default)
+
+plot(df)
+```
+
+---
+
+## Arbol (`type` arg)
+
+```{r, echo=FALSE}
+# fig.height=5 default
+df_rt1 <- fit_classification_tree(df)
+df_rt2 <- fit_classification_tree(df, type = "response")
+df_rt3 <- fit_classification_tree(df, type = "node")
+
+p1 <- plot(df_rt1) + labs(subtitle = "prob")
+p2 <- plot(df_rt2) + labs(subtitle = "response")
+p3 <- plot(df_rt3) + labs(subtitle = "node")
+
+p1 + p2 + p3 +
+  patchwork::plot_layout(guides = "collect")
+```
+
+---
+
+## Arbol (`maxdepth` arg)
+
+```{r, echo=FALSE}
+maxdepths <- c(1, 2, 3, 4)
+
+maxdepths |> 
+  purrr::map(fit_classification_tree, df = df, type = "prob") |> 
+  purrr::map(plot) |> 
+  map2(.y = maxdepths, function(x, y){
+    x +
+      labs(title = str_glue("Depth: {y}")) +
+        theme(legend.position = "none")
+  }) |> 
+  purrr::reduce(`+`) +
+  patchwork::plot_layout(guides = "collect") 
+```
+
+
+---
+
+## Regression logística
+
+
+$$p(x)=\frac{1}{1+e^{-(\beta_0+\beta_1 \times elevationsqrt + \beta_2 \times pricepersqft )}}$$
+
+Revisar https://chart-studio.plotly.com/~florianh/149.embed
+
+Mini ejercicios: 
+
+1. Realizar versiones marginales de regresión logística.
+1. Replicar 3D con los datos.
+
+--
+
+Notar que uno puede agregar más variables incorporando por ejemplo $elevationsqrt^n$ y/o $pricepersqft^n$.
+
+
+---
+
+## Regresión Logística (`order` arg)
+
+```{r, echo=FALSE}
+orders <- c(1, 2, 3, 4)
+
+orders |> 
+  purrr::map(fit_logistic_regression, df = df) |> 
+  purrr::map(plot) |> 
+  map2(.y = orders, function(x, y){
+    x +
+      labs(title = str_glue("Orden: {y}")) +
+        theme(legend.position = "none")
+  }) |> 
+  purrr::reduce(`+`) +
+  patchwork::plot_layout(guides = "collect") 
+```
+
+---
+
+## Random Forest (`ntree` arg)
+
+```{r, echo=FALSE}
+ntree <- c(1, 5,  50, 100)
+
+ntree |> 
+  purrr::map(fit_classification_random_forest, df = df, type = "prob") |> 
+  purrr::map(plot) |> 
+  map2(.y = ntree, function(x, y){
+    x +
+      labs(title = str_glue("#trees: {y}")) +
+        theme(legend.position = "none")
+  }) |> 
+  purrr::reduce(`+`) +
+  patchwork::plot_layout(guides = "collect") 
+```
+
+
+---
+
+## K Nearest Neighbours (`neighbours` arg)
+
+```{r, echo=FALSE}
+neighbours <- c(3, 5, 10, 100)
+
+purrr::map(neighbours, fit_knn, df = df) |> 
+  purrr::map(plot) |> 
+   map2(.y = neighbours, function(x, y){
+    x +
+      labs(title = str_glue("Neighbours: {y}")) +
+        theme(legend.position = "none")
+  }) |> 
+  purrr::reduce(`+`) +
+  patchwork::plot_layout(guides = "collect") 
+```
+
+---
+
+## K Nearest Neighbours (`order` arg)
+
+```{r, echo=FALSE}
+df2 <- df |> 
+  mutate(x = rescale01(x)) |> 
+  mutate(y = rescale01(y))
+
+purrr::map(neighbours, fit_knn, df = df2) |> 
+  purrr::map(plot) |> 
+   map2(.y = neighbours, function(x, y){
+    x +
+      labs(title = str_glue("Neighbours: {y}")) +
+        theme(legend.position = "none")
+  }) |> 
+  purrr::reduce(`+`) +
+  patchwork::plot_layout(guides = "collect") 
+```
+
+
+---
+
+class: center, inverse, middle
+
+# Ejercicios
+
+
+---
+
+## Ejercicio 1
+
+- Separe los datos `datos_credito` en muestra de desarrollo y validación.
+
+- Realice algunas exploraciones visuales.
+
+- Ajuste un árbol con el paquete `partykit` de profundidad 5 y explore el modelo.
+
+- Calcule las métricas para evaluar el modelo en la muestra de desarrollo y validación.
+
+- Pruebe lo anterior con distintos valores de `maxdepth`.
+
+---
+
+## Ejercicio 2
+
+- Con los mismos datos del ejericio 1.
+
+- Ajuste un random Forest con el paquete `ranger`.
+
+- Calcule las métricas para evaluar el modelo en la muestra de desarrollo y validación.
