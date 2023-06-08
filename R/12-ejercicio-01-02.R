@@ -72,9 +72,7 @@ datos |>
   # mutate(estado = as.numeric(estado == "bueno")) |>
   pivot_longer(cols = starts_with("pred"), names_to = "modelo", values_to = "pred") |>
   group_by(muestra, modelo) |>
-  summarise(
-    auc = Metrics::auc(estado, pred)
-  ) |>
+  summarise(auc = Metrics::auc(estado, pred), .groups = "drop") |>
   ungroup() |>
   pivot_wider(names_from = muestra, values_from = auc) |> 
   arrange(desc(tst))
@@ -87,13 +85,13 @@ datos_tst <- datos |>
 
 datos_tst
 
-vi_2 <- variable_importance(m2, data = datos_tst, iterations = 100)
+vi_2 <- variable_importance(m2, data = datos_tst, iterations = 10)
 plot(vi_2)
 
 vi_3 <- variable_importance(
   m3, 
   data = datos_tst, 
-  iterations = 100,
+  iterations = 10,
   predict_function = function(m, d){  predict(m, newdata = d, type = "response") }
   )
 plot(vi_3)
@@ -105,8 +103,17 @@ vi_4 <- variable_importance(
   iterations = 10,
   predict_function = function(m, d){  predict(m, data = d, type = "response")$predictions[,1] }
 )
-
 plot(vi_4)
 
-plot(vi_2, vi_3, vi_4)
+plot(vi_2, vi_3, vi_4) +
+  scale_y_continuous(
+    name = "1 - AUC",
+    position = "right",
+    limits = c(0.1, 0.4),
+    sec.axis = sec_axis(
+      ~ 1 - ., 
+      labels = scales::percent, 
+      name = "AUC",
+      )
+  ) 
 
