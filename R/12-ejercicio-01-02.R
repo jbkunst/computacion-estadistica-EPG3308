@@ -42,7 +42,7 @@ datos_trn <- datos |>
 # plot(m1)
 # text(m1)
 
-m2 <- ctree(estado ~ ., data = datos_trn, control = ctree_control(maxdepth = 4))
+m2 <- ctree(estado ~ ., data = datos_trn, control = ctree_control(maxdepth = Inf))
 plot(m2)
 
 # rl ----------------------------------------------------------------------
