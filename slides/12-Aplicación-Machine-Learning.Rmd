@@ -120,7 +120,7 @@ maxdepths |>
 
 ---
 
-## Regression logística
+## Regresión logística
 
 
 $$p(x)=\frac{1}{1+e^{-(\beta_0+\beta_1 \times elevationsqrt + \beta_2 \times pricepersqft )}}$$
@@ -196,7 +196,7 @@ purrr::map(neighbours, fit_knn, df = df) |>
 
 ---
 
-## K Nearest Neighbours (`order` arg)
+## K Nearest Neighbours (luego de estandarizar)
 
 ```{r, echo=FALSE}
 df2 <- df |> 

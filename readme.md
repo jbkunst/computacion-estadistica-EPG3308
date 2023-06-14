@@ -1,15 +1,15 @@
 EPG3308 - Computación Estadística
 ================
 
-- <a href="#programa" id="toc-programa">Programa</a>
-- <a href="#material" id="toc-material">Material</a>
-  - <a href="#slides" id="toc-slides">Slides</a>
-  - <a href="#repositorio" id="toc-repositorio">Repositorio</a>
-- <a href="#bibliografía" id="toc-bibliografía">Bibliografía</a>
-- <a href="#horarios" id="toc-horarios">Horarios</a>
-  - <a href="#cátedra" id="toc-cátedra">Cátedra</a>
-  - <a href="#ayudantía" id="toc-ayudantía">Ayudantía</a>
-- <a href="#evaluaciones" id="toc-evaluaciones">Evaluaciones</a>
+- [Programa](#programa)
+- [Material](#material)
+  - [Slides](#slides)
+  - [Repositorio](#repositorio)
+- [Bibliografía](#bibliografía)
+- [Horarios](#horarios)
+  - [Cátedra](#cátedra)
+  - [Ayudantía](#ayudantía)
+- [Evaluaciones](#evaluaciones)
 
 ## Programa
 
@@ -38,9 +38,9 @@ En particular, las clases están planificadas de la siguiente manera:
 |  11 | 2023-05-24 | Modelamiento       | Elementos del modelamiento predictivo              | Definiciones, error, sesgo, varianza. Métricas de valuación: RMSE, MAPE.                                                                                | <https://es.r4ds.hadley.nz/modelos-conceptos-b%C3%A1sicos.html>                                                                                  |                   |
 |  12 | 2023-05-31 | Modelamiento       | Árboles y Random Forest                            | Definición ML, métricas evaluación KS, ROC, matriz de confusión. Árboles y RF.                                                                          |                                                                                                                                                  |                   |
 |  13 | 2023-06-07 | Modelamiento       | Árboles y Random Forest                            | Clase aplicada en ejemplo de créditos otorgados.                                                                                                        |                                                                                                                                                  |                   |
-|  14 | 2023-06-14 | Comunicar 2        | Shiny Aplicaciones                                 | Aplicaciones en shiny, paquetes auxiliares, htmlwidgets v2                                                                                              |                                                                                                                                                  |                   |
+|  14 | 2023-06-14 | Comunicar 2        | Shiny Aplicaciones                                 | Aplicaciones en shiny, interfaz de usuario, servidor, paquetes auxiliares, htmlwidgets v2                                                               | <https://mastering-shiny.org/>                                                                                                                   |                   |
 |  15 | 2023-06-21 |                    |                                                    |                                                                                                                                                         |                                                                                                                                                  | pueblos-indigenas |
-|  16 | 2023-06-28 | Aplicaciones       | Por definir/tentativo                              | Shiny                                                                                                                                                   |                                                                                                                                                  | última-clase      |
+|  16 | 2023-06-28 | Aplicaciones       | Por definir/tentativo                              |                                                                                                                                                         |                                                                                                                                                  | última-clase      |
 
 ## Material
 
@@ -70,6 +70,8 @@ En particular, las clases están planificadas de la siguiente manera:
     ranger</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/11-Machine-Learning-Arboles-RF.html)
 12. [Aplicación Machine
     Learning](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/12-Aplicación-Machine-Learning.html)
+13. [Aplicaciones Web <code><small>shiny
+    bslib</small></code>](https://jbkunst.github.io/computacion-estadistica-EPG3308/slides/13-Aplicaciones-web-shiny.html)
 
 ### Repositorio
 

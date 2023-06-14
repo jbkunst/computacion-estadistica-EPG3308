@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>13-Aplicaciones-Web-Shiny</title>
+    <meta charset="utf-8" />
+    <meta name="author" content=" Joshua Kunst @jbkunst" />
+    <meta name="date" content="2023-06-13" />
+    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+.title[
+# Aplicaciones Web Shiny
+]
+.subtitle[
+## 13 Aplicaciones Web <code><small>shiny bslib</small></code>
+]
+.author[
+### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
+]
+.date[
+### 2023-06-13
+]
+
+---
+
+
+
+
+class: center, middle, inverse
+
+# Por que shiny?
+
+
+---
+
+## Por que `shiny`?
+
+&lt;br/&gt;
+
+&lt;img src="images/data-science.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: center, middle, inverse
+
+# ¿Qué es una *app*(licación) web?
+
+---
+
+## Aplicación Web
+
+(Wikipedia:) Herramientas que los usuarios pueden utilizar accediendo 
+a un servidor web a través de internet o de una intranet mediante un navegador.
+
+Puede ser de lo más simple...
+
+.center[
+&lt;img src="images/shiny/miprimerapp.png" width="900px" /&gt;
+]
+
+---
+
+## Aplicación Web
+
+Hasta algo más complejo con más `input`s y `output`s
+
+.center[
+&lt;img src="images/shiny/otraapp2.png" width="800px" /&gt;
+]
+
+---
+
+## Ejemplos para motivarse!
+
+Algunos simples.
+
+* https://jjallaire.shinyapps.io/shiny-kmeans/
+* https://jbkunst.shinyapps.io/05-arma/ 
+
+--
+
+Otros con más detalle en la parte visual.
+
+* https://github.com/jbkunst/shiny-apps-educational
+* https://frzambra.shinyapps.io/odes-unidades-shiny-app/
+* https://jbkunst.shinyapps.io/trd-sttstcs/ (https://github.com/jbkunst/trd-sttstcs)
+* https://jorgehcas1998.shinyapps.io/Dataton-app/ (https://github.com/socapal/dataton-tudinero)
+* https://nz-stefan.shinyapps.io/commute-explorer-2
+
+---
+
+## La estructura de una ShinyApp
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage()
+
+server &lt;- function(input, output) {}
+
+runApp(list(ui = ui, server = server)) 
+```
+
+En `shiny`, una aplicación constará de **2** partes:
+
+- La interfaz de usuario, `ui` (user interface), donde definiremos el look de nuestra aplicación, y lugar de  `inputs` y `outputs`.
+- El `server`, en donde especificaremos como interactuan los `outputs` en función de los `inputs`.
+
+---
+
+## La estructura de una ShinyApp
+
+
+
+```r
+library(shiny)
+
+*ui &lt;- fluidPage()
+
+server &lt;- function(input, output) {}
+
+runApp(list(ui = ui, server = server)) 
+```
+
+- Se define una interfaz de usuario (user interface). En adelante `ui`.
+- En este caso es una página fluida vacía `fluidPage()`.
+- En el futuro acá definiremos diseño/estructura de nuestra aplicación (_layout_).
+Que se refiere la disposición de nuestros `inputs` y `outputs`.
+
+
+---
+
+## La estructura de una ShinyApp
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage()                            
+
+*server &lt;- function(input, output) {}
+
+runApp(list(ui = ui, server = server)) 
+```
+
+- Se define el `server` en donde estará toda la lógica de nuestra aplicación.
+- Principalmente serán instrucciones que dependeran de `inputs` y
+reflejaremos `outputs`: como tablas, gráficos.
+
+---
+
+## La estructura de una ShinyApp
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage()                            
+
+server &lt;- function(input, output) {}         
+
+*runApp(list(ui = ui, server = server))
+```
+
+- `runApp` es la funcion que crea y deja corriendo la app con los 
+parámetros otorgados.
+- **No siempre** tendremos que escribirla pues veremos que RStudio
+al crear una shinyApp nos pondrá un botón para _servir_ la aplicación.
+
+---
+
+## La estructura de una ShinyApp
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage()                            
+
+server &lt;- function(input, output) {}         
+
+runApp(list(ui = ui, server = server))       
+```
+
+De formar general la aplicación será:
+
+
+```r
+library(shiny)
+# acá se cargarán paquetes y posiblemente también datos
+# necesarios para ui (como definir opciones de inputs)
+
+ui &lt;- fluidPage(
+  # código que da forma a nuestrá aplicación: títulos, secciones, textos, inputs
+)                            
+
+server &lt;- function(input, output) {
+  # toooda la lógica de como interactuan los outputs en función de los inputs
+}         
+```
+
+---
+
+## Ejercicio 1: Nuestra primer App andando
+
+Hacer funcionar el siguiente `código` en R Rstudio: (hint: sí, copy + paste + run) 
+
+.code40[
+
+```r
+library(shiny)
+ui &lt;- fluidPage(
+   sidebarLayout(
+      sidebarPanel(
+        sliderInput("nrand", "Simulaciones", min = 50, max = 100, value = 70),
+        selectInput("col", "Color", c("red", "blue", "black")),
+        checkboxInput("punto", "Puntos:", value = FALSE)
+      ),
+      mainPanel(plotOutput("outplot"))
+   )
+)
+server &lt;- function(input, output) {
+   output$outplot &lt;- renderPlot({
+     set.seed(123)
+     x &lt;- rnorm(input$nrand)
+     t &lt;- ifelse(input$punto, "b", "l")
+     plot(x, type = t, col = input$col)
+   })
+}
+shinyApp(ui, server)
+```
+]
+
+---
+
+class: center, middle, inverse
+
+# Funcionamiento de una app de Shiny (reactividad)
+
+---
+
+## App
+
+![](images/shiny/shiny_works/Diapositiva1.png)
+
+---
+
+## Contenedor 
+
+![](images/shiny/shiny_works/Diapositiva2.png)
+
+---
+
+## Otros contenedores 
+
+![](images/shiny/shiny_works/Diapositiva3.png)
+
+---
+
+## Inputs 
+
+![](images/shiny/shiny_works/Diapositiva4.png)
+
+---
+
+## Outputs
+
+![](images/shiny/shiny_works/Diapositiva5.png)
+
+---
+
+## Interacción 
+
+![](images/shiny/shiny_works/Diapositiva6.png)
+
+---
+
+## Resultado
+
+![](images/shiny/shiny_works/Diapositiva7.png)
+
+---
+
+## La estructura de una ShinyApp 2
+
+
+```r
+ui &lt;- fluidPage(
+   sidebarLayout(
+      sidebarPanel(
+        sliderInput("nrand", "Simulaciones", min = 50, max = 100, value = 70),
+        selectInput("col", "Color", c("red", "blue", "black")),
+        checkboxInput("punto", "Puntos:", value = FALSE)
+      ),
+      mainPanel(plotOutput("outplot"))
+   )
+)
+
+server &lt;- function(input, output) {
+   output$outplot &lt;- renderPlot({
+     set.seed(123)
+     x &lt;- rnorm(input$nrand)
+     t &lt;- ifelse(input$punto, "b", "l")
+     plot(x, type = t, col = input$col)
+   })
+}
+```
+
+---
+
+## La estructura de una ShinyApp 2: Contenedores
+
+
+```r
+*ui &lt;- fluidPage(
+*  sidebarLayout(
+*     sidebarPanel(
+        sliderInput("nrand", "Simulaciones", min = 50, max = 100, value = 70),
+        selectInput("col", "Color", c("red", "blue", "black")),
+        checkboxInput("punto", "Puntos:", value = FALSE)
+      ),
+*     mainPanel(plotOutput("outplot"))
+   )
+)
+
+server &lt;- function(input, output) {
+   output$outplot &lt;- renderPlot({
+     set.seed(123)
+     x &lt;- rnorm(input$nrand)
+     t &lt;- ifelse(input$punto, "b", "l")
+     plot(x, type = t, col = input$col)
+   })
+}
+```
+
+Por ejemplo uso de _tabs_ de _menus_, o páginas
+con navegación. [Más detalles](http://shiny.rstudio.com/articles/layout-guide.html).
+
+
+---
+
+## La estructura de una ShinyApp 2: Inputs
+
+
+```r
+ui &lt;- fluidPage(                                                                                          
+   sidebarLayout(                                                 
+      sidebarPanel(                                               
+*       sliderInput("nrand", "Simulaciones", min = 50, max = 100, value = 70),
+*       selectInput("col", "Color", c("red", "blue", "black")),
+*       checkboxInput("punto", "Puntos:", value = FALSE)
+      ),
+      mainPanel(plotOutput("outplot"))                            
+   )
+)
+
+server &lt;- function(input, output) {
+   output$outplot &lt;- renderPlot({
+     set.seed(123)
+     x &lt;- rnorm(input$nrand)
+     t &lt;- ifelse(input$punto, "b", "l")
+     plot(x, type = t, col = input$col)
+   })
+}
+```
+
+[Más ejemplos](https://shiny.rstudio.com/gallery/widget-gallery.html). En R
+se usan como numericos, strings, booleanos, fechas, ...
+
+---
+
+## La estructura de una ShinyApp 2: Outputs
+
+
+```r
+ui &lt;- fluidPage(                                                                                          
+   sidebarLayout(                                                 
+      sidebarPanel(                                               
+        sliderInput("nrand", "Simulaciones", min = 50, max = 100, value = 70),             
+        selectInput("col", "Color", c("red", "blue", "black")),   
+        checkboxInput("punto", "Puntos:", value = FALSE)          
+      ),
+*     mainPanel(plotOutput("outplot"))
+   )
+)
+
+server &lt;- function(input, output) {
+   output$outplot &lt;- renderPlot({
+     set.seed(123)
+     x &lt;- rnorm(input$nrand)
+     t &lt;- ifelse(input$punto, "b", "l")
+     plot(x, type = t, col = input$col)
+   })
+}
+```
+
+Existen varios outpus como tablas, texto, imágenes, mapas, etc.
+
+---
+
+## La estructura de una ShinyApp 2: Renders
+
+
+```r
+ui &lt;- fluidPage(                                                                                          
+   sidebarLayout(                                                 
+      sidebarPanel(                                               
+        sliderInput("nrand", "Simulaciones", min = 50, max = 100, value = 70),             
+        selectInput("col", "Color", c("red", "blue", "black")),   
+        checkboxInput("punto", "Puntos:", value = FALSE)          
+      ),
+      mainPanel(plotOutput("outplot"))                                                   
+   )
+)
+
+server &lt;- function(input, output) {
+*  output$outplot &lt;- renderPlot({
+     set.seed(123)
+     x &lt;- rnorm(input$nrand)
+     t &lt;- ifelse(input$punto, "b", "l")
+     plot(x, type = t, col = input$col)
+   })
+}
+```
+
+Envian la información/objeto al output. Adentro hay código R.
+
+---
+
+## La estructura de una ShinyApp 2: Lógica (código R!)
+
+
+```r
+ui &lt;- fluidPage(                                                                                          
+   sidebarLayout(                                                 
+      sidebarPanel(                                               
+        sliderInput("nrand", "Simulaciones", min = 50, max = 100, value = 70),             
+        selectInput("col", "Color", c("red", "blue", "black")),   
+        checkboxInput("punto", "Puntos:", value = FALSE)          
+      ),
+      mainPanel(plotOutput("outplot"))                                                   
+   )
+)
+
+server &lt;- function(input, output) {
+   output$outplot &lt;- renderPlot({                               
+*    set.seed(123)
+*    x &lt;- rnorm(input$nrand)
+*    t &lt;- ifelse(input$punto, "b", "l")
+*    plot(x, type = t, col = input$col)
+   })
+}
+```
+
+Acá usamos los inputs para entregar lo que deseamos (outputs).
+
+---
+
+## La estructura de una ShinyApp 2: *Output() y render*()
+
+&lt;pre class="r hljs remark-code"&gt;
+ui &lt;- fluidPage(                                                                                          
+   sidebarLayout(                                                 
+      sidebarPanel(                                               
+        sliderInput("nrand", "Simulaciones", min = 50, max = 100, value = 70),             
+        selectInput("col", "Color", c("red", "blue", "black")),   
+        checkboxInput("punto", "Puntos:", value = FALSE)          
+      ),
+      mainPanel(&lt;b&gt;plotOutput&lt;/b&gt;("outplot"))
+   )
+)
+
+server &lt;- function(input, output) {
+   output$outplot &lt;- &lt;b&gt;renderPlot&lt;/b&gt;({                               
+     set.seed(123)                                              
+     x &lt;- rnorm(input$nrand)                                    
+     t &lt;- ifelse(input$punto, "b", "l")                         
+     plot(x, type = t, col = input$col)                         
+   })
+}
+&lt;/pre&gt;
+
+- Las funciones `*Output()` y `render*()` trabajan juntas para agregar salidas de R a la interfaz de usuario.
+ 
+---
+
+## La estructura de una ShinyApp 2: IDs outpus
+
+&lt;pre class="r hljs remark-code"&gt;
+ui &lt;- fluidPage(                                                                                          
+   sidebarLayout(                                                 
+      sidebarPanel(                                               
+        sliderInput("nrand", "Simulaciones", min = 50, max = 100, value = 70),             
+        selectInput("col", "Color", c("red", "blue", "black")),   
+        checkboxInput("punto", "Puntos:", value = FALSE)          
+      ),
+      mainPanel(plotOutput(&lt;b&gt;"outplot"&lt;/b&gt;))
+   )
+)
+
+server &lt;- function(input, output) {
+   output$&lt;b&gt;outplot&lt;/b&gt; &lt;- renderPlot({                               
+     set.seed(123)                                              
+     x &lt;- rnorm(input$nrand)                                    
+     t &lt;- ifelse(input$punto, "b", "l")                         
+     plot(x, type = t, col = input$col)                         
+   })
+}
+&lt;/pre&gt;
+
+- Cada `*Output()` y `render*()` se asocian con un **id** definido por nosotros.
+
+---
+
+## La estructura de una ShinyApp 2: IDs inputs
+
+.code60[
+&lt;pre class="r hljs remark-code"&gt;
+ui &lt;- fluidPage(                                                                                          
+   sidebarLayout(                                                 
+      sidebarPanel(                                               
+        sliderInput(&lt;b&gt;"nrand"&lt;/b&gt;, "Simulaciones", min = 50, max = 100, value = 70),             
+        selectInput("col", "Color", c("red", "blue", "black")),   
+        checkboxInput("punto", "Puntos:", value = FALSE)          
+      ),
+      mainPanel(plotOutput("outplot"))
+   )
+)
+
+server &lt;- function(input, output) {
+   output$outplot &lt;- renderPlot({                               
+     set.seed(123)                                              
+     x &lt;- rnorm(input$&lt;b&gt;nrand&lt;/b&gt;)                                    
+     t &lt;- ifelse(input$punto, "b", "l")                         
+     plot(x, type = t, col = input$col)                         
+   })
+}
+&lt;/pre&gt;
+]
+
+Cada functión `*Input` requiere un **id** para ser identificado en el server.
+
+
+---
+
+## La estructura de una ShinyApp 2: Más info de inputs
+
+.code60[
+&lt;pre class="r hljs remark-code"&gt;
+ui &lt;- fluidPage(                                                                                          
+   sidebarLayout(                                                 
+      sidebarPanel(                                               
+        sliderInput(&lt;b&gt;"nrand"&lt;/b&gt;, "Simulaciones", min = 50, max = 100, value = 70),             
+        selectInput(&lt;b&gt;"col"&lt;/b&gt;, "Color", c("red", "blue", "black")),   
+        checkboxInput(&lt;b&gt;"punto"&lt;/b&gt;, "Puntos:", value = FALSE)          
+      ),
+      mainPanel(plotOutput("outplot"))
+   )
+)
+
+server &lt;- function(input, output) {
+   output$outplot &lt;- renderPlot({                               
+     set.seed(123)                                              
+     x &lt;- rnorm(input$&lt;b&gt;nrand&lt;/b&gt;)                                    
+     t &lt;- ifelse(input$&lt;b&gt;punto&lt;/b&gt;, "b", "l")                         
+     plot(x, type = t, col = input$&lt;b&gt;col&lt;/b&gt;)                         
+   })
+}
+&lt;/pre&gt;
+]
+
+Más inputs [acá](https://gallery.shinyapps.io/065-update-input-demo/) y [acá](http://shinyapps.dreamrs.fr/shinyWidgets/).
+
+---
+
+## Ejercicio 2: Inputs y outputs vengan a mi!
+
+
+Haga click en:
+
+- _File_, luego _New File_ y _Shiny Web App_, seleccione el nombre
+- Ejecutela con _Run App_ e intearctúe
+- Luego modifique y cree una app que contenga:
+  - 2 inputs, un `sliderInput` y un `textInput` 
+  - 3 outputs de tipo texto `textOutput` donde el primero contenga 
+el valor del primer input, el segundo el valor del segundo input, y el tercero la suma de los
+dos.
+
+
+Hints importantes:
+
+- No tema a escribir, ni preguntar!
+- Está totalmente permitido equivocarse, de hecho se pondrán puntos extras.
+
+
+---
+
+## Solucion (?)
+
+.code60[
+&lt;pre class="r hljs remark-code"&gt;
+ui &lt;- fluidPage(
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput("numerouno", "#1", min = 10, max = 500, value = 100),
+            textInput("numerodos", "#2", value = 3)
+        ),
+        mainPanel(
+           textOutput("resultado1"),
+           textOutput("resultado2"),
+           textOutput("resultado3")
+        )
+    )
+)
+
+server &lt;- function(input, output) {
+
+  output$resultado1 &lt;- renderText({input$numerouno})
+  
+  output$resultado2 &lt;- renderText({input$numerodos})
+  
+  output$resultado3 &lt;- renderText({input$numerouno + input$numerodos})
+  
+}
+&lt;/pre&gt;
+]
+
+
+---
+
+## Reactividad: Como funciona shiny
+
+Consideremos la aplicación del ejemplo anterior. 
+
+Al cambiar un input -como lo es `input$numerouno` o `input$numerodos`- shiny
+reconoce que expresiones (renders, como `renderText` en este caso) dependen
+dichos elementos y vuelve a calcularlos a penas suceda el cambio.
+
+.center[
+&lt;img src="images/shiny/reactivity-ejemplo.png" width="800px" /&gt;
+]
+
+En este sentido, shiny funciona similar a excel.
+
+---
+
+class: center, middle, inverse
+
+# Publicar/Servir tu app
+
+---
+
+## Publicar/Servir tu app
+
+Existen dos formas simples/sencillas para compartir una aplicación. Es decir
+que sea visible en otros dispositivos pc/móviles. Luego existen otras 
+que requieren de mayor conocimiento técnico.
+
+**Vía IP local**: Permite que tu pc sirva la aplicación y pueda ser visible en una red local 
+(por ejemplo, la de tu casa), o también en una VPN.
+
+--
+
+**Servicio shinyapps.io**:  Permite que otro pc (una máquina virtual) sirva tu apliación y la exponga 
+con una url pública. Ejemplo https://usuario.shinyapps.io/nombreapp.
+
+--
+
+**Otras**: Como por ejemplo arrendar una máquina virtual linode/digitalocean/aws e 
+instalar shinyserver.
+
+---
+
+## Vía IP local
+
+- Solamente funciona para redes locales (casa/trabajo) o tambien VPN.
+- Requiere que _nuestro_ pc esté encendido para que la app corra.
+
+Básicamente se obtiene la IP (_dirección de nuesto pc_) a través de una instrucción y luego se especifica correr la aplicación con dicha IP. Se deberá cambiar:
+
+
+```r
+shinyApp(ui = ui, server = server)
+```
+
+Por:
+
+
+```r
+# esto es en windows
+ip &lt;- gsub(".*? ([[:digit:]])", "\\1", system("ipconfig", intern=T)[grep("IPv4", system("ipconfig", intern = T))])
+
+shinyApp(ui = ui, server = server, options = list(host = ip))
+```
+
+---
+
+## Servicio shinyapps.io
+
+- Básicamente sube todo lo que está en la carpeta de la aplicación archivos R y **otros** 
+a una máquina virtual y detecta los paquetes utilizados.
+- La versión gratuita tienes horas de uso que se van recuperando cada mes. Está
+máquina virtual es humilde en términos de recursos, puede ser lenta dependiendo
+del uso.
+
+
+Primero se debe una cuenta en https://www.shinyapps.io/ (puedes asociar tu correo gmail).
+Luego crear una app.
+- `rsconnect::deployApp("&lt;ruta_a_la_aplicacion&gt;")`, o:
+
+.center[
+![](images/shiny/publicar_screenshot_1v2.png)
+]
+
+
+---
+
+## Paquetes 
+
+Paquetes para realizar aplicaciones web con shiny:
+
+
+```r
+install.packages(
+  c("tidyverse", "shiny", "shinythemes", "shinyWidgets", "bslib",
+    "shinydashboard", "DT", "leaflet", "plotly", "highcharter")
+  )
+```
+
+---
+
+## Más información
+
+- https://jkunst.com/shiny-visualizacion-de-datos-con-R/clase-01.html
+- https://mastering-shiny.org/ https://github.com/cienciadedatos/mastering-shiny
+- https://shiny.rstudio.com/tutorial/
+- https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/
+- https://shiny.rstudio.com/images/shiny-cheatsheet.pdf
+- https://raw.githubusercontent.com/rstudio/cheatsheets/main/translations/spanish/shiny_es.pdf
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
