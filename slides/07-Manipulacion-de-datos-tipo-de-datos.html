@@ -4,8 +4,8 @@
     <title>07-Tipos-de-datos</title>
     <meta charset="utf-8" />
     <meta name="author" content=" Joshua Kunst @jbkunst" />
-    <meta name="date" content="2023-04-26" />
-    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <meta name="date" content="2023-11-30" />
+    <script src="libs/header-attrs-2.23/header-attrs.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" />
   </head>
@@ -23,7 +23,7 @@ class: left, middle, title-slide
 ### <br>Joshua Kunst<br><span class="citation">@jbkunst</span>
 ]
 .date[
-### 2023-04-26
+### 2023-11-30
 ]
 
 ---
@@ -2683,23 +2683,23 @@ library(datos)
 
 ```
 ## # A tibble: 336,776 × 19
-##     anio   mes   dia horario_s…¹ salid…² atras…³ horar…⁴ llega…⁵ atras…⁶ aerol…⁷
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
-##  1  2013     1     1         517     515       2     830     819      11 UA     
-##  2  2013     1     1         533     529       4     850     830      20 UA     
-##  3  2013     1     1         542     540       2     923     850      33 AA     
-##  4  2013     1     1         544     545      -1    1004    1022     -18 B6     
-##  5  2013     1     1         554     600      -6     812     837     -25 DL     
-##  6  2013     1     1         554     558      -4     740     728      12 UA     
-##  7  2013     1     1         555     600      -5     913     854      19 B6     
-##  8  2013     1     1         557     600      -3     709     723     -14 EV     
-##  9  2013     1     1         557     600      -3     838     846      -8 B6     
-## 10  2013     1     1         558     600      -2     753     745       8 AA     
-## # … with 336,766 more rows, 9 more variables: vuelo &lt;int&gt;, codigo_cola &lt;chr&gt;,
+##     anio   mes   dia horario_salida salida_programada atraso_salida
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;          &lt;int&gt;             &lt;int&gt;         &lt;dbl&gt;
+##  1  2013     1     1            517               515             2
+##  2  2013     1     1            533               529             4
+##  3  2013     1     1            542               540             2
+##  4  2013     1     1            544               545            -1
+##  5  2013     1     1            554               600            -6
+##  6  2013     1     1            554               558            -4
+##  7  2013     1     1            555               600            -5
+##  8  2013     1     1            557               600            -3
+##  9  2013     1     1            557               600            -3
+## 10  2013     1     1            558               600            -2
+## # ℹ 336,766 more rows
+## # ℹ 13 more variables: horario_llegada &lt;int&gt;, llegada_programada &lt;int&gt;,
+## #   atraso_llegada &lt;dbl&gt;, aerolinea &lt;chr&gt;, vuelo &lt;int&gt;, codigo_cola &lt;chr&gt;,
 ## #   origen &lt;chr&gt;, destino &lt;chr&gt;, tiempo_vuelo &lt;dbl&gt;, distancia &lt;dbl&gt;,
-## #   hora &lt;dbl&gt;, minuto &lt;dbl&gt;, fecha_hora &lt;dttm&gt;, and abbreviated variable names
-## #   ¹​horario_salida, ²​salida_programada, ³​atraso_salida, ⁴​horario_llegada,
-## #   ⁵​llegada_programada, ⁶​atraso_llegada, ⁷​aerolinea
+## #   hora &lt;dbl&gt;, minuto &lt;dbl&gt;, fecha_hora &lt;dttm&gt;
 ```
 ]
 
@@ -2734,7 +2734,7 @@ vuelos |&gt;
 ##  8  2013     1     1     6      0
 ##  9  2013     1     1     6      0
 ## 10  2013     1     1     6      0
-## # … with 336,766 more rows
+## # ℹ 336,766 more rows
 ```
 ]
 
@@ -2773,7 +2773,7 @@ vuelos |&gt;
 ##  8 2013-01-01  2013     1     1     6      0
 ##  9 2013-01-01  2013     1     1     6      0
 ## 10 2013-01-01  2013     1     1     6      0
-## # … with 336,766 more rows
+## # ℹ 336,766 more rows
 ```
 ]
 
@@ -2821,7 +2821,7 @@ vuelos |&gt;
 ##  8 2013-01-01 2013-01-01 06:00:00  2013     1     1     6      0
 ##  9 2013-01-01 2013-01-01 06:00:00  2013     1     1     6      0
 ## 10 2013-01-01 2013-01-01 06:00:00  2013     1     1     6      0
-## # … with 336,766 more rows
+## # ℹ 336,766 more rows
 ```
 ]
 
@@ -2887,7 +2887,7 @@ t &lt;- today()
 .panel2-lubridate3-auto[
 
 ```
-## [1] "2023-04-26"
+## [1] "2023-11-30"
 ```
 ]
 
@@ -2908,7 +2908,7 @@ t
 .panel2-lubridate3-auto[
 
 ```
-## [1] "2023-04-26"
+## [1] "2023-11-30"
 ```
 
 ```
@@ -2935,7 +2935,7 @@ class(t)
 .panel2-lubridate3-auto[
 
 ```
-## [1] "2023-04-26"
+## [1] "2023-11-30"
 ```
 
 ```
@@ -2943,7 +2943,7 @@ class(t)
 ```
 
 ```
-## [1] "2023-04-26 UTC"
+## [1] "2023-11-30 UTC"
 ```
 ]
 
@@ -2968,7 +2968,7 @@ as_datetime(t)
 .panel2-lubridate3-auto[
 
 ```
-## [1] "2023-04-26"
+## [1] "2023-11-30"
 ```
 
 ```
@@ -2976,7 +2976,7 @@ as_datetime(t)
 ```
 
 ```
-## [1] "2023-04-26 UTC"
+## [1] "2023-11-30 UTC"
 ```
 ]
 
@@ -3003,7 +3003,7 @@ ahora &lt;- now()
 .panel2-lubridate3-auto[
 
 ```
-## [1] "2023-04-26"
+## [1] "2023-11-30"
 ```
 
 ```
@@ -3011,11 +3011,11 @@ ahora &lt;- now()
 ```
 
 ```
-## [1] "2023-04-26 UTC"
+## [1] "2023-11-30 UTC"
 ```
 
 ```
-## [1] "2023-04-26"
+## [1] "2023-11-30"
 ```
 ]
 

@@ -82,6 +82,8 @@ dir(recursive = TRUE)
 dir(pattern = "\\.Rmd$", recursive = TRUE)
 dir(pattern = "\\.R$", recursive = TRUE)
 dir(pattern = "\\.csv$", recursive = TRUE)
+str_subset(dir(pattern = "\\.csv$", recursive = TRUE), "datos_credito")
+
 
 # ejemplo email -----------------------------------------------------------
 xs <- "Por favor, envíame un correo electrónico a juan.perez@gmail.com con la información que necesito.
@@ -100,6 +102,8 @@ xs <- str_split_1(xs, "\n")
 
 str_view(xs)
 str_view(xs, "[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}")
+
+unlist(str_extract_all(xs, "[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}"))
 
 # ejemplo direcciones -----------------------------------------------------
 library(tidyverse)
@@ -123,10 +127,11 @@ data <- data |>
     c("direccion", "comuna"),
     sep = ","
   ) 
+
 data
 
 data |> 
-  mutate(numero = str_extract(direccion, " "))
+  mutate(numero = str_extract(direccion, "\\d+"))
 
 data <- data |> 
   separate(

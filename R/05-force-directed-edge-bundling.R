@@ -37,7 +37,7 @@ dedges2 <- dedges |>
   left_join(dvertices, by = join_by(from == name), suffix = c("", "_from")) |> 
   left_join(dvertices, by = join_by(to   == name), suffix = c("", "_to"))
 
-ggplot() +
+p1 <- ggplot() +
   ggraph::theme_graph(background = "black") +
   coord_map() +
   geom_polygon(
@@ -52,6 +52,8 @@ ggplot() +
     col = "white", linewidth = 1, alpha = 0.1
     )
 
+p1
+
 # segundo intento (Force directed edge bundling) --------------------------
 g <- graph_from_data_frame(dedges, directed = TRUE, vertices = dvertices)
 
@@ -63,8 +65,15 @@ verts <- data.frame(x = V(g)$longitud, y = V(g)$latitud)
 
 fbundle <- edge_bundle_force(g, xy, compatibility_threshold = 0.6)
 
-ggplot() +
+p2 <- ggplot() +
   ggraph::theme_graph(background = "black") +
   coord_map() +
   geom_polygon(data = states, aes(long, lat, group = group),  col = "gray20", linewidth = 0.1, fill = NA) +
   geom_path(data = fbundle, aes(x, y, group = group), col = "gray70", linewidth = 1, alpha = 0.1) 
+
+
+p2
+
+library(patchwork)
+
+p1/p2
